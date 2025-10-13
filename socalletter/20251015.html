@@ -1,241 +1,176 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8" />
-  <title>SW College Letter VOL.28</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <style>
-    /* ===== Clean palette (no brown) ===== */
-    :root{
-      --bg:#f6f7fb;          /* page background */
-      --surface:#ffffff;     /* 
-      s */
-      --ink:#0f172a;         /* main text (slate-900) */
-      --muted:#64748b;       /* secondary (slate-500) */
-      --line:#e5e7eb;        /* borders (gray-200) */
-      --accent:#2563eb;      /* blue-600 */
-      --accent-ink:#0b2a7a;  /* deep blue text if needed */
-      --pill:#eff6ff;        /* blue-50 */
-      --shadow:0 6px 18px rgba(2,6,23,.08);
-    }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>SWC Weekly – 2×2 Instagram Grid</title>
+<style>
+/* ===== 화이트 테마 ===== */
+:root{
+  --bg:#ffffff; --surface:#ffffff; --ink:#0f172a; --muted:#64748b;
+  --line:#eef2f7; --accent:#2563eb; --pill:#eff6ff;
+  --shadow:0 6px 18px rgba(2,6,23,.06);
+}
 
-    *{box-sizing:border-box}
-    body{
-      margin:0; padding:0;
-      font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans KR',Roboto,Helvetica,Arial,sans-serif;
-      background:var(--bg); color:var(--ink); line-height:1.6;
-    }
-
-    /* ===== Layout skeleton ===== */
-    .wrap{max-width:960px;margin:28px auto;padding:0 20px}
-    .
-    {
-      background:var(--surface);
-      border:1px solid var(--line);
-      border-radius:14px;
-      box-shadow:var(--shadow);
-      padding:16px 18px;
-    }
-    .section{margin-top:16px}
-  
-    /* ===== Layout skeleton ===== */
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans KR',Roboto,Helvetica,Arial,sans-serif;
+  line-height:1.6;
+}
 .wrap{max-width:960px;margin:28px auto;padding:0 20px}
-.
-    {background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:16px 18px}
-.section{margin-top:16px}
 
-/* Weekly title strip */
-.weekly-head{display:flex;align-items:center;gap:10px;margin:0 0 6px}
-.weekly-title{font-size:18px;font-weight:900;letter-spacing:.1px}
-.weekly-badges{display:flex;gap:6px;margin-left:auto}
-.badge{font-size:12px;font-weight:800;padding:4px 10px;border:1px solid var(--line);border-radius:999px;background:var(--pill);color:#1e40af}
-
-/* ===== Topbar (Instagram look) ===== */
-.topbar{display:flex;align-items:center;gap:12px;padding:10px 0}
-.topbar .avatar{width:36px;height:36px;border-radius:50%;border:1px solid var(--line);object-fit:cover;background:#fff}
+/* ===== 상단 바 ===== */
+.panel{
+  background:var(--surface); border:1px solid var(--line); border-radius:14px;
+  box-shadow:var(--shadow); padding:16px 18px;
+}
+.topbar{display:flex;align-items:center;gap:12px}
+.topbar .avatar{width:36px;height:36px;border-radius:50%;border:1px solid var(--line);object-fit:cover}
 .topbar .meta{line-height:1.2}
 .topbar .handle{font-weight:800}
 .topbar .sub{font-size:12px;color:var(--muted)}
-.topbar .pill{margin-left:auto;padding:6px 10px;border-radius:999px;font-size:12px;font-weight:800;color:#0b2a7a;background:var(--pill);border:1px solid var(--line)}
-
-    /* ===== Topbar (Instagram look) ===== */
-    .topbar{
-      display:flex;align-items:center;gap:12px;
-      padding:10px 0;
-    }
-    .topbar .avatar{
-      width:36px;height:36px;border-radius:50%;
-      border:1px solid var(--line);object-fit:cover;
-      background:#fff;
-    }
-    .topbar .meta{line-height:1.2}
-    .topbar .handle{font-weight:800}
-    .topbar .sub{font-size:12px;color:var(--muted)}
-    .topbar .pill{
-      margin-left:auto;
-      padding:6px 10px;border-radius:999px;
-      font-size:12px;font-weight:800;color:#0b2a7a;
-      background:var(--pill); border:1px solid var(--line);
-    }
-
-    /* ===== Hero (툰 + 제목/설명) ===== */
-    .hero-title{
-      display:flex;align-items:center;gap:10px;margin:10px 2px 4px;
-      font-size:22px;font-weight:900;
-    }
-    .eyebrow{
-      display:inline-flex;align-items:center;gap:8px;
-      background:var(--pill);border:1px solid var(--line);
-      color:#1e40af;padding:4px 10px;border-radius:999px;
-      font-size:12px;font-weight:800;
-    }
-    .hero-desc{margin:2px 2px 12px;color:var(--muted)}
-    .hero-img{
-      width:100%;border-radius:12px;border:1px solid var(--line);
-      display:block;box-shadow:0 8px 20px rgba(2,6,23,.06);
-    }
-    .cta{
-      margin-top:10px;display:inline-block;
-      padding:0 16px;height:40px;line-height:40px;border-radius:10px;
-      font-weight:800;font-size:14px;text-decoration:none;
-      color:white;background:var(--accent);border:1px solid var(--accent);
-    }
-
-    /* ===== IG grid (2×2) — one clean 
-    only ===== */
-    .ig-head{display:flex;align-items:center;gap:10px;margin-bottom:10px}
-    .ig-title{font-size:16px;font-weight:900}
-    .ig-sub{font-size:12px;color:var(--muted)}
-    .ig-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
-    .tile{position:relative;border-radius:12px;overflow:hidden;border:1px solid var(--line)}
-    .tile img{width:100%;display:block;aspect-ratio:1/1;object-fit:cover}
-    .tile::after{content:"";position:absolute;inset:0;
-      background:linear-gradient(180deg,rgba(0,0,0,.12),rgba(0,0,0,.55));}
-    .tile .rightbar{position:absolute;top:0;right:0;bottom:0;width:6px;background:rgba(255,255,255,.75);mix-blend-mode:soft-light}
-    .cap-top{position:absolute;left:12px;top:12px;right:14px;
-      padding:4px 8px 2px;border-radius:6px;background:rgba(0,0,0,.45);
-      color:#fff;font-size:12px;font-weight:800;z-index:2}
-    .cap-title{position:absolute;left:12px;right:14px;bottom:48px;
-      color:#fff;font-weight:900;line-height:1.1;font-size:clamp(22px,3.4vw,30px);
-      text-shadow:0 2px 6px rgba(0,0,0,.65);z-index:2}
-    .cap-desc{position:absolute;left:12px;right:14px;bottom:12px;
-      color:#fff;font-size:13px;font-weight:700;opacity:.95;text-shadow:0 1px 2px rgba(0,0,0,.6);z-index:2}
-    @media (max-width:520px){
-      .hero-title{font-size:20px}
-      .cap-title{font-size:clamp(20px,5vw,26px)}
-      .cap-desc{font-size:12px}
-    }
-
-    /* ===== Tiny utilities ===== */
-    .spacer{height:6px}
-    .divider{height:1px;background:var(--line);margin:12px 0}
-/* Weekly title strip over the topbar */
-.weekly-head{
-  display:flex; align-items:center; gap:10px;
-  margin:0 0 6px 0;
+.topbar .pill{
+  margin-left:auto;padding:6px 10px;border-radius:999px;font-size:12px;font-weight:800;
+  color:#0b2a7a;background:var(--pill);border:1px solid var(--line)
 }
-.weekly-title{
-  font-size:18px; font-weight:900; letter-spacing:.1px;
+.mega-title{
+  color:#000;font-weight:900;letter-spacing:-.01em;line-height:1.1;
+  font-size:clamp(28px,4.2vw,44px);margin:10px 0 6px
 }
-.weekly-badges{display:flex; gap:6px; margin-left:auto;}
-.badge{
-  font-size:12px; font-weight:800; padding:4px 10px;
-  border:1px solid var(--line); border-radius:999px;
-  background:var(--pill); color:#1e40af; /* accent계열 */
+.mega-sub{color:#666;font-size:clamp(14px,1.6vw,18px)}
+
+/* ===== 2×2 인스타 그리드 ===== */
+.ig-head{display:flex;align-items:center;gap:10px;margin:18px 0 10px}
+.ig-title{font-weight:900}
+.ig-sub{font-size:12px;color:var(--muted);margin-left:auto}
+
+.ig-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+@media (max-width:720px){.ig-grid{grid-template-columns:1fr}}
+
+/* 공통 타일 */
+.ig-tile{
+  position:relative;border-radius:14px;overflow:hidden;border:1px solid var(--line);
+  display:block;text-decoration:none;color:inherit;background:#000; /* 레터박스 대비 */
 }
-@media (max-width:520px){
-  .weekly-title{font-size:16px}
+.ig-tile img{
+  width:100%;display:block;aspect-ratio:1/1;object-fit:cover;object-position:center;
 }
 
-    
-  </style>
+/* 오른쪽 세로 하이라이트 */
+.ig-sidebar{
+  position:absolute;top:0;right:0;bottom:0;width:6px;
+  background:linear-gradient(180deg,rgba(255,255,255,.9),rgba(255,255,255,.35));
+  mix-blend-mode:soft-light;pointer-events:none
+}
+
+/* 상단 작은 노트 */
+.ig-topnote{
+  position:absolute;left:12px;right:14px;top:12px;
+  padding:4px 8px 2px;border-radius:6px;
+  font-size:12px;font-weight:800;letter-spacing:.02em;color:#fff;
+  background:rgba(0,0,0,.45);text-shadow:0 1px 2px rgba(0,0,0,.5)
+}
+
+/* 큰 제목(좌측, 하단↑) */
+.ig-title-big{
+  position:absolute;left:12px;right:14px;bottom:48px;
+  color:#fff;font-weight:900;line-height:1.1;
+  font-size:clamp(22px,3.4vw,30px);
+  text-shadow:0 2px 6px rgba(0,0,0,.65)
+}
+
+/* 한 줄 설명 */
+.ig-desc{
+  position:absolute;left:12px;right:14px;bottom:14px;
+  color:#fff;font-size:13px;line-height:1.35;font-weight:700;opacity:.95;
+  text-shadow:0 1px 2px rgba(0,0,0,.6)
+}
+
+/* ===== 와이드(쏘칼툰) — 좌우 절대 미절단 ===== */
+.ig-wide{ grid-column:1 / -1; } /* 2열 전체 */
+.ig-tile.ig-wide{ background:#000; } /* 레터박스도 자연스럽게 */
+.ig-tile.ig-wide img{
+  /* 좌우가 절대 안 잘리도록: 가로 100%, 세로 자동, contain */
+  width:100%; height:auto; aspect-ratio:auto; object-fit:contain; object-position:center;
+  display:block;
+}
+.ig-tile.ig-wide .ig-title-big{ font-size:clamp(24px,3.6vw,36px); }
+@media (max-width:720px){
+  .ig-tile.ig-wide{ grid-column:1 / -1; }
+}
+</style>
 </head>
 <body>
-  <div class="wrap">
-    <!-- Topbar (no brown) -->
-    <div class="panel">
-          <!-- 주간 제목 줄 -->
-  <div class="weekly-head">
-    <div class="weekly-title">[Weekly] 루틴을 지키는 피지컬 AI 학습 가이드</div>
-    <div class="weekly-badges">
+<div class="wrap">
 
+  <!-- 상단 -->
+  <div class="panel">
+    <div class="topbar">
+      <img class="avatar" src="https://pingjueuna.github.io/socalletter/socallogo.png" alt="SWC">
+      <div class="meta">
+        <div class="handle">swcollege.lge.com</div>
+        <div class="sub">쏘칼레터 · 공식 계정</div>
+      </div>
+      <div class="pill">VOL.28</div>
     </div>
+    <h1 class="mega-title">이번 주, 가장 빨리 실력 오르는 4가지</h1>
+    <div class="mega-sub">짧게 보고 바로 쓰는 실전 하이라이트만 모았습니다.</div>
   </div>
-      <div class="topbar">
-        <img class="avatar" src="https://sophiahjlee.github.io/socal_profile1.png" alt="SW College"> 
-        <div class="meta">
-          <div class="handle">swcollege.lge.com</div>
-          <div class="sub">쏘칼레터 · 공식 계정</div>
-        </div>
-        <div class="pill">VOL.28</div>
-      </div>
+
+  <!-- 2×2 인스타 큰 타일 + 와이드 쏘칼툰 -->
+  <section>
+    <div class="ig-head">
+      <div class="ig-title">Update This Weeks</div>
+      <div class="ig-sub">핵심 4선</div>
     </div>
 
-    <!-- Hero: 제목/툰/CTA (중첩박스 최소) -->
-    <section class="panel section" aria-label="이번 호 하이라이트">
-      <span class="eyebrow">🌕 추석 특집</span>
-      <div class="hero-title">피지컬 <span style="color:#1e40af;margin-left:4px;">AI</span> 시대를 대비하는 자세</div>
-      <p class="hero-desc">가족·휴식·배움의 균형을 위해, 이번 주는 <strong>루틴 유지</strong>에 초점을 맞춰보세요. 🍂</p>
-      <img class="hero-img" src="https://pingjueuna.github.io/socalletter/socaltun25.png" alt="쏘칼툰 – 추석 특집">
+    <div class="ig-grid">
+      <!-- 쏘칼툰 : 와이드 배너 (좌우 미절단) -->
+      <a class="ig-tile ig-wide"
+         href="http://collab.lge.com/main/pages/viewpage.action?pageId=3168618014"
+         target="_blank" rel="noopener">
+        <img src="https://pingjueuna.github.io/socalletter/socaltun25.png" alt="쏘칼툰 추석 특집">  
+      </a>
 
-      <a class="cta" href="http://collab.lge.com/main/pages/viewpage.action?pageId=3168618014" target="_blank" rel="noopener">쏘칼툰 몰아보기</a>
-    </section>
+      <!-- 1) 러크TV -->
+      <a class="ig-tile" href="http://collab.lge.com/main/pages/viewpage.action?pageId=2193929410" target="_blank" rel="noopener">
+        <img src="https://github.com/sophiahjlee/sophiahjlee.github.io/blob/main/socalletter/img_3.png?raw=true" alt="">
+        <span class="ig-sidebar" aria-hidden="true"></span>
+        <span class="ig-topnote">러크TV</span>
+        <span class="ig-title-big">10월 최신 컨텐츠</span>
+        <span class="ig-desc">이번 주, 시청수 폭발한 실전 영상만 골랐습니다.</span>
+      </a>
 
-    <!-- IG Grid: Hero와 바로 연결되는 다음 섹션 -->
-    <section class="panel section" aria-label="Update This Weeks">
-      <div class="ig-head">
-        <div class="ig-title">Update This Weeks</div>
-        <div class="spacer"></div>
-        <div class="ig-sub">이번 호 핵심 4선</div>
-      </div>
+      <!-- 2) 유데미 코스워크 랭킹 -->
+      <a class="ig-tile" href="http://collab.lge.com/main/pages/viewpage.action?pageId=2966064616" target="_blank" rel="noopener">
+        <img src="https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?q=80&w=1200&auto=format&fit=crop" alt="">
+        <span class="ig-sidebar" aria-hidden="true"></span>
+        <span class="ig-topnote">랭킹 업데이트</span>
+        <span class="ig-title-big">코스워크 학습률 1위, Top10</span>
+        <span class="ig-desc">누가 가장 꾸준히, 가장 많이 해냈을까?</span>
+      </a>
 
-      <div class="ig-grid">
-        <!-- 1) 러크tv -->
-        <a class="tile" href="http://collab.lge.com/main/pages/viewpage.action?pageId=2193929410" target="_blank" rel="noopener">
-          <img src="https://media.istockphoto.com/id/1173451503/ko/%EB%B2%A1%ED%84%B0/%ED%98%84%EC%8B%A4%EC%A0%81%EC%9D%B8-%EC%84%B1%EC%9A%B4%EA%B3%BC-%EB%B9%9B%EB%82%98%EB%8A%94-%EB%B3%84%EA%B3%B5%EA%B0%84-%EB%B0%B0%EA%B2%BD-%EC%8A%A4%ED%83%80-%EB%8D%94%EC%8A%A4%ED%8A%B8%EC%99%80-%EC%9D%80%ED%95%98%EC%88%98%EC%99%80-%EB%8B%A4%EC%B1%84%EB%A1%9C%EC%9A%B4-%EC%BD%94%EC%8A%A4%EB%AA%A8%EC%8A%A4-%EB%A7%A4%EC%A7%81-%EC%BB%AC%EB%9F%AC-%EC%9D%80%ED%95%98-%EB%AC%B4%ED%95%9C%ED%95%9C-%EC%9A%B0%EC%A3%BC%EC%99%80-%EB%B3%84%EC%9D%B4-%EB%B9%9B%EB%82%98%EB%8A%94-%EB%B0%A4-%EB%B2%A1%ED%84%B0-%EC%9D%BC%EB%9F%AC%EC%8A%A4%ED%8A%B8%EB%A0%88%EC%9D%B4%EC%85%98.jpg?s=2048x2048&w=is&k=20&c=5aaRTahJ0MQkUVgHK0hCW8s5RrJhPVJPlnMsZOP2DME=" alt="">
-          <span class="rightbar" aria-hidden="true"></span>
-          <span class="cap-top">이번 주 추천 콘텐츠</span>
-          <span class="cap-title">| 러크tv 추석 픽</span>
-          <span class="cap-desc">한가위에 보기 좋은 AI·개발·자동화 하이라이트</span>
-        </a>
+      <!-- 3) (특집) LG 준전문가 소개 -->
+      <a class="ig-tile" href="http://collab.lge.com/main/display/EMBEDDEDSW" target="_blank" rel="noopener">
+        <img src="https://github.com/sophiahjlee/sophiahjlee.github.io/blob/main/socalletter/img_4.png?raw=true" alt="">
+        <span class="ig-sidebar" aria-hidden="true"></span>
+        <span class="ig-topnote">특집 · LG전자 준전문가 소개</span>
+        <span class="ig-title-big">PM역량인증, 프로젝트의 기본</span>
+        <span class="ig-desc">프로젝트 관리를 학습 할 수 있을까? 인증(EP)까지 한 장 요약!</span>
+      </a>
 
-        <!-- 2) Fast Learner -->
-        <a class="tile" href="http://collab.lge.com/main/pages/viewpage.action?pageId=2966064616" target="_blank" rel="noopener">
-          <img src="https://media.istockphoto.com/id/471006158/ko/%EC%82%AC%EC%A7%84/%EC%98%88%EC%88%A0%EC%A7%81-%ED%8E%98%EC%9D%B8%ED%8A%B8-%EB%B0%B0%EA%B2%BD-%EC%95%A0%EB%8B%88%EB%A9%94%EC%9D%B4%EC%85%98.jpg?s=2048x2048&w=is&k=20&c=hcN51G4GzUqkQJqmql7dzA5QcEpQMOSICxTskUL9jnA=" alt="">
-          <span class="rightbar" aria-hidden="true"></span>
-          <span class="cap-top">Ranking Update</span>
-          <span class="cap-title">| Fast Learner</span>
-          <span class="cap-desc">이번 주 러닝 헌터 Top10과 1위 주인공 공개</span>
-        </a>
+      <!-- 4) 쏘칼 이벤트 -->
+      <a class="ig-tile" href="http://collab.lge.com/main/pages/viewpage.action?pageId=3288218356" target="_blank" rel="noopener">
+        <img src="https://github.com/sophiahjlee/sophiahjlee.github.io/blob/main/socalletter/img_event1.png?raw=true" alt="">
+        <span class="ig-sidebar" aria-hidden="true"></span>
+        <span class="ig-topnote">10월 쏘칼 이벤트</span>
+        <span class="ig-title-big">이벤트참여하기 ></span>
+        <span class="ig-desc">생각과 경험을 나누어요 🎉 3분 참여 = 자동 응모</span>
+      </a>
+    </div>
+  </section>
 
-        <!-- 3) 준전문가 소개 -->
-        <a class="tile" href="http://collab.lge.com/main/display/EMBEDDEDSW" target="_blank" rel="noopener">
-          <img src="https://media.istockphoto.com/id/844226626/ko/%EC%82%AC%EC%A7%84/%EC%9E%8E-%EB%B0%B0%EA%B2%BD.jpg?s=2048x2048&w=is&k=20&c=N-kXJMb1kqfGchXPjLcg1zvuQKvE7x-jPnUa21ifwl4=" alt="">
-          <span class="rightbar" aria-hidden="true"></span>
-          <span class="cap-top">LG PM Competition</span>
-          <span class="cap-title">| LG 준전문가 소개</span>
-          <span class="cap-desc">실무형 과제·EP 등재·성장 로드맵까지 한눈에</span>
-        </a>
-
-        <!-- 4) 이벤트 -->
-        <a class="tile" href="http://collab.lge.com/main/pages/viewpage.action?pageId=3288218356" target="_blank" rel="noopener">
-          <img src="https://media.istockphoto.com/id/503308960/ko/%EC%82%AC%EC%A7%84/%EB%85%B8%EB%9E%80%EC%83%89-%EC%9B%8C%ED%84%B0%EC%BB%AC%EB%9F%AC-%ED%8E%98%EC%9D%B8%ED%8A%B8-%EB%B0%B0%EA%B2%BD.jpg?s=2048x2048&w=is&k=20&c=C76bgBCg34MnbD4Whji-Jy3Ia_qfez3s-SELEHCuXZ8=" alt="">
-          <span class="rightbar" aria-hidden="true"></span>
-          <span class="cap-top">Winners</span>
-          <span class="cap-title">| 10월 쏘칼 이벤트</span>
-          <span class="cap-desc">10월의 신규 이벤트, 지금 바로 참여 하세요!(3min) 🎉</span>
-        </a>
-      </div>
-    </section>
-
-    <!-- Footer -->
-    <section class="panel section" aria-label="푸터">
-      <div style="font-size:12px;color:var(--muted);text-align:center">
-        즐겁고 넉넉한 한가위 보내세요! 🌕🍀<br/>
-        문의: 교육서비스센터 유지혜 선임 ｜ 발행: SW역량강화팀 ｜ 제작: 이은아, 진명숙, 이호정, 유지혜, 장서련
-      </div>
-    </section>
-  </div>
+</div>
 </body>
 </html>
-
