@@ -22,8 +22,10 @@ body{
 
 /* ===== 상단 바 ===== */
 .panel{
-  background:var(--surface); border:1px solid var(--line); border-radius:14px;
-  box-shadow:var(--shadow); padding:16px 18px;
+  background:transparent;   /* 카드 배경 제거 */
+  border:none;              /* 보더 제거 */
+  box-shadow:none;          /* 그림자 제거 */
+  padding:12px 0 10px;      /* 위아래만 살짝 여백 */
 }
 .topbar{display:flex;align-items:center;gap:12px}
 .topbar .avatar{width:36px;height:36px;border-radius:50%;border:1px solid var(--line);object-fit:cover}
@@ -50,7 +52,7 @@ body{
 
 /* 공통 타일 */
 .ig-tile{
-  position:relative;border-radius:14px;overflow:hidden;border:1px solid var(--line);
+  position:relative;border-radius:0px;overflow:hidden;border:1px solid var(--line);
   display:block;text-decoration:none;color:inherit;background:#000; /* 레터박스 대비 */
 }
 .ig-tile img{
@@ -114,7 +116,7 @@ body{
       </div>
       <div class="pill">VOL.28</div>
     </div>
-    <h1 class="mega-title">이번 주, 가장 빨리 실력 오르는 4가지</h1>
+    <h1 class="mega-title">AI의 해,  실력을 빠르게 오르는 4가지</h1>
     <div class="mega-sub">짧게 보고 바로 쓰는 실전 하이라이트만 모았습니다.</div>
   </div>
 
