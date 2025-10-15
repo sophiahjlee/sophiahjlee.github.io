@@ -1,237 +1,211 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<meta charset="UTF-8" />
-<title>SW College Letter VOL.29</title>
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<style>
-  /* 안전한 범위의 기본 스타일 (대부분의 메일클라이언트 호환) */
-  :root{
-    --bg:#fdfaf5; --surface:#ffffff; --ink:#2c1a10; --muted:#6b4e2e;
-    --indigo-deep:#40261f; --accent:#ffefd5; --accent-border:#6b8e23;
-    --line:#6b8e23;
-  }
-  body{margin:0;padding:0;background:var(--bg);color:var(--ink);
-    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans KR',Roboto,Helvetica,Arial,sans-serif;line-height:1.6}
-  img{border:0;outline:none;display:block}
-  a{text-decoration:none;color:inherit}
-
-  /* 버튼(라운드) – 대부분 클라에서 OK (Outlook은 사각/라운드 불문 문제 無) */
-  .btn{display:inline-block;padding:0 16px;height:40px;line-height:40px;
-    border-radius:8px;font-size:14px;font-weight:700;background:var(--accent);
-    border:1px solid var(--accent-border);color:#2c1a10}
-
-  /* 카드 공통 */
-  .card{border:1px solid var(--line);border-radius:12px;background:#fff}
-  .p20{padding:20px}
-  .t12{font-size:12px}.t14{font-size:14px}.t22{font-size:22px}.t28{font-size:28px}
-  .bold{font-weight:900}.muted{color:var(--muted)}.deep{color:var(--indigo-deep)}
-  .mb8{margin-bottom:8px}.mb12{margin-bottom:12px}.mb16{margin-bottom:16px}.mb18{margin-bottom:18px}.mb24{margin-bottom:24px}
-  .list-tight{margin:8px 0 12px 18px;padding:0}.list-tight li{line-height:1.7}
-  .hair{height:1px;background:#e5e7eb;margin:12px 0 4px}
-  .center{text-align:center}
-  .footer{font-size:12px;color:var(--muted);text-align:center;border-top:1px dashed var(--line);padding-top:8px}
-
-  /* 이미지(툰) 감싸는 카드 내부 이미지 – 최대폭 맞춤 */
-  .hero-img{width:100%;max-width:700px;border-radius:10px;border:1px solid var(--line)}
-</style>
-<!--[if mso]>
+  <meta charset="UTF-8">
+  <title>SW College Letter VOL.29</title>
+  <meta name="x-apple-disable-message-reformatting">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
-    /* Outlook 폰트 대체 */
-    body, table, td {font-family: Segoe UI, Arial, sans-serif !important;}
+    /* Outlook-safe 기본 글꼴/색만 최소 사용 */
+    body { margin:0; padding:0; background:#fdfaf5; color:#2c1a10;
+           font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI','Noto Sans KR', Arial, Helvetica, sans-serif; line-height:1.5; }
+    img { border:0; outline:none; text-decoration:none; display:block; }
+    a { color:inherit; text-decoration:none; }
+    .container { width:100%; max-width:900px; margin:0 auto; background:#ffffff; border:1px solid #6b8e23; border-radius:14px; }
+    .ribbon { background:#8fbc8f; color:#ffffff; padding:14px 20px; }
+    .logo { height:56px; }
+    .card { border:1px solid #6b8e23; border-radius:12px; padding:20px; }
+    .h2 { font-size:28px; font-weight:900; margin:0 0 8px 0; color:#40261f; }
+    .h3 { font-size:22px; font-weight:900; margin:0 0 8px 0; color:#40261f; }
+    .btn { display:inline-block; height:40px; line-height:40px; padding:0 16px; border-radius:8px; background:#ffefd5; border:1px solid #6b8e23; font-weight:700; }
+    /* 모바일 */
+    @media only screen and (max-width:620px){
+      .full { width:100% !important; display:block !important; }
+      .col { width:100% !important; display:block !important; }
+    }
   </style>
-<![endif]-->
 </head>
 <body>
+  <center>
+    <table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="background:#fdfaf5;">
+      <tr><td style="height:40px;"></td></tr>
+      <tr>
+        <td align="center">
+          <table role="presentation" cellpadding="0" cellspacing="0" class="container">
+            <!-- Ribbon -->
+            <tr>
+              <td class="ribbon" style="font-weight:700;">
+                <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+                  <tr>
+                    <td style="font-weight:800;">SW College Letter</td>
+                    <td align="right">VOL.29&nbsp;|&nbsp;2025&nbsp;10월호</td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
 
-<!-- 아웃룩 포함 전체 폭 고정: 760px -->
-<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background:#fdfaf5;">
-  <tr>
-    <td align="center">
-      <table role="presentation" width="760" cellspacing="0" cellpadding="0" border="0" style="width:760px;background:#ffffff;border:1px solid #6b8e23;border-radius:14px;">
-        <!-- 상단 리본(단색) -->
-        <tr>
-          <td style="padding:14px 20px;background:#8fbc8f;color:#ffffff;border-top-left-radius:14px;border-top-right-radius:14px;">
-            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
-              <tr>
-                <td align="left" style="font-weight:800"> </td>
-                <td align="right" style="font-weight:700">VOL.29 | 2025 10월호</td>
-              </tr>
-            </table>
-          </td>
-        </tr>
+            <!-- 헤더(로고) -->
+            <tr>
+              <td style="padding:14px 20px 0 20px;">
+                <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+                  <tr>
+                    <td><img class="logo" src="https://pingjueuna.github.io/socalletter/socallogo.png" alt="SW College 로고"></td>
+                    <td align="right" style="color:#5b342f; font-weight:700;"></td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
 
-        <!-- 헤더 로고 -->
-        <tr>
-          <td style="padding:18px 24px 10px 24px;">
-            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
-              <tr>
-                <td align="left">
-                  <img src="https://pingjueuna.github.io/socalletter/socallogo.png" width="160" height="56" alt="SW College 로고" style="height:56px;width:auto;display:block;">
-                </td>
-                <td align="right"> </td>
-              </tr>
-            </table>
-            <div class="hair"></div>
-          </td>
-        </tr>
+            <!-- 쏘칼툰 -->
+            <tr>
+              <td style="padding:16px 20px 0 20px;">
+                <table role="presentation" width="100%" cellpadding="0" cellspacing="0" class="card" style="border-color:#e6dcc8;">
+                  <tr>
+                    <td align="center">
+                      <div class="h2">AI가 대체하지 못하는 건, 배우는 인간이다</div>
+                      <p style="margin:0 0 12px 0; color:#6b4e2e;">긴 연휴 이후 <strong>재루틴</strong>에 초점을! 가볍게 보며 다시 시동 겁니다 🍂</p>
+                      <!-- 최신 이미지 (좌우 미절단) -->
+                      <img src="https://sophiahjlee.github.io/socalletter/socal_toon_10_3rdw.png" alt="쏘칼툰 – 10월 특집" width="100%" style="max-width:800px; height:auto; border-radius:10px; border:1px solid #e6dcc8; margin:12px 0 14px 0;">
+                      <!-- 버튼: VML + anchor -->
+                      <!--[if mso]>
+                        <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" href="http://collab.lge.com/main/pages/viewpage.action?pageId=3168618014"
+                          style="height:40px;v-text-anchor:middle;width:200px;" arcsize="16%" stroke="f" fillcolor="#ffefd5">
+                          <w:anchorlock/>
+                          <center style="color:#2c1a10;font-family:Segoe UI, Arial, sans-serif;font-size:14px;font-weight:700;">쏘칼툰 몰아보기</center>
+                        </v:roundrect>
+                      <![endif]-->
+                      <!--[if !mso]><!-- --><a class="btn" href="http://collab.lge.com/main/pages/viewpage.action?pageId=3168618014" target="_blank" rel="noopener">쏘칼툰 몰아보기</a><!--<![endif]-->
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
 
-        <!-- 히어로(툰) -->
-        <tr>
-          <td style="padding:0 24px 18px 24px;">
-            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" class="card">
-              <tr>
-                <td class="p20 center">
-                  <div class="t28 bold deep mb8">AI가 대체하지 못하는 건, 배우는 인간이다</div>
-                  <div class="t14 muted mb12">이번 주는 긴 연휴 이후의 <strong>몸과 마음의 재루틴화</strong> 시간입니다 🍂</div>
-                  <img class="hero-img" src="https://sophiahjlee.github.io/socalletter/socal_toon_10_3rdw.png" alt="쏘칼툰 – 추석 테마">
-                  <div style="height:12px"></div>
-                  <a class="btn" href="http://collab.lge.com/main/pages/viewpage.action?pageId=3168618014" target="_blank" rel="noopener">쏘칼툰 몰아보기</a>
-                </td>
-              </tr>
-            </table>
-          </td>
-        </tr>
-
-        <!-- 4분기 코스워크 (위쪽 배치) -->
-        <tr>
-          <td style="padding:0 24px 18px 24px;">
-            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" class="card">
-              <tr>
-                <td class="p20">
-                  <div class="t22 bold deep mb8">🔔 4분기 코스워크 신청 안내</div>
-                  <div class="t14 mb12">
-                    내년 1월까지 들을 수있는 유데미*쏘칼 마지막 기회! 놓치면 내년으로 미뤄야 합니다.<br>
-                    <strong>4분기 쏘칼 코스워크</strong>, 미리미리 신청하세요.
-                  </div>
-                  <ul class="list-tight t14">
-                    <li>러닝넷 신청일: 11월 5일(수) 23:59까지</li>
-                    <li>신청 방법 : EP- Learning → 코스워크 이름 검색 → 수강 신청</li>
-                    <li>4분기 학습일 : 2025년 11월 10일 ~ 2026년 01월 30일</li>
-                  </ul>
-                  <div style="height:8px"></div>
-                  <a class="btn" href="http://collab.lge.com/main/pages/viewpage.action?pageId=2878865316" target="_blank" rel="noopener">📑 신청 가능 코스워크 목록 보기</a>
-                </td>
-              </tr>
-            </table>
-          </td>
-        </tr>
-
-        <!-- 2열: 러크TV / Fast Learner (같은 높이 360px, 둥근 모서리 VML) -->
-        <tr>
-          <td style="padding:0 24px 18px 24px;">
-            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
-              <tr>
-                <!-- 좌측 컬럼 -->
-                <td width="50%" valign="top" style="padding-right:10px;">
-                  <!--[if mso]>
-                  <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" arcsize="8%"
-                    strokecolor="#6b8e23" strokeweight="1px" fillcolor="#ffffff"
-                    style="width:370px;height:360px;v-text-anchor:top;">
-                    <v:textbox inset="18pt,18pt,18pt,18pt">
-                  <![endif]-->
-                  <!--[if !mso]><!-->
-                  <div style="border:1px solid #6b8e23;border-radius:12px;background:#ffffff;overflow:hidden;height:360px;">
-                    <div style="padding:20px;">
-                  <!--<![endif]-->
-                      <div class="t22 bold deep mb8">📺 러크tv | 세미나 대신 들어드립니다!</div>
-                      <div class="t14 mb12">최신 세미나 참석 후기, 최신 AI 트렌드를 바로 확인해보세요!</div>
-                      <ul class="list-tight t14" style="font-size:13px;">
-                        <li><a href="http://collab.lge.com/main/x/8UvNxg" target="_blank" rel="noopener">OpenAI DEV DAY 2025 <strong>▶ Click!</strong></a></li>
-                        <li><a href="http://collab.lge.com/main/x/YEnNxg" target="_blank" rel="noopener">Microsoft Copilot Studio 시작 가이드 <strong>▶ Click!</strong></a></li>
-                        <li><a href="http://collab.lge.com/main/x/zVOixg" target="_blank" rel="noopener">LG 2025 SDC - 프롬프톤 대회 본선 진출작 리뷰 <strong>▶ Click!</strong></a></li>
-                        <li><a href="http://collab.lge.com/main/x/kWvNxg" target="_blank" rel="noopener">Sora 2 프롬프팅 가이드 <strong>▶ Click!</strong></a></li>
+            <!-- 4분기 코스워크 -->
+            <tr>
+              <td style="padding:16px 20px 0 20px;">
+                <table role="presentation" width="100%" cellpadding="0" cellspacing="0" class="card">
+                  <tr>
+                    <td>
+                      <div class="h3">🔔 4분기 코스워크 신청 안내</div>
+                      <p style="margin:6px 0 10px 0;">유데미×쏘칼 마지막 학습 기회! <strong>4분기 코스워크</strong> 미리 신청하세요.</p>
+                      <ul style="margin:0 0 12px 18px; padding:0;">
+                        <li>러닝넷 신청일: 11월 5일(수) 23:59까지</li>
+                        <li>신청 방법: EP → Learning → 코스워크 이름 검색 → 수강 신청</li>
+                        <li>학습 기간: 2025-11-10 ~ 2026-01-30</li>
                       </ul>
-                      <div style="height:8px"></div>
-                      <a class="btn" href="http://collab.lge.com/main/pages/viewpage.action?pageId=2193929410" target="_blank" rel="noopener">📺 러크TV 전체 보기</a>
-                  <!--[if !mso]><!-->
-                    </div>
-                  </div>
-                  <!--<![endif]-->
-                  <!--[if mso]></v:textbox></v:roundrect><![endif]-->
-                </td>
+                      <!--[if mso]>
+                        <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" href="http://collab.lge.com/main/pages/viewpage.action?pageId=2878865316"
+                          style="height:40px;v-text-anchor:middle;width:240px;" arcsize="16%" stroke="f" fillcolor="#ffefd5">
+                          <w:anchorlock/>
+                          <center style="color:#2c1a10;font-family:Segoe UI, Arial, sans-serif;font-size:14px;font-weight:700;">📑 코스워크 목록 보기</center>
+                        </v:roundrect>
+                      <![endif]-->
+                      <!--[if !mso]><!-- --><a class="btn" href="http://collab.lge.com/main/pages/viewpage.action?pageId=2878865316" target="_blank" rel="noopener">📑 코스워크 목록 보기</a><!--<![endif]-->
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
 
-                <!-- 우측 컬럼 -->
-                <td width="50%" valign="top" style="padding-left:10px;">
-                  <!--[if mso]>
-                  <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" arcsize="8%"
-                    strokecolor="#6b8e23" strokeweight="1px" fillcolor="#ffffff"
-                    style="width:370px;height:360px;v-text-anchor:top;">
-                    <v:textbox inset="18pt,18pt,18pt,18pt">
-                  <![endif]-->
-                  <!--[if !mso]><!-->
-                  <div style="border:1px solid #6b8e23;border-radius:12px;background:#ffffff;overflow:hidden;height:360px;">
-                    <div style="padding:20px;">
-                  <!--<![endif]-->
-                      <div class="t22 bold deep mb8">🏃 3분기 <span style="color:RoyalBlue">Fast Learner</span></div>
-                      <div class="t14 mb12">한가위에도 학습의 불씨를 이은 최상위 학습 우수자 선정!</div>
-                      <div class="t14 mb12">🏆 <strong>권혁진 선임님(HS본부)</strong>과 <strong>Top10</strong>을 확인하세요!</div>
-                      <div style="height:8px"></div>
-                      <a class="btn" href="http://collab.lge.com/main/pages/viewpage.action?pageId=2966064616" target="_blank" rel="noopener">🏅 Fast Learner Ranking Board</a>
-                  <!--[if !mso]><!-->
-                    </div>
-                  </div>
-                  <!--<![endif]-->
-                  <!--[if mso]></v:textbox></v:roundrect><![endif]-->
-                </td>
-              </tr>
-            </table>
-          </td>
-        </tr>
+            <!-- 2-칼럼: 좌 러크tv / 우 PM 역량 인증 -->
+            <tr>
+              <td style="padding:16px 20px 0 20px;">
+                <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+                  <tr>
+                    <!-- LEFT: 러크tv -->
+                    <td class="col" width="50%" valign="top" style="padding-right:9px;">
+                      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" class="card" style="height:100%;">
+                        <tr>
+                          <td>
+                            <div class="h3">📺 러크tv | 세미나 대신 들어드립니다!</div>
+                            <p style="margin:6px 0 10px 0;">최신 세미나/AI 트렌드 핵심만 빠르게.</p>
+                            <ul style="margin:0 0 12px 18px; padding:0; font-size:14px;">
+                              <li><a href="http://collab.lge.com/main/x/8UvNxg" target="_blank" rel="noopener">OpenAI DEV DAY 2025</a></li>
+                              <li><a href="http://collab.lge.com/main/x/YEnNxg" target="_blank" rel="noopener">Microsoft Copilot Studio 시작 가이드</a></li>
+                              <li><a href="http://collab.lge.com/main/x/zVOixg" target="_blank" rel="noopener">LG 2025 SDC 프롬프톤 본선 리뷰</a></li>
+                              <li><a href="http://collab.lge.com/main/x/kWvNxg" target="_blank" rel="noopener">Sora 2 프롬프팅 실전 전략</a></li>
+                            </ul>
+                            <!-- 버튼 -->
+                            <!--[if mso]>
+                              <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" href="http://collab.lge.com/main/pages/viewpage.action?pageId=2193929410"
+                                style="height:40px;v-text-anchor:middle;width:200px;" arcsize="16%" stroke="f" fillcolor="#ffefd5">
+                                <w:anchorlock/>
+                                <center style="color:#2c1a10;font-family:Segoe UI, Arial, sans-serif;font-size:14px;font-weight:700;">📺 러크TV 전체 보기</center>
+                              </v:roundrect>
+                            <![endif]-->
+                            <!--[if !mso]><!-- --><a class="btn" href="http://collab.lge.com/main/pages/viewpage.action?pageId=2193929410" target="_blank" rel="noopener">📺 러크TV 전체 보기</a><!--<![endif]-->
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
 
-        <!-- 특집: 준전문가 소개 -->
-        <tr>
-          <td style="padding:0 24px 18px 24px;">
-            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" class="card">
-              <tr>
-                <td class="p20">
-                  <div class="t22 bold deep mb8">🧩 특집 · LG전자 <strong>준전문가 소개 : PM 역량 인증 편</strong></div>
-                  <div class="t14 mb12">
-                    프로젝트의 기본 체력, <strong>PM 역량 인증</strong>으로 키워보세요.<br>
-                    AI가 코딩하는 시대, 개발자는 단순 구현을 넘어 AI와 함께 프로젝트를 이끌어가는 리더십이 필요합니다.
-                    복잡해지는 SW 개발 환경에서 성공을 좌우하는 핵심은 탄탄한 <strong>Project Management</strong> 역량입니다.
-                  </div>
-                  <ul class="list-tight t14" style="font-size:13px;">
-                    <li>나만의 차별화된 <strong>프로젝트 관리</strong> 노하우 공식 인증</li>
-                    <li><strong>현업 프로젝트 경험</strong> 기반의 역량 검증</li>
-                    <li>업무에 바로 적용 가능한 <strong>실전 중심</strong> 역량 육성</li>
-                  </ul>
-                  <div style="height:8px"></div>
-                  <a class="btn" href="http://collab.lge.com/main/display/EMBEDDEDSW" target="_blank" rel="noopener">📚 자세히 보기</a>
-                </td>
-              </tr>
-            </table>
-          </td>
-        </tr>
+                    <!-- RIGHT: PM 역량 인증 (최신) -->
+                    <td class="col" width="50%" valign="top" style="padding-left:9px;">
+                      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" class="card" style="height:100%;">
+                        <tr>
+                          <td>
+                            <div class="h3">🧩 PM 역량 인증 (Embedded SW Professional)</div>
+                            <p style="margin:6px 0 10px 0;">
+                              AI 시대의 개발자는 구현을 넘어 <strong>프로젝트를 이끄는 힘</strong>이 필요합니다.
+                              현업 과제로 검증하는 <strong>Project Management</strong> 역량 인증 소개.
+                            </p>
+                            <ul style="margin:0 0 12px 18px; padding:0; font-size:14px;">
+                              <li><strong>프로젝트 관리 노하우</strong>를 공식 인증</li>
+                              <li><strong>현업 과제 기반</strong>으로 실전 검증</li>
+                              <li>실무 즉시 적용 가능한 <strong>실전 중심</strong> 역량</li>
+                            </ul>
+                            <!-- 버튼 -->
+                            <!--[if mso]>
+                              <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" href="http://collab.lge.com/main/display/PROJMANAGE"
+                                style="height:40px;v-text-anchor:middle;width:160px;" arcsize="16%" stroke="f" fillcolor="#ffefd5">
+                                <w:anchorlock/>
+                                <center style="color:#2c1a10;font-family:Segoe UI, Arial, sans-serif;font-size:14px;font-weight:700;">📌 자세히 보기</center>
+                              </v:roundrect>
+                            <![endif]-->
+                            <!--[if !mso]><!-- --><a class="btn" href="http://collab.lge.com/main/display/PROJMANAGE" target="_blank" rel="noopener">📌 자세히 보기</a><!--<![endif]-->
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
 
-        <!-- 이벤트 -->
-        <tr>
-          <td style="padding:0 24px 20px 24px;">
-            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" class="card">
-              <tr>
-                <td class="p20">
-                  <div class="t22 bold deep mb8">🙋‍♂️📢 <span style="color:green">“26년 SW College</span>, 이렇게 바뀌면 좋겠습니다”</div>
-                  <div class="t14 mb12">올해 학습 경험을 공유하고 내년 교육 방향에 제안해주세요. 참여하신 분께는 소정의 상품을 드립니다. 🎁</div>
-                  <a class="btn" href="http://collab.lge.com/main/pages/viewpage.action?pageId=3339681465" target="_blank" rel="noopener">10월 이벤트 참여하기</a>
-                </td>
-              </tr>
-            </table>
-          </td>
-        </tr>
+            <!-- 이벤트 -->
+            <tr>
+              <td style="padding:16px 20px 0 20px;">
+                <table role="presentation" width="100%" cellpadding="0" cellspacing="0" class="card">
+                  <tr>
+                    <td>
+                      <div class="h3">🙋‍♂️📢 26년 SW College, 이렇게 바뀌면 좋겠습니다</div>
+                      <p style="margin:6px 0 12px 0;">올해 경험을 공유하고 내년 교육 방향에 제안해주세요. 참여 시 소정의 선물 🎁</p>
+                      <!--[if mso]>
+                        <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" href="http://collab.lge.com/main/pages/viewpage.action?pageId=3339681465"
+                          style="height:40px;v-text-anchor:middle;width:200px;" arcsize="16%" stroke="f" fillcolor="#ffefd5">
+                          <w:anchorlock/>
+                          <center style="color:#2c1a10;font-family:Segoe UI, Arial, sans-serif;font-size:14px;font-weight:700;">이벤트 참여하기</center>
+                        </v:roundrect>
+                      <![endif]-->
+                      <!--[if !mso]><!-- --><a class="btn" href="http://collab.lge.com/main/pages/viewpage.action?pageId=3339681465" target="_blank" rel="noopener">이벤트 참여하기</a><!--<![endif]-->
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
 
-        <!-- 푸터 -->
-        <tr>
-          <td class="p20">
-            <div class="footer">
-              문의: 교육서비스센터 유지혜 선임 ｜ 발행: SW역량강화팀 ｜ 제작: 이은아, 진명숙, 이호정, 유지혜, 장서련
-            </div>
-          </td>
-        </tr>
-
-      </table>
-    </td>
-  </tr>
-</table>
-
+            <!-- 푸터 -->
+            <tr>
+              <td align="center" style="padding:18px 20px 24px 20px; font-size:12px; color:#6b4e2e; border-top:1px dashed #6b8e23;">
+                문의: 교육서비스센터 유지혜 선임 ｜ 발행: SW역량강화팀 ｜ 제작: 이은아, 진명숙, 이호정, 유지혜, 장서련
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr><td style="height:40px;"></td></tr>
+    </table>
+  </center>
 </body>
 </html>
