@@ -2,39 +2,35 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
-  <title>SW College Letter VOL.29 </title>
+  <title>SW College Letter VOL.29</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     :root{
-      /* 팔레트 */
+      /* 기존 팔레트 유지 */
       --bg: #fdfaf5;
       --surface: #ffffff;
       --ink: #2c1a10;
       --muted: #6b4e2e;
       --indigo: #5b342f;
       --indigo-deep:#40261f;
-      --accent:#ffefd5;      /* 버튼 단색 (그라데이션 제거) */
+      --accent:#ffefd5;
       --accent-border:#6b8e23;
       --pill:#8fbc8f;
       --line:#6b8e23;
       --shadow: 0 6px 18px rgba(64,38,31,0.15);
-      --ribbon-start:#a64b2a; /* 리본도 단색/그라데이션 없이 */
-      --ribbon-end:#6b342e;
     }
 
     * { box-sizing: border-box; }
     body{
       margin:0; padding:0;
       font-family: -apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans KR',Roboto,Helvetica,Arial,sans-serif;
-      background: var(--bg);
-      color: var(--ink);
-      line-height: 1.6;
+      background: var(--bg); color: var(--ink); line-height: 1.6;
     }
 
     .container{
       max-width: 900px;
       margin: 40px auto;
-      padding: 0 24px 24px 24px;
+      padding: 0 24px 24px;
       background: var(--surface);
       border: 1px solid var(--line);
       border-radius: 14px;
@@ -42,79 +38,61 @@
       overflow: hidden;
     }
 
-    /* 상단 리본: 그라데이션 제거, 단색 그라데이션 대체 */
     .ribbon{
-      background: #8fbc8f; /* 단색 */
-      color: #fff;
-      padding: 14px 20px;
-      display:flex; align-items:center; justify-content:space-between;
-      gap: 12px;
+      background: #8fbc8f;
+      color: #fff; padding: 14px 20px;
+      display:flex; align-items:center; justify-content:space-between; gap: 12px;
     }
     .ribbon .left{ display:flex; align-items:center; gap:10px; }
-    .ribbon .moon{
-      width: 28px; height: 28px; border-radius: 50%;
-      background: #ffd077; /* 단색 */
-      border: 1px solid rgba(255,255,255,0.25);
-      flex: 0 0 28px;
-    }
-    .ribbon .title{ font-weight:800; letter-spacing:.2px; }
+    .ribbon .moon{ width: 28px; height: 28px; border-radius: 50%; background: #ffd077; border: 1px solid rgba(255,255,255,0.25); }
     .ribbon .vol{ font-weight:700; opacity:.9; }
 
     .header-table{ width:100%; border-collapse: collapse; }
-    .header-table td{ vertical-align: middle; padding: 14px 0 0 0; }
+    .header-table td{ vertical-align: middle; padding: 14px 0 0; }
     .logo{ height: 56px; }
-    .vol-info{ text-align:right; font-weight:700; letter-spacing:.2px; color: var(--indigo); }
 
     .card{
-      padding: 20px;
-      background: var(--surface);
-      border-radius: 12px;
-      border: 1px solid var(--line);
-      box-shadow: var(--shadow);
-      margin-bottom: 18px;
+      padding: 20px; background: var(--surface);
+      border-radius: 12px; border: 1px solid var(--line);
+      box-shadow: var(--shadow); margin-bottom: 18px;
     }
 
-    /* 버튼 클래스는 유지하되 애니메이션/그라데이션 제거 (아웃룩 호환성) */
-    .btn{
-      display:inline-block;
-      padding: 0 16px;
-      height: 40px; line-height: 40px;
-      border-radius: 8px;
-      font-size: 14px; font-weight: 700; text-decoration: none;
-      background: var(--accent);
-      border: 1px solid var(--accent-border);
-      color:#2c1a10;
-    }
-
-    h2,h3{ margin:0 0 6px 0; }
-    h3{ font-size: 18px; font-weight:800; color: var(--indigo-deep); }
+    /* ▶︎ 제목 더 크게 */
+    h2{ margin:0 0 8px; font-size: 28px; font-weight: 900; color: var(--indigo-deep); }
+    h3{ margin:0 0 8px; font-size: 22px; font-weight: 900; color: var(--indigo-deep); }
     h4{ margin:8px 0 6px; font-size:15px; color: var(--muted); font-weight:700; }
     p, ul, ol{ margin:8px 0; font-size: 14px; }
     a{ text-decoration: none; color: inherit; }
 
-    .highlight{ color: var(--indigo-deep); }
-    .subtle{ color: var(--muted); font-size:13px; }
-    .list-tight{ padding-left: 18px; }
-    .list-tight li{ line-height: 1.7; }
-
+    .btn{
+      display:inline-block; padding: 0 16px; height: 40px; line-height: 40px;
+      border-radius: 8px; font-size: 14px; font-weight: 700;
+      background: var(--accent); border: 1px solid var(--accent-border); color:#2c1a10;
+    }
     .pill{
       display:inline-flex; align-items:center; gap:8px; font-size:12px; font-weight:800;
       background: var(--pill); color: var(--indigo-deep);
       padding: 4px 10px; border-radius: 999px; border:1px solid var(--line);
     }
-
-    .divider{ height:1px; background: var(--line); margin: 14px 0; }
-
     .img-soft{
       width:100%; max-width:800px; border-radius:10px;
-      border: 1px solid var(--line);
-      box-shadow: 0 8px 20px rgba(44,26,16,0.12);
+      border: 1px solid var(--line); box-shadow: 0 8px 20px rgba(44,26,16,0.12);
     }
-
     .footer{
       font-size:12px; color: var(--muted); text-align:center;
       margin-top: 36px; padding: 8px 0 0; border-top:1px dashed var(--line);
     }
+
+    /* ▶︎ 러크tv / Fast Learner 2분할 그리드 */
+    .cards-row{
+      display:grid; grid-template-columns: 1fr 1fr; gap:18px;
+    }
+    @media (max-width: 720px){
+      .cards-row{ grid-template-columns: 1fr; }
+    }
+    /* 카드 내부 리스트 간격 */
+    .list-tight{ padding-left: 18px; }
+    .list-tight li{ line-height: 1.7; }
   </style>
 </head>
 <body>
@@ -125,231 +103,93 @@
         <div class="moon" aria-hidden="true"></div>
         <div class="title"></div>
       </div>
-      <div class="vol">VOL.29 | 2025 10월호 </div>
+      <div class="vol">VOL.29 | 2025 10월호</div>
     </div>
 
     <!-- 헤더 -->
     <table class="header-table" role="presentation" aria-label="헤더">
       <tr>
         <td><img src="https://pingjueuna.github.io/socalletter/socallogo.png" alt="SW College 로고" class="logo" /></td>
-        <td class="vol-info"></td>
+        <td></td>
       </tr>
     </table>
 
     <!-- 쏘칼툰 -->
     <section class="card" style="text-align:center;">
-      <div class="pill" aria-label="특집 배지"><span aria-hidden="true">✏️</span><font color="white"> 소제목 넣기</font></div>
-      <h2 class="highlight" style="margin-top:12px;"><strong>피지컬 AI 시대를 대비하는 자세</strong></h2>
-      <p class="subtle">가족·휴식·배움의 균형을 위해, 이번 주는 <strong>루틴 유지</strong>에 초점을 맞춰보세요. 🍂</p>
-      <img src="https://pingjueuna.github.io/socalletter/socaltun25.png" alt="쏘칼툰 – 추석 테마" class="img-soft" style="margin-top:12px;" />
-
-      <!-- 버튼 (불릿프루프) : 쏘칼툰 몰아보기 -->
-      <!--[if mso]>
-      <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" href="http://collab.lge.com/main/pages/viewpage.action?pageId=3168618014"
-        style="height:40px;v-text-anchor:middle;width:200px;" arcsize="16%" stroke="f" fillcolor="#d4a017">
-        <w:anchorlock/>
-        <center style="color:#2c1a10;font-family:Segoe UI, Arial, sans-serif;font-size:14px;font-weight:700;">
-          쏘칼툰 몰아보기
-        </center>
-      </v:roundrect>
-      <![endif]-->
-      <!--[if !mso]><!-- -->
-      <a class="btn" href="http://collab.lge.com/main/pages/viewpage.action?pageId=3168618014" target="_blank" rel="noopener noreferrer" aria-label="쏘칼툰 더 보기">쏘칼툰 몰아보기</a>
-      <!--<![endif]-->
+      
+      <h2><strong>AI가 대체하지 못하는 건, 배우는 인간이다</strong></h2>
+      <p style="color:#6b4e2e">이번 주는 긴연휴 이후의 <strong>몸과 마음의 재루틴화</strong> 시간입니다  🍂</p>
+      <img src="https://sophiahjlee.github.io/socalletter/socal_toon_10_3rdw.png" alt="쏘칼툰 – 추석 테마" class="img-soft" style="margin-top:12px;" />
+      <a class="btn" href="http://collab.lge.com/main/pages/viewpage.action?pageId=3168618014" target="_blank" rel="noopener">쏘칼툰 몰아보기</a>
     </section>
 
-    <!-- 러크TV -->
+    <!-- ▶︎ 4분기 코스워크 신청 안내 : 순서 위로 이동 -->
     <section class="card">
-     <h3>📺 러크tv | 세미나 대신 들어드립니다!</h3>
-<p>당신의 실력을 한층 업그레이드할 수 있는 이번 러크tv 콘텐츠, 지금 바로 확인해보세요!</p>
-      <ul class="list-tight" style="font-size:13px;">
-        <li><a href="http://collab.lge.com/main/x/8UvNxg" target="_blank" rel="noopener noreferrer">OpenAI DEV DAY 2025</a></li>
-         <li><a href="http://collab.lge.com/main/x/YEnNxg" target="_blank" rel="noopener noreferrer"> Microsoft Copilot Studio 시작 가이드</a></li>
-        <li><a href="http://collab.lge.com/main/x/zVOixg" target="_blank" rel="noopener noreferrer">LG 2025 SDC - 프롬프톤 대회 본선 진출작 리뷰</a></li>
-        <li><a href="http://collab.lge.com/main/x/kWvNxg" target="_blank" rel="noopener noreferrer">Sora 2 프롬프팅 가이드: 성공적인 비디오 생성을 위한 실전 전략</a></li>
+      <h3>🔔 4분기 코스워크 신청 안내</h3>
+      <p>
+        내년 1월까지 들을 수있는 유데미*쏘칼 마지막 기회! 놓치면 내년으로 미뤄야 합니다.<br>
+        <strong>4분기 쏘칼 코스워크</strong>, 미리미리 신청하세요.
+      </p>
+      <ul class="list-tight">
+        <li>러닝넷 신청일: 11월 5일(수) 23:59까지</li>
+        <li>신청 방법 : EP- Learning → 코스워크 이름 검색 → 수강 신청</li>
+        <li>4분기 학습일 : 2025년 11월 10일 ~ 2026년 01월 30일</li>
       </ul>
-
-      <!-- 버튼 : 러크TV 전체 보기 -->
-      <!--[if mso]>
-      <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" href="http://collab.lge.com/main/pages/viewpage.action?pageId=2193929410"
-        style="height:40px;v-text-anchor:middle;width:192px;" arcsize="16%" stroke="f" fillcolor="#d4a017">
-        <w:anchorlock/>
-        <center style="color:#2c1a10;font-family:Segoe UI, Arial, sans-serif;font-size:14px;font-weight:700;">
-          러크TV 전체 보기
-        </center>
-      </v:roundrect>
-      <![endif]-->
-      <!--[if !mso]><!-- -->
-      <a class="btn" href="http://collab.lge.com/main/pages/viewpage.action?pageId=2193929410" target="_blank" rel="noopener noreferrer">📺 러크TV 전체 보기</a>
-      <!--<![endif]-->
+      <a class="btn" href="http://collab.lge.com/main/pages/viewpage.action?pageId=2878865316" target="_blank" rel="noopener">📑 신청 가능 코스워크 목록 보기</a>
     </section>
 
-     <!-- Fast Learner -->
-    <section class="card">
-    <h3>🏃 3분기 <font color="Royal blue">Fast Learner</font></h3>
-<p>
-이번 주 <a href="http://collab.lge.com/main/pages/viewpage.action?pageId=3291779820" target="_blank" rel="noopener noreferrer">한가위에도 학습의 불씨를 이으며 최상위 학습 우수자로 부상한<br> <strong>🏆권혁진 선임님(HS본부)</strong>과  <strong>Top10</strong>을 확인하세요!
-</p>
-      <!-- 버튼 : Fast Learner Board -->
-      <!--[if mso]>
-      <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" href="http://collab.lge.com/main/pages/viewpage.action?pageId=2966064616"
-        style="height:40px;v-text-anchor:middle;width:240px;" arcsize="16%" stroke="f" fillcolor="#d4a017">
-        <w:anchorlock/>
-        <center style="color:#2c1a10;font-family:Segoe UI, Arial, sans-serif;font-size:14px;font-weight:700;">
-          🏅 Fast Learner Ranking Board
-        </center>
-      </v:roundrect>
-      <![endif]-->
-      <!--[if !mso]><!-- -->
-      <a class="btn" href="http://collab.lge.com/main/pages/viewpage.action?pageId=2966064616" target="_blank" rel="noopener noreferrer">🏅 Fast Learner Ranking Board</a>
-      <!--<![endif]-->
-    </section>
-
- <!-- 4분기 코스워크 신청 안내 -->
-    <section class="card">
-    <h3>🔔 4분기 코스워크 신청 안내</h3>
-<p>
-내년 1월까지 들을 수있는 유데미*쏘칼 마지막 기회!
-놓치면 내년으로 미뤄야 합니다. <br><strong>4분기 쏘칼 코스워크</strong>, 미리미리 신청하세요. 
-</p>
-      <ul style="margin:8px 0 12px 18px; padding:0; font-family:Segoe UI, Arial, sans-serif; font-size:14px; color:#2c1a10; line-height:1.7;">
-          <li>러닝넷 신청일: 11월 5일(수) 23:59까지 </li>
-          <li>신청 방법 : EP- Learning - 코스워크 이름 검색 - 수강 신청</li>
-          <li>4분기 학습일 : 2025년 11월 10일~2026년 01월 30일 까지</li>
+    <!-- ▶︎ 좌우 2분할: 러크tv / 3분기 Fast Learner -->
+    <div class="cards-row">
+      <!-- 러크TV -->
+      <section class="card">
+        <h3>📺 러크tv | 세미나 대신 들어드립니다!</h3>
+        <p>최신세미나 참석 후기, 최신 AI 트렌드를 바로 확인해보세요!</p>
+        <ul class="list-tight" style="font-size:13px;">
+          <li><a href="http://collab.lge.com/main/x/8UvNxg" target="_blank" rel="noopener">OpenAI DEV DAY 2025  <strong> ▶ Click! </strong></a></li>
+          <li><a href="http://collab.lge.com/main/x/YEnNxg" target="_blank" rel="noopener">Microsoft Copilot Studio 시작 가이드<strong> ▶ Click! </strong></a></li>
+          <li><a href="http://collab.lge.com/main/x/zVOixg" target="_blank" rel="noopener">LG 2025 SDC - 프롬프톤 대회 본선 진출작 리뷰<strong> ▶ Click! </strong></a></li>
+          <li><a href="http://collab.lge.com/main/x/kWvNxg" target="_blank" rel="noopener">Sora 2 프롬프팅 가이드: 성공적인 비디오 생성을 위한 실전 전략<strong> ▶ Click! </strong></a></li>
         </ul>
-      <!-- 버튼 : Fast Learner Board -->
-      <!--[if mso]>
-      <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" href="http://collab.lge.com/main/pages/viewpage.action?pageId=2878865316"
-        style="height:40px;v-text-anchor:middle;width:240px;" arcsize="16%" stroke="f" fillcolor="#d4a017">
-        <w:anchorlock/>
-        <center style="color:#2c1a10;font-family:Segoe UI, Arial, sans-serif;font-size:14px;font-weight:700;">
-          📑 코스워크 목록 보기
-        </center>
-      </v:roundrect>
-      <![endif]-->
-      <!--[if !mso]><!-- -->
-      <a class="btn" href="http://collab.lge.com/main/pages/viewpage.action?pageId=2878865316" target="_blank" rel="noopener noreferrer"> 📑 코스워크 목록 보기</a>
-      <!--<![endif]-->
-    </section>
-    
-<!-- SW 준전문가 소개편 : Outlook-safe (table + inline SVG + VML CTA) -->
-<section class="card" style="padding:0; border:1px solid #e6dcc8; border-radius:12px; overflow:hidden;">
-  <!-- 배너: 테이블 레이아웃 -->
-  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse; background:#eef3f2;">
-    <tr>
-      <!-- 왼쪽 아이콘(Microchip) -->
-      <td width="72" align="center" valign="middle" style="padding:16px;">
-        <!-- inline SVG: microchip -->
-        <div style="width:48px; height:48px; line-height:0;">
-          <svg viewBox="0 0 24 24" width="48" height="48" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <rect x="6" y="6" width="12" height="12" rx="2" fill="#2f3c2a"/>
-            <rect x="9" y="9" width="6" height="6" rx="1" fill="#f7d372"/>
-            <g fill="#2f3c2a">
-              <rect x="4" y="10.5" width="2" height="3"/>
-              <rect x="18" y="10.5" width="2" height="3"/>
-              <rect x="10.5" y="4" width="3" height="2"/>
-              <rect x="10.5" y="18" width="3" height="2"/>
-              <rect x="2" y="8" width="2" height="2"/>
-              <rect x="2" y="14" width="2" height="2"/>
-              <rect x="20" y="8" width="2" height="2"/>
-              <rect x="20" y="14" width="2" height="2"/>
-            </g>
-          </svg>
-        </div>
-      </td>
+        <a class="btn" href="http://collab.lge.com/main/pages/viewpage.action?pageId=2193929410" target="_blank" rel="noopener">📺 러크TV 전체 보기</a>
+      </section>
 
-      <!-- 중앙 제목 -->
-      <td align="center" valign="middle" style="padding:20px;">
-        <div style="font-family:Segoe UI, Arial, sans-serif; font-size:28px; font-weight:800; color:#2f3c2a; line-height:1.2;">
-          EMBEDDED SW<br/>PROFESSIONAL
-        </div>
-      </td>
-
-      <!-- 오른쪽 아이콘(Trophy) -->
-      <td width="72" align="center" valign="middle" style="padding:16px;">
-        <!-- inline SVG: trophy -->
-        <div style="width:48px; height:48px; line-height:0;">
-          <svg viewBox="0 0 24 24" width="48" height="48" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <path d="M6 4h12v2a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4V4z" fill="#d4a017"/>
-            <path d="M7 4H5a2 2 0 0 0-2 2v1a4 4 0 0 0 4 4h1" fill="none" stroke="#b3880f" stroke-width="1.5"/>
-            <path d="M17 4h2a2 2 0 0 1 2 2v1a4 4 0 0 1-4 4h-1" fill="none" stroke="#b3880f" stroke-width="1.5"/>
-            <path d="M9 12c0 1.657 1.343 3 3 3s3-1.343 3-3" fill="#f7d372"/>
-            <rect x="9" y="15" width="6" height="2" fill="#2f3c2a"/>
-            <rect x="8" y="17" width="8" height="2" fill="#2f3c2a"/>
-          </svg>
-        </div>
-      </td>
-    </tr>
-  </table>
-
-  <!-- 본문: 테이블로 감싸 안정화 -->
-  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;">
-    <tr>
-      <td style="padding:18px 20px;">
-        <div style="font-family:Segoe UI, Arial, sans-serif; font-size:18px; font-weight:800; color:#40261f; margin:0 0 6px;">
-         🧑‍💻 SW 준전문가 소개편 : <font color="Coral"> SW Project Management</font> 역량 인증
-        </div>
-
-        <p style="font-family:Segoe UI, Arial, sans-serif; font-size:14px; color:#2c1a10; margin:8px 0 12px;">
-          AI가 코딩하는 시대, 개발자는 단순 구현을 넘어 <strong>AI와 함께 프로젝트를 이끌어가는 리더십</strong>이 필요합니다.
-복잡해지는 SW 개발 환경에서 성공을 좌우하는 핵심은 바로 <strong>탄탄한 Project Management 역량</strong>입니다.
-        </p>
-
-        <ul style="margin:8px 0 12px 18px; padding:0; font-family:Segoe UI, Arial, sans-serif; font-size:14px; color:#2c1a10; line-height:1.7;">
-          <li><strong>나만의 차별화된 프로젝트 관리 노하우</strong>를 공식 인증</li>
-          <li><strong>현업 프로젝트 경험</strong>을 기반으로 역량 검증</li>
-          <li>실제 업무에서 바로 적용 가능한 <strong>실전 중심 역량 육성</strong></li>
-        </ul>
-
-        <p style="font-family:Segoe UI, Arial, sans-serif; font-size:14px; color:#2c1a10; margin:0 0 14px;">
-          <strong>👉SW개발자로서 기술 + 관리 역량을 모두 갖춘 ‘프로젝트 리더’로 성장하고 싶다면 지금이 기회!<br> 2026년, 전사 확대 운영 예정 </strong>
+      <!-- 3분기 Fast Learner -->
+      <section class="card">
+        <h3>🏃 3분기 <span style="color:RoyalBlue">Fast Learner</span></h3>
+        <p>
+          이번 주 한가위에도 학습의 불씨를 이어가 최상위 학습 우수자로 부상하였습니다:) </p>
+        <p>  <strong>🏆 권혁진 선임님(HS본부)</strong>과 <strong>Top10</strong>을 확인하세요!
         </p>
         
+        <a class="btn" href="http://collab.lge.com/main/pages/viewpage.action?pageId=2966064616" target="_blank" rel="noopener">🏅 Fast Learner Ranking Board</a>
+      </section>
+    </div>
+    <!-- ▶︎ 특집 · LG전자 준전문가 소개 -->
+    <section class="card">
+      <h3>🧩 특집 · LG전자 <strong>준전문가 소개 : PM 역량 인증 편</strong></h3>
+      <p>
+        프로젝트의 기본 체력, <strong>PM 역량 인증</strong>으로 키워보세요.<br>
+        AI가 코딩하는 시대, 개발자는 단순 구현을 넘어 AI와 함께 프로젝트를 이끌어가는 리더십이 필요합니다.
+복잡해지는 SW 개발 환경에서 성공을 좌우하는 핵심은 바로 탄탄한 <strong>Project Management </strong> 역량입니다.
+      </p>
+      <ul class="list-tight" style="font-size:13px;">
 
-        <!-- CTA 버튼: VML(아웃룩) + 일반 anchor -->
-        <!--[if mso]>
-        <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" href="http://collab.lge.com/main/pages/viewpage.action?pageId=XXXXX"
-          style="height:40px;v-text-anchor:middle;width:180px;" arcsize="16%" stroke="f" fillcolor="#d4a017">
-          <w:anchorlock/>
-          <center style="color:#2c1a10;font-family:Segoe UI, Arial, sans-serif;font-size:14px;font-weight:700;">
-            📌 자세히 보기
-          </center>
-        </v:roundrect>
-        <![endif]-->
-        <!--[if !mso]><!-- -->
-        <a href="http://collab.lge.com/main/display/PROJMANAGE"
-           target="_blank" rel="noopener noreferrer"
-           style="display:inline-block; height:40px; line-height:40px; padding:0 16px; border-radius:8px;
-                  background:#ffefd5; color:#2c1a10; font-family:Segoe UI, Arial, sans-serif;
-                  font-size:14px; font-weight:700; text-decoration:none; border:1px solid #6b8e23;">
-          📌 자세히 보기
-        </a>
-        <!--<![endif]-->
-      </td>
-    </tr>
-  </table>
-</section>
+        <li> 나만의 차별화된 <strong>프로젝트 관리</strong>  노하우를 공식 인증</li>
+        <li><strong>현업 프로젝트 경험</strong>을 기반으로 역량 검증</li>
+        <li>실제 업무에서 바로 적용 가능한 <strong>실전 중심</strong> 역량 육성</li>
+      </ul>
 
+      <!-- 필요하면 대표 이미지 노출 (원치 않으면 이 줄 삭제 가능) -->
+      <!-- <img src="https://pingjueuna.github.io/socalletter/socal_pm_intro.png" alt="준전문가 소개" class="img-soft" style="margin:10px 0 14px;" /> -->
+
+      <a class="btn" href="http://collab.lge.com/main/display/EMBEDDEDSW" target="_blank" rel="noopener">📚 자세히 보기</a>
+    </section>
 
     <!-- 이벤트 -->
     <section class="card">
-      <h3>🙋‍♂️📢<font color="green">“26년 SW College</font>, 이렇게 바뀌면 좋겠습니다” </h3>
-      <p>올해 학습 경험을 공유하고 내년 교육 방향에 제안해주세요.
-참여하신 분께는 소정의 상품을 드립니다. 🎁<br/></p>
-
-      <!-- 버튼 : 이벤트 참여하기 -->
-      <!--[if mso]>
-      <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" href="http://collab.lge.com/main/pages/viewpage.action?pageId=3339681465"
-        style="height:40px;v-text-anchor:middle;width:160px;" arcsize="16%" stroke="f" fillcolor="#d4a017">
-        <w:anchorlock/>
-        <center style="color:#2c1a10;font-family:Segoe UI, Arial, sans-serif;font-size:14px;font-weight:700;">
-          이벤트 참여하기
-        </center>
-      </v:roundrect>
-      <![endif]-->
-      <!--[if !mso]><!-- -->
-      <a class="btn" href="http://collab.lge.com/main/pages/viewpage.action?pageId=3339681465" target="_blank" rel="noopener noreferrer">이벤트 당첨자 확인하기</a>
-      <!--<![endif]-->
+      <h3>🙋‍♂️📢 <span style="color:green">“26년 SW College</span>, 이렇게 바뀌면 좋겠습니다”</h3>
+      <p>올해 학습 경험을 공유하고 내년 교육 방향에 제안해주세요. 참여하신 분께는 소정의 상품을 드립니다. 🎁</p>
+      <a class="btn" href="http://collab.lge.com/main/pages/viewpage.action?pageId=3339681465" target="_blank" rel="noopener">10월 이벤트 참여하기</a>
     </section>
 
     <!-- 푸터 -->
@@ -358,3 +198,4 @@
     </footer>
   </div>
 </body>
+</html>
