@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2025 4분기 SW College x Udemy <br> SW 코스워크 신청 안내</title>
+    <style>
+        /* 아웃룩 호환성을 위한 기본 스타일 */
+        body {
+            font-family: Arial, sans-serif !important;
+            line-height: 1.6;
+            color: #333 !important;
+            margin: 0;
+            padding: 0;
+            background-color: #667eea;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #667eea;
+            padding: 20px;
+        }
+        
+        .header {
+            text-align: center;
+            color: white !important;
+            margin-bottom: 30px;
+            padding: 20px 0;
+        }
+        
+        .header h1 {
+            font-size: 24px !important;
+            margin-bottom: 10px;
+            color: white !important;
+            font-weight: bold;
+        }
+        
+        .header p {
+            font-size: 16px !important;
+            color: white !important;
+            margin: 0;
+        }
+        
+        .content-section {
+            background-color: white !important;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .section-title h2 {
+            font-size: 20px !important;
+            color: #2d3748 !important;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        
+        .section-title p {
+            font-size: 14px !important;
+            color: #666 !important;
+            margin: 0;
+        }
+        
+        .concept-title h2 {
+            font-size: 18px !important;
+            color: #5a67d8 !important;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+        
+        .main-question {
+            font-size: 20px !important;
+            font-weight: bold !important;
+        }
+        
+        .description {
+            font-size: 16px !important;
+            color: #333 !important;
+            font-weight: bold !important;
+        }
+        
+        /* 테이블 기반 레이아웃 (아웃룩 호환성) */
+        .coursework-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        
+        .coursework-card {
+            background-color: #f7fafc !important;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .card-category {
+            background-color: #667eea !important;
+            color: white !important;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 12px !important;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+        
+        .card-title {
+            font-size: 16px !important;
+            color: #2d3748 !important;
+            margin-bottom: 10px;
+            font-weight: bold !important;
+        }
+        
+        .course-list {
+            margin: 0;
+            padding-left: 0;
+            list-style: none;
+        }
+        
+        .course-list li {
+            padding: 5px 0;
+            color: #4a5568 !important;
+            border-bottom: 1px solid #e2e8f0;
+            font-size: 14px !important;
+            margin-left: 20px;
+            position: relative;
+        }
+        
+        .course-list li:before {
+            content: "✓ ";
+            color: #48bb78 !important;
+            font-weight: bold;
+            position: absolute;
+            left: -20px;
+        }
+        
+        .course-count {
+            background-color: #e6fffa !important;
+            color: #065f46 !important;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 12px !important;
+            font-weight: bold !important;
+            text-align: center;
+            margin-top: 10px;
+        }
+        
+        .deadline-notice {
+            background-color: #fed7d7 !important;
+            border: 2px solid #fc8181;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        .deadline-notice h3 {
+            color: #c53030 !important;
+            margin-bottom: 5px;
+            font-size: 16px !important;
+        }
+        
+        .deadline-notice p {
+            color: #742a2a !important;
+            font-weight: bold !important;
+            margin: 0;
+            font-size: 14px !important;
+        }
+        
+        .cta-section {
+            text-align: center;
+            background-color: white !important;
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 20px;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background-color: #667eea !important;
+            color: white !important;
+            padding: 15px 30px;
+            font-size: 14px !important;
+            text-decoration: none !important;
+            border-radius: 25px;
+            margin: 10px 5px;
+            font-weight: bold;
+        }
+        
+        .flow-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        
+        .flow-step {
+            text-align: center;
+            padding: 15px;
+            width: 33.33%;
+        }
+        
+        .flow-icon {
+            font-size: 32px;
+            background-color: #667eea;
+            color: white;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            line-height: 60px;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+        
+        .flow-step h3 {
+            font-size: 14px !important;
+            color: #2d3748 !important;
+            margin: 5px 0;
+            font-weight: bold;
+        }
+        
+        .flow-step p {
+            color: #666 !important;
+            font-size: 12px !important;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 헤더 -->
+        <div class="header">
+            <h1>🚀 2025 4분기 SW College x Udemy <br> 코스워크 신청 안내</h1>
+            <p>2025년 마지막 신청기회 굿즈도 받고 인사이트 특강도 참여할 기회 <br> 온라인 학습플랫폼 Udemy와 함께 체계적인 SW 트렌드 및 기술 학습으로 전문성을 키워보세요</p>
+        </div>
+
+        <!-- 코스워크 개념 설명 -->
+        <div class="content-section">
+            <div class="concept-title">
+                <h2>💡 <span class="main-question">코스워크란?</span> <span class="description">Udemy 과정들을 소주제별로 묶어 제공하는 학습 프로그램</span></h2>
+            </div>
+            
+            <table class="flow-table">
+                <tr>
+                    <td class="flow-step">
+                        <div class="flow-icon">📚</div>
+                        <h3>주제별 그룹핑</h3>
+                        <p>관련 과정들을<br>체계적으로 분류</p>
+                    </td>
+                    <td class="flow-step">
+                        <div class="flow-icon">🎯</div>
+                        <h3>단계별 학습</h3>
+                        <p>기초부터 심화까지<br>순서대로 학습</p>
+                    </td>
+                    <td class="flow-step">
+                        <div class="flow-icon">🏆</div>
+                        <h3>실무 적용</h3>
+                        <p>학습 내용을<br>바로 적용 가능</p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- NEW 코스워크 리스트 -->
+        <div class="content-section">
+            <div class="section-title">
+                <h2>⭐ NEW 코스워크</h2>
+                <p>새롭게 추가된 라이트한 코스워크와 인기 코스워크를 만나보세요</p>
+            </div>
+            
+            <!-- 라이트한 코스워크 + 초보자 기초 코스워크 -->
+            <div class="coursework-card">
+                <div class="card-category">💡 라코 & 기초</div>
+                <div class="card-title">가볍게 시작하는 라이트 & 기초 코스워크</div>
+                <ul class="course-list">
+                    <li>가볍게! 시작하는 시계열 분석 기초⏱️</li>
+                    <li>가볍게! 시작하는 프롬프트 엔지니어링</li>
+                    <li>내부 데이터 활용 RAG 기반 챗봇 맛보기!</li>
+                    <li>바이브 코딩? AI에 몸을 맡겨.. 코드를 완성해보자</li>
+                    <li>초보자도 쉽게 따라하는 딥러닝 개론📊</li>
+                    <li>초보자도 쉽게 따라하는 머신러닝 개론🤖</li>
+                </ul>
+                <div class="course-count">총 6개 코스</div>
+            </div>
+
+            <!-- 업무 효율 + 실무 적용 코스워크 -->
+            <div class="coursework-card">
+                <div class="card-category">🚀 업무 효율 & 실무</div>
+                <div class="card-title">업무 효율 향상 & 실무 바로 적용 코스워크</div>
+                <ul class="course-list">
+                    <li>생성형AI Agent 마스터 코스 (New)</li>
+                    <li>ChatGPT 프롬프트 마스터 클래스</li>
+                    <li>AI Technical Writing</li>
+                    <li>실제 업무에 바로 쓸 수 있는 임베디드 기초</li>
+                    <li>실제 업무에 바로 쓸 수 있는 Linux-Yocto, 쉽게 다루기</li>
+                </ul>
+                <div class="course-count">총 5개 코스</div>
+            </div>
+        </div>
+
+        <!-- 기존 코스워크 리스트 -->
+        <div class="content-section">
+            <div class="section-title">
+                <h2>📋 4분기 코스워크 목록</h2>
+                <p>7개의 핵심 분야로 구성된 코스워크를 선택하세요</p>
+            </div>
+            
+            <!-- AI활용 코스워크 -->
+            <div class="coursework-card">
+                <div class="card-category">🤖 AI활용</div>
+                <div class="card-title">AI 활용 실무 마스터 코스워크</div>
+                <ul class="course-list">
+                    <li>개발 생산성을 확! 끌어올리는 AI 프로그래밍</li>
+                    <li>업무 효율을 확! 끌어올리는 LangChain과 함께하는 LLM 기반 애플리케이션 개발</li>
+                    <li>업무 효율을 확! 끌어올리는 MS365 Copilot 프롬프트 마스터 클래스</li>
+                </ul>
+                <div class="course-count">총 3개 코스</div>
+            </div>
+
+            <!-- DevOps 코스워크 -->
+            <div class="coursework-card">
+                <div class="card-category">⚙️ DevOps</div>
+                <div class="card-title">DevOps 엔지니어 완성 코스워크</div>
+                <ul class="course-list">
+                    <li>손에 잡히는 DevOps Fundamental</li>
+                    <li>손에 잡히는 SW 개발 프로젝트 매니지먼트 - 기초부터 도구사용과 사람관리까지</li>
+                    <li>손에 잡히는 소프트웨어 아키텍처 설계</li>
+                    <li>손에 잡히는 테스트 이론 및 Unit Test : Google Test & Google mock</li>
+                    <li>손에 잡히는 테스트 자동화 기초 : Python 기본부터 SQL까지</li>
+                </ul>
+                <div class="course-count">총 5개 코스</div>
+            </div>
+
+            <!-- Security 코스워크 -->
+            <div class="coursework-card">
+                <div class="card-category">🔒 Security</div>
+                <div class="card-title">사이버보안 전문가 코스워크</div>
+                <ul class="course-list">
+                    <li>개발자가 꼭 알아야 할 Cyber Security 기본 : 글로벌 규제 동향 부터 LG SDL 가이드</li>
+                    <li>개발자가 꼭 알아야 할 웹 & 네트워크 보안 실무</li>
+                    <li>실무자가 알려주는 소프트웨어 보안 설계, 구현, 검증 : 암호학, threat modling, fuzz, 악성코드 분석</li>
+                    <li>실무자가 알려주는 임베디드 시스템 보안 개론 및 보안 기술의 이해</li>
+                </ul>
+                <div class="course-count">총 4개 코스</div>
+            </div>
+
+            <!-- Web & Cloud 코스워크 -->
+            <div class="coursework-card">
+                <div class="card-category">☁️ Web & Cloud</div>
+                <div class="card-title">웹 & 클라우드 마스터 코스워크</div>
+                <ul class="course-list">
+                    <li>쉽게 시작하는 코딩의 비밀 : Flutter로 배우는 Speed Up 앱 개발</li>
+                    <li>쉽게 시작하는 코딩의 비밀: Go언어로 배우는 확장형 웹 애플리케이션</li>
+                    <li>쉽게 시작하는 클라우드 인프라 구축 : 쿠버네티스</li>
+                    <li>쉽게 시작하는 클라우드 인프라 설계: EKS와 Argo CD로 시작하는 자동화 여정</li>
+                </ul>
+                <div class="course-count">총 4개 코스</div>
+            </div>
+
+            <!-- Programming 코스워크 -->
+            <div class="coursework-card">
+                <div class="card-category">💻 Programming</div>
+                <div class="card-title">프로그래밍 전문가 코스워크</div>
+                <ul class="course-list">
+                    <li>SW프로그래밍 역량인증시험 합격까지</li>
+                </ul>
+                <div class="course-count">총 1개 코스</div>
+            </div>
+
+            <!-- webOS Reskilling 코스워크 -->
+            <div class="coursework-card">
+                <div class="card-category">📺 webOS Reskilling</div>
+                <div class="card-title">webOS 개발자 전환 코스워크</div>
+                <ul class="course-list">
+                    <li>리스킬 시작하기 : webOS 개발 프로세스 및 Native서비스 개발 기초</li>
+                </ul>
+                <div class="course-count">총 1개 코스</div>
+            </div>
+
+            <!-- LUPA Reskilling 코스워크 -->
+            <div class="coursework-card">
+                <div class="card-category">🚗 LUPA Reskilling</div>
+                <div class="card-title">LUPA 플랫폼 전환 코스워크</div>
+                <ul class="course-list">
+                    <li>리스킬 시작하기 : LUPA 앱 개발자로 커리어 피봇</li>
+                </ul>
+                <div class="course-count">총 1개 코스</div>
+            </div>
+        </div>
+
+        <!-- 신청 마감일 공지 -->
+        <div class="deadline-notice">
+            <h3>⏰ 신청 마감 임박!</h3>
+            <p>2025년 11월 5일(수)까지 신청 가능합니다</p>
+        </div>
+
+        <!-- 신청 버튼 -->
+        <div class="cta-section">
+            <h2 style="margin-bottom: 15px; color: #2d3748; font-size: 18px;">🎯 지금 바로 시작하세요!</h2>
+            <p style="margin-bottom: 20px; color: #666; font-size: 14px;">
+                원하는 코스워크를 선택하고 체계적인 학습을 시작해보세요
+            </p>
+            
+            <a href="http://collab.lge.com/main/pages/viewpage.action?pageId=2878865316" class="cta-button">📚 코스워크 개요서 확인하기</a>
+            <a href="https://lg.lms.sapsf.com/learning/user/deeplink_redirect.jsp?linkId=HOME_PAGE&fromDeepLink=null&pageID=&fromSF=Y" class="cta-button">🚀 러닝넷에서 신청하기</a>
+            
+            <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid #e2e8f0;">
+                <p style="color: #666; font-size: 12px; margin: 0;">
+                    <strong>학습 기간:</strong> 2025년 11월 10일 ~ 2026년 1월 30일<br>
+                    <strong>신청 방법:</strong> 위 버튼을 통해 코스워크 확인 후, 러닝넷에서 검색하여 신청<br>
+                    <strong>문의:</strong> CTO SW센터 SW공학(연) SW역량강화팀 <br>
+
+                </p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
