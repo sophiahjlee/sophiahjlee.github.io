@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LUPA App 인증심사 채점 결과 조회</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+            background: #f4f4f4;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 0;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
+            padding: 50px 40px;
+            max-width: 600px;
+            width: 100%;
+            border-top: 4px solid #A50034;
+        }
+
+        .logo-section {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .lg-logo {
+            font-size: 32px;
+            font-weight: 700;
+            color: #A50034;
+            letter-spacing: -1px;
+            margin-bottom: 5px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #000;
+            margin-bottom: 8px;
+            font-size: 24px;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #767676;
+            margin-bottom: 35px;
+            font-size: 13px;
+            font-weight: 400;
+        }
+
+        .search-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        label {
+            font-weight: 500;
+            color: #000;
+            font-size: 14px;
+            letter-spacing: -0.3px;
+        }
+
+        input {
+            padding: 14px 16px;
+            border: 1px solid #ddd;
+            border-radius: 0;
+            font-size: 15px;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #A50034;
+            box-shadow: 0 0 0 1px #A50034;
+        }
+
+        input::placeholder {
+            color: #bbb;
+        }
+
+        .btn-search {
+            padding: 16px;
+            background: #A50034;
+            color: white;
+            border: none;
+            border-radius: 0;
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin-top: 10px;
+            letter-spacing: -0.3px;
+        }
+
+        .btn-search:hover {
+            background: #8B0029;
+        }
+
+        .btn-search:active {
+            background: #6D001F;
+        }
+
+        .notice {
+            text-align: center;
+            color: #999;
+            font-size: 11px;
+            margin-top: 12px;
+            line-height: 1.6;
+            font-weight: 400;
+        }
+
+        /* 탭 스타일 */
+        .tabs {
+            display: none;
+            border-bottom: 1px solid #ddd;
+            margin-top: 25px;
+            margin-bottom: -1px;
+        }
+
+        .tabs.show {
+            display: flex;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 14px;
+            background: none;
+            border: none;
+            border-bottom: 2px solid transparent;
+            font-size: 14px;
+            font-weight: 500;
+            color: #767676;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .tab-btn:hover {
+            color: #000;
+        }
+
+        .tab-btn.active {
+            color: #A50034;
+            border-bottom-color: #A50034;
+        }
+
+        .result {
+            display: none;
+            background: #fafafa;
+            border-radius: 0;
+            padding: 30px;
+            margin-top: 0;
+            border: 1px solid #e0e0e0;
+            border-top: none;
+        }
+
+        .result.show {
+            display: block;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .result-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .result-name {
+            font-size: 22px;
+            font-weight: 600;
+            color: #000;
+            letter-spacing: -0.5px;
+        }
+
+        .result-badge {
+            padding: 6px 18px;
+            border-radius: 0;
+            font-weight: 600;
+            font-size: 14px;
+            letter-spacing: 0.5px;
+        }
+
+        .result-badge.pass {
+            background: #A50034;
+            color: white;
+        }
+
+        .result-badge.fail {
+            background: #666;
+            color: white;
+        }
+
+        .result-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 16px 0;
+            border-bottom: 1px solid #e8e8e8;
+        }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            font-weight: 400;
+            color: #767676;
+            font-size: 14px;
+        }
+
+        .info-value {
+            font-weight: 500;
+            color: #000;
+            font-size: 14px;
+        }
+
+        .score-value {
+            font-size: 26px;
+            color: #A50034;
+            font-weight: 600;
+        }
+
+        /* 상세 평가 스타일 */
+        .detail-content {
+            display: none;
+        }
+
+        .detail-content.show {
+            display: block;
+        }
+
+        .category-group {
+            margin-bottom: 25px;
+        }
+
+        .category-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #A50034;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #A50034;
+        }
+
+        .eval-item {
+            background: white;
+            padding: 16px;
+            margin-bottom: 10px;
+            border-left: 3px solid #e0e0e0;
+        }
+
+        .eval-item.pass {
+            border-left-color: #A50034;
+        }
+
+        .eval-item.fail {
+            border-left-color: #666;
+        }
+
+        .eval-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .eval-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #000;
+        }
+
+        .eval-score {
+            font-size: 13px;
+            font-weight: 600;
+            color: #A50034;
+        }
+
+        .eval-score.fail {
+            color: #666;
+        }
+
+        .eval-description {
+            font-size: 13px;
+            color: #767676;
+            line-height: 1.5;
+        }
+
+        .error {
+            display: none;
+            background: #fff5f5;
+            color: #d32f2f;
+            padding: 18px;
+            border-radius: 0;
+            margin-top: 20px;
+            border: 1px solid #ffcdd2;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .error.show {
+            display: block;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            color: #A50034;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+
+        .loading.show {
+            display: block;
+        }
+
+        @media (max-width: 640px) {
+            .container {
+                padding: 35px 25px;
+                max-width: 100%;
+            }
+
+            h1 {
+                font-size: 20px;
+            }
+
+            .result-name {
+                font-size: 18px;
+            }
+
+            .result-badge {
+                font-size: 12px;
+                padding: 5px 14px;
+            }
+
+            .score-value {
+                font-size: 22px;
+            }
+
+            .tab-btn {
+                font-size: 13px;
+                padding: 12px;
+            }
+
+            .eval-item {
+                padding: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo-section">
+            <div class="lg-logo">LG Embedded SW Professional</div>
+        </div>
+        
+        <h1>LUPA App 인증심사 채점 결과 조회</h1>
+        <p class="subtitle">사번을 입력하여 결과를 확인하세요</p>
+
+        <form class="search-form" id="searchForm">
+            <div class="input-group">
+                <label for="empNo">사번</label>
+                <input type="text" id="empNo" placeholder="사번을 입력하세요" required autofocus>
+            </div>
+
+            <button type="submit" class="btn-search">결과 조회</button>
+        </form>
+
+        <p class="notice">* 본 페이지는 1차 채점 결과를 개별 안내하기 위해 임시 운영되며, 추후 변경될 수 있습니다.</p>
+
+        <div class="loading" id="loading">
+            조회 중입니다...
+        </div>
+
+        <div class="error" id="error">
+            입력하신 사번과 일치하는 결과를 찾을 수 없습니다.<br>
+            사번을 다시 확인해주세요.
+        </div>
+
+        <!-- 탭 버튼 -->
+        <div class="tabs" id="tabs">
+            <button class="tab-btn active" onclick="showTab('summary')">최종 결과</button>
+            <button class="tab-btn" onclick="showTab('detail')">상세 평가</button>
+        </div>
+
+        <!-- 최종 결과 탭 -->
+        <div class="result" id="resultSummary">
+            <div class="result-header">
+                <div class="result-name" id="resultName"></div>
+                <div class="result-badge" id="resultBadge"></div>
+            </div>
+
+            <div class="result-info">
+                <div class="info-row">
+                    <span class="info-label">사번</span>
+                    <span class="info-value" id="resultEmpNo"></span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">직급</span>
+                    <span class="info-value" id="resultPosition"></span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">심사 점수</span>
+                    <span class="info-value score-value" id="resultScore"></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 상세 평가 탭 -->
+        <div class="result detail-content" id="resultDetail">
+            <div id="detailItems"></div>
+        </div>
+    </div>
+
+    <script>
+        let examData = [];
+        let examTemplate = [];
+        let examScores = {};
+        let currentEmpNo = null;
+
+        // JSON 데이터 로드
+        async function loadData() {
+            try {
+                const [dataRes, templateRes, scoresRes] = await Promise.all([
+                    fetch('exam_data.json'),
+                    fetch('exam_template.json'),
+                    fetch('exam_scores.json')
+                ]);
+
+                examData = await dataRes.json();
+                examTemplate = await templateRes.json();
+                examScores = await scoresRes.json();
+
+                console.log('데이터 로드 완료:', examData.length, '명');
+                console.log('평가 항목:', examTemplate.length, '개');
+                console.log('상세 점수:', Object.keys(examScores).length, '명');
+            } catch (error) {
+                console.error('데이터 로드 실패:', error);
+                alert('데이터를 불러오는데 실패했습니다. 페이지를 새로고침해주세요.');
+            }
+        }
+
+        // 페이지 로드 시 데이터 로드
+        loadData();
+
+        // 폼 제출 이벤트
+        document.getElementById('searchForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const empNo = document.getElementById('empNo').value.trim();
+
+            // UI 초기화
+            document.getElementById('resultSummary').classList.remove('show');
+            document.getElementById('resultDetail').classList.remove('show');
+            document.getElementById('tabs').classList.remove('show');
+            document.getElementById('error').classList.remove('show');
+            document.getElementById('loading').classList.add('show');
+
+            // 탭 초기화
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector('.tab-btn').classList.add('active');
+
+            // 짧은 딜레이로 로딩 효과
+            setTimeout(() => {
+                document.getElementById('loading').classList.remove('show');
+
+                // 데이터 검색
+                const found = examData.find(item => item.empNo === empNo);
+
+                if (found) {
+                    currentEmpNo = empNo;
+                    displayResult(found);
+                    displayDetailResult(empNo);
+                    document.getElementById('tabs').classList.add('show');
+                    showTab('summary');
+                } else {
+                    document.getElementById('error').classList.add('show');
+                }
+            }, 300);
+        });
+
+        // 최종 결과 표시
+        function displayResult(data) {
+            document.getElementById('resultName').textContent = data.name;
+            document.getElementById('resultEmpNo').textContent = data.empNo;
+            document.getElementById('resultPosition').textContent = data.position;
+            document.getElementById('resultScore').textContent = data.score + '점';
+
+            const badge = document.getElementById('resultBadge');
+            badge.textContent = data.result;
+            badge.className = 'result-badge ' + (data.result === 'PASS' ? 'pass' : 'fail');
+
+            document.getElementById('resultSummary').classList.add('show');
+        }
+
+        // 상세 평가 표시
+        function displayDetailResult(empNo) {
+            const scores = examScores[empNo];
+            if (!scores) {
+                document.getElementById('detailItems').innerHTML = '<p>상세 평가 데이터를 찾을 수 없습니다.</p>';
+                return;
+            }
+
+            // 카테고리별로 그룹화
+            const categories = {};
+            examTemplate.forEach((item, index) => {
+                const category = item.category || '기타';
+                if (!categories[category]) {
+                    categories[category] = [];
+                }
+                categories[category].push({
+                    ...item,
+                    ...scores[index]
+                });
+            });
+
+            // HTML 생성
+            let html = '';
+            for (const [category, items] of Object.entries(categories)) {
+                if (category.trim() === '') continue;
+
+                html += `<div class="category-group">`;
+                html += `<div class="category-title">${category}</div>`;
+
+                items.forEach(item => {
+                    const isPassed = item.evaluation === 'PASS';
+                    html += `
+                        <div class="eval-item ${isPassed ? 'pass' : 'fail'}">
+                            <div class="eval-header">
+                                <div class="eval-title">${item.no}. ${item.itemName}</div>
+                                <div class="eval-score ${isPassed ? '' : 'fail'}">${item.score}/${item.maxScore}점</div>
+                            </div>
+                            <div class="eval-description">${item.description}</div>
+                        </div>
+                    `;
+                });
+
+                html += `</div>`;
+            }
+
+            document.getElementById('detailItems').innerHTML = html;
+        }
+
+        // 탭 전환
+        function showTab(tab) {
+            // 탭 버튼 활성화
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            // 콘텐츠 표시
+            if (tab === 'summary') {
+                document.getElementById('resultSummary').classList.add('show');
+                document.getElementById('resultDetail').classList.remove('show');
+            } else {
+                document.getElementById('resultSummary').classList.remove('show');
+                document.getElementById('resultDetail').classList.add('show');
+            }
+        }
+    </script>
+</body>
+</html>
