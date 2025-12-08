@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LUPA App 인증심사 채점 결과 조회</title>
+    <title>LUPA APP 인증심사 채점 결과 조회 / 너무 고생 많으셨습니다 ! </title>
     <style>
         * {
             margin: 0;
@@ -134,9 +134,10 @@
         /* 탭 스타일 */
         .tabs {
             display: none;
-            border-bottom: 1px solid #ddd;
+            border-bottom: 2px solid #e0e0e0;
             margin-top: 25px;
-            margin-bottom: -1px;
+            margin-bottom: 0;
+            gap: 0;
         }
 
         .tabs.show {
@@ -145,22 +146,29 @@
 
         .tab-btn {
             flex: 1;
-            padding: 14px;
-            background: none;
+            padding: 16px 20px;
+            background: #f4f4f4;
             border: none;
-            border-bottom: 2px solid transparent;
-            font-size: 14px;
-            font-weight: 500;
-            color: #767676;
+            border-bottom: 3px solid transparent;
+            font-size: 15px;
+            font-weight: 600;
+            color: #999;
             cursor: pointer;
             transition: all 0.2s;
+            border-right: 1px solid #e0e0e0;
+        }
+
+        .tab-btn:last-child {
+            border-right: none;
         }
 
         .tab-btn:hover {
-            color: #000;
+            background: #fafafa;
+            color: #333;
         }
 
         .tab-btn.active {
+            background: #fafafa;
             color: #A50034;
             border-bottom-color: #A50034;
         }
