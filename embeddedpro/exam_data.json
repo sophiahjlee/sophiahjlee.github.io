@@ -13,7 +13,7 @@
     "position": "연구원",
     "score": 100,
     "result": "PASS",
-    "empNo": "315104" 
+    "empNo": "315104"
   },
   {
     "name": "신용호",
@@ -83,7 +83,7 @@
     "name": "고유림",
     "email": "yurim.ko@lge.com",
     "position": "연구원",
-    "score": 61,
+    "score": 70,
     "result": "FAIL",
     "empNo": "315099"
   },
@@ -163,7 +163,7 @@
     "name": "신지우",
     "email": "jiwoo.shin@lge.com",
     "position": "연구원",
-    "score": 66,
+    "score": 70,
     "result": "FAIL",
     "empNo": "316595"
   },
@@ -219,7 +219,7 @@
     "name": "최희선",
     "email": "heesunny.choi@lge.com",
     "position": "연구원",
-    "score": 66,
+    "score": 70,
     "result": "FAIL",
     "empNo": "316610"
   },
