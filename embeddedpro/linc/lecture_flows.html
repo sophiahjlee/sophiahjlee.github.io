@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LINC 교육과정 Flow</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+ :root {
+   --bg:        #0a0c10;
+   --surface:   #111520;
+   --border:    #1e2535;
+   --muted:     #3a4460;
+   --text:      #c8d0e0;
+   --text-dim:  #5a6580;
+   --mono:      'IBM Plex Mono', monospace;
+   --sans:      'Noto Sans KR', sans-serif;
+
+   --lupa:      #00b4d8;
+   --lupa-dim:  #003d4d;
+   --lupa-glow: rgba(0,180,216,0.15);
+
+   --linc:      #4895ef;
+   --linc-dim:  #0d2a5a;
+   --linc-glow: rgba(72,149,239,0.15);
+
+   --studio:    #7b5cf0;
+   --studio-dim:#24134a;
+   --studio-glow:rgba(123,92,240,0.15);
+
+   --cert:      #f4a261;
+   --cert-dim:  #3d1f00;
+   --cert-glow: rgba(244,162,97,0.15);
+
+   --tag-theory:#1e3a5f;
+   --tag-prac:  #1a2e44;
+   --tag-both:  #1e2e44;
+ }
+
+ * { box-sizing: border-box; margin: 0; padding: 0; }
+
+ body {
+   font-family: var(--sans);
+   background: var(--bg);
+   color: var(--text);
+   min-height: 100vh;
+   padding: 48px 40px 64px;
+   position: relative;
+   overflow-x: hidden;
+ }
+
+ /* 배경 그리드 */
+ body::before {
+   content: '';
+   position: fixed;
+   inset: 0;
+   background-image:
+     linear-gradient(rgba(30,37,53,0.4) 1px, transparent 1px),
+     linear-gradient(90deg, rgba(30,37,53,0.4) 1px, transparent 1px);
+   background-size: 40px 40px;
+   pointer-events: none;
+   z-index: 0;
+ }
+
+ .page { position: relative; z-index: 1; max-width: 1100px; margin: 0 auto; }
+
+ /* ── 헤더 ── */
+ .header {
+   display: flex;
+   align-items: flex-end;
+   justify-content: space-between;
+   margin-bottom: 48px;
+   padding-bottom: 24px;
+   border-bottom: 1px solid var(--border);
+ }
+ .header-left {}
+ .course-label {
+   font-family: var(--mono);
+   font-size: 10px;
+   letter-spacing: 3px;
+   color: var(--text-dim);
+   text-transform: uppercase;
+   margin-bottom: 8px;
+ }
+ .course-title {
+   font-size: 26px;
+   font-weight: 700;
+   color: #e8edf8;
+   line-height: 1.2;
+   letter-spacing: -0.5px;
+ }
+ .course-title span {
+   color: var(--linc);
+ }
+ .course-sub {
+   margin-top: 8px;
+   font-size: 12px;
+   color: var(--text-dim);
+   font-family: var(--mono);
+ }
+ .header-right {
+   text-align: right;
+ }
+ .meta-item {
+   font-family: var(--mono);
+   font-size: 11px;
+   color: var(--text-dim);
+   line-height: 2;
+ }
+ .meta-item span { color: var(--text); }
+
+ /* ── 플로우 전체 ── */
+ .flow {
+   display: flex;
+   flex-direction: column;
+   gap: 0;
+ }
+
+ /* ── 일차 블록 ── */
+ .day-block {
+   display: flex;
+   gap: 0;
+   position: relative;
+ }
+
+ /* 세로 연결선 */
+ .day-block:not(:last-child)::after {
+   content: '';
+   position: absolute;
+   left: 119px;
+   bottom: -32px;
+   width: 1px;
+   height: 32px;
+   background: linear-gradient(to bottom, var(--muted), transparent);
+   z-index: 2;
+ }
+
+ .day-connector {
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   margin-bottom: 32px;
+ }
+ .day-connector-line {
+   width: 1px;
+   flex: 1;
+   background: linear-gradient(to bottom, var(--muted) 0%, transparent 100%);
+ }
+
+ /* 왼쪽 일차 라벨 */
+ .day-label-col {
+   width: 120px;
+   flex-shrink: 0;
+   padding-top: 4px;
+   padding-right: 20px;
+   display: flex;
+   flex-direction: column;
+   align-items: flex-end;
+   position: relative;
+ }
+
+ .day-label-col::after {
+   content: '';
+   position: absolute;
+   right: -1px;
+   top: 12px;
+   bottom: 0;
+   width: 1px;
+   background: var(--border);
+ }
+
+ .day-dot {
+   width: 10px;
+   height: 10px;
+   border-radius: 50%;
+   border: 2px solid;
+   background: var(--bg);
+   position: absolute;
+   right: -5px;
+   top: 10px;
+   z-index: 3;
+ }
+
+ .day-num {
+   font-family: var(--mono);
+   font-size: 10px;
+   letter-spacing: 2px;
+   color: var(--text-dim);
+   margin-bottom: 4px;
+ }
+ .day-name {
+   font-size: 13px;
+   font-weight: 700;
+   text-align: right;
+   line-height: 1.3;
+ }
+ .day-hours {
+   font-family: var(--mono);
+   font-size: 9px;
+   color: var(--text-dim);
+   margin-top: 4px;
+ }
+
+ /* 오른쪽 세션 카드들 */
+ .sessions-col {
+   flex: 1;
+   padding-left: 32px;
+   padding-bottom: 40px;
+   display: flex;
+   flex-direction: column;
+   gap: 10px;
+ }
+
+ /* ── 세션 카드 ── */
+ .session {
+   border-radius: 8px;
+   border: 1px solid var(--border);
+   padding: 16px 18px;
+   display: flex;
+   align-items: flex-start;
+   gap: 16px;
+   position: relative;
+   transition: transform 0.15s ease, box-shadow 0.15s ease;
+ }
+ .session:hover {
+   transform: translateX(3px);
+ }
+
+ /* 왼쪽 강조 바 */
+ .session::before {
+   content: '';
+   position: absolute;
+   left: 0;
+   top: 8px;
+   bottom: 8px;
+   width: 3px;
+   border-radius: 0 2px 2px 0;
+ }
+
+ /* 색상 테마별 */
+ .s-lupa   { background: linear-gradient(135deg, var(--lupa-glow), transparent 60%), var(--surface); }
+ .s-lupa::before   { background: var(--lupa); box-shadow: 0 0 8px var(--lupa); }
+ .s-lupa:hover     { box-shadow: 0 4px 20px var(--lupa-glow); }
+
+ .s-linc   { background: linear-gradient(135deg, var(--linc-glow), transparent 60%), var(--surface); }
+ .s-linc::before   { background: var(--linc); box-shadow: 0 0 8px var(--linc); }
+ .s-linc:hover     { box-shadow: 0 4px 20px var(--linc-glow); }
+
+ .s-studio { background: linear-gradient(135deg, var(--studio-glow), transparent 60%), var(--surface); }
+ .s-studio::before { background: var(--studio); box-shadow: 0 0 8px var(--studio); }
+ .s-studio:hover   { box-shadow: 0 4px 20px var(--studio-glow); }
+
+ .s-cert   { background: linear-gradient(135deg, var(--cert-glow), transparent 60%), var(--surface); }
+ .s-cert::before   { background: var(--cert); box-shadow: 0 0 8px var(--cert); }
+ .s-cert:hover     { box-shadow: 0 4px 20px var(--cert-glow); }
+
+ /* 세션 ID 배지 */
+ .sess-id {
+   font-family: var(--mono);
+   font-size: 11px;
+   font-weight: 600;
+   min-width: 32px;
+   padding-top: 2px;
+ }
+ .s-lupa   .sess-id { color: var(--lupa); }
+ .s-linc   .sess-id { color: var(--linc); }
+ .s-studio .sess-id { color: var(--studio); }
+ .s-cert   .sess-id { color: var(--cert); }
+
+ /* 세션 본문 */
+ .sess-body { flex: 1; }
+ .sess-title {
+   font-size: 13px;
+   font-weight: 700;
+   color: #dde4f0;
+   margin-bottom: 4px;
+   line-height: 1.4;
+ }
+ .sess-desc {
+   font-size: 11.5px;
+   color: var(--text-dim);
+   line-height: 1.6;
+   margin-bottom: 8px;
+ }
+ .sess-desc b { color: var(--text); font-weight: 500; }
+
+ /* 태그 묶음 */
+ .sess-tags { display: flex; flex-wrap: wrap; gap: 5px; }
+ .tag {
+   font-family: var(--mono);
+   font-size: 9px;
+   letter-spacing: 0.5px;
+   padding: 2px 7px;
+   border-radius: 3px;
+   border: 1px solid;
+   text-transform: uppercase;
+ }
+ .tag-theory { color: #60a5fa; border-color: #1e3a5f; background: #0d1e33; }
+ .tag-prac   { color: #86efac; border-color: #1a3a22; background: #0a1f10; }
+ .tag-both   { color: #c084fc; border-color: #2e1a55; background: #18082e; }
+ .tag-eval   { color: #fbbf24; border-color: #3d2800; background: #1f1200; }
+ .tag-person { color: #94a3b8; border-color: #1e2535; background: transparent; }
+
+ /* 세션 오른쪽: 강사 */
+ .sess-right {
+   text-align: right;
+   min-width: 110px;
+   flex-shrink: 0;
+ }
+ .sess-instructor {
+   font-size: 10px;
+   color: var(--text-dim);
+   line-height: 1.7;
+ }
+ .sess-instructor b { color: var(--text); font-weight: 500; font-size: 10.5px; }
+
+ /* ── 일차별 컬러 ── */
+ .day1 .day-name { color: var(--lupa); }
+ .day1 .day-dot  { border-color: var(--lupa); }
+ .day2 .day-name { color: var(--linc); }
+ .day2 .day-dot  { border-color: var(--linc); }
+ .day3 .day-name { color: var(--studio); }
+ .day3 .day-dot  { border-color: var(--studio); }
+ .day4 .day-name { color: var(--cert); }
+ .day4 .day-dot  { border-color: var(--cert); }
+
+ /* ── 세션 간 연결 화살표 (같은 날 안에서) ── */
+ .sessions-col .session:not(:last-child)::after {
+   content: '';
+   display: block;
+ }
+ .arrow-intra {
+   display: flex;
+   align-items: center;
+   gap: 6px;
+   padding-left: 4px;
+ }
+ .arrow-intra-line {
+   width: 1px;
+   height: 10px;
+   background: var(--border);
+   margin-left: 15px;
+ }
+
+ /* ── 일차 간 화살표 ── */
+ .day-arrow {
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   gap: 12px;
+   margin: 4px 0 4px 152px;
+   color: var(--text-dim);
+   font-family: var(--mono);
+   font-size: 10px;
+   letter-spacing: 1px;
+ }
+ .day-arrow-line {
+   flex: 1;
+   max-width: 200px;
+   height: 1px;
+   background: linear-gradient(to right, var(--border), transparent);
+ }
+ .day-arrow svg {
+   opacity: 0.4;
+ }
+
+ /* ── 범례 ── */
+ .legend {
+   display: flex;
+   gap: 20px;
+   flex-wrap: wrap;
+   margin-top: 40px;
+   padding-top: 20px;
+   border-top: 1px solid var(--border);
+ }
+ .leg-item { display: flex; align-items: center; gap: 7px; font-size: 11px; color: var(--text-dim); }
+ .leg-dot  { width: 8px; height: 8px; border-radius: 50%; }
+
+ /* ── 인증심사 특별 카드 ── */
+ .cert-card {
+   border-radius: 8px;
+   border: 1px solid #3d2800;
+   padding: 22px 24px;
+   background: linear-gradient(135deg, var(--cert-glow), transparent 60%), var(--surface);
+   position: relative;
+ }
+ .cert-card::before {
+   content: '';
+   position: absolute;
+   left: 0; top: 8px; bottom: 8px;
+   width: 3px;
+   border-radius: 0 2px 2px 0;
+   background: var(--cert);
+   box-shadow: 0 0 8px var(--cert);
+ }
+ .cert-title {
+   font-size: 16px;
+   font-weight: 700;
+   color: var(--cert);
+   margin-bottom: 8px;
+ }
+ .cert-desc { font-size: 12px; color: var(--text-dim); line-height: 1.8; }
+ .cert-desc b { color: var(--text); }
+
+ /* 애니메이션 */
+ @keyframes fadeUp {
+   from { opacity: 0; transform: translateY(16px); }
+   to   { opacity: 1; transform: translateY(0); }
+ }
+ .day-block {
+   animation: fadeUp 0.4s ease both;
+ }
+ .day-block:nth-child(1) { animation-delay: 0.05s; }
+ .day-block:nth-child(2) { animation-delay: 0.15s; }
+ .day-block:nth-child(3) { animation-delay: 0.25s; }
+ .day-block:nth-child(4) { animation-delay: 0.35s; }
+ .day-block:nth-child(5) { animation-delay: 0.4s; }
+ .day-block:nth-child(6) { animation-delay: 0.45s; }
+ .day-block:nth-child(7) { animation-delay: 0.5s; }
+</style>
+</head>
+<body>
+<div class="page">
+
+ <!-- 헤더 -->
+ <div class="header">
+   <div class="header-left">
+     <div class="course-label">강사 회의용 · Course Design Review</div>
+     <div class="course-title">Embedded Professional<br><span>LINC</span> — LUPA/LINC 기본 및 실습</div>
+     <div class="course-sub">// 3일 본교육 + 인증심사 1일 · 총 24시간 (심사 8시간 별도)</div>
+   </div>
+   <div class="header-right">
+     <div class="meta-item">담당자 <span>하승우 seungwoo.ha</span></div>
+     <div class="meta-item">장소 <span>마곡 사이언스파크 W10</span></div>
+     <div class="meta-item">이수기준 <span>학습성취도 70% / 출석 80%</span></div>
+   </div>
+ </div>
+
+ <!-- 플로우 -->
+ <div class="flow">
+
+   <!-- ════════════════ 1일차 ════════════════ -->
+   <div class="day-block day1">
+     <div class="day-label-col">
+       <div class="day-dot"></div>
+       <div class="day-num">DAY 01</div>
+       <div class="day-name">LUPA<br>Platform</div>
+       <div class="day-hours">08:30–17:30</div>
+     </div>
+     <div class="sessions-col">
+
+       <div class="session s-lupa">
+         <div class="sess-id">1-a</div>
+         <div class="sess-body">
+           <div class="sess-title">LUPA Studio — 사전학습 Wrap-up · 환경설정 · 빌드</div>
+           <div class="sess-desc">
+             사전학습 내용을 점검하고 LUPA Studio 개발 환경을 구성한다.<br>
+             <b>Target board</b> 연결 및 빌드 동작을 직접 확인한다.
+           </div>
+           <div class="sess-tags">
+             <span class="tag tag-both">이론+실습</span>
+             <span class="tag tag-person">1~2교시</span>
+             <span class="tag tag-person">김윤관C</span>
+           </div>
+         </div>
+       </div>
+
+       <div class="session s-lupa">
+         <div class="sess-id">1-b</div>
+         <div class="sess-body">
+           <div class="sess-title">LUPA Platform 이해 · LUPA App 개발</div>
+           <div class="sess-desc">
+             LUPA OS의 플랫폼 구조와 앱 개발 방식을 이해한다.<br>
+             <b>LUPA App</b> 의 기본 구조와 실행 흐름을 실습으로 확인한다.
+           </div>
+           <div class="sess-tags">
+             <span class="tag tag-both">이론+실습</span>
+             <span class="tag tag-person">3교시</span>
+             <span class="tag tag-person">이상민C</span>
+           </div>
+         </div>
+       </div>
+
+       <div class="session s-lupa">
+         <div class="sess-id">1-c</div>
+         <div class="sess-body">
+           <div class="sess-title">IPC 통신 이론 &amp; 실습</div>
+           <div class="sess-desc">
+             LUPA 내 앱 간 통신 메커니즘인 <b>IPC (Inter-Process Communication)</b> 원리를 이해하고,<br>
+             직접 메시지를 송수신하는 실습을 수행한다. → 3일차 3-d에서 Data Store 연계로 심화.
+           </div>
+           <div class="sess-tags">
+             <span class="tag tag-both">이론+실습</span>
+             <span class="tag tag-person">5~6교시</span>
+             <span class="tag tag-person">이상민C</span>
+           </div>
+         </div>
+       </div>
+
+     </div>
+   </div>
+
+   <!-- 일차 간 화살표 -->
+   <div class="day-arrow">
+     <div class="day-arrow-line"></div>
+     <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 2v10M7 12l-3-3M7 12l3-3" stroke="#4895ef" stroke-width="1.5" stroke-linecap="round"/></svg>
+     <span>LUPA 선행 완료 → LINC Architecture 진입</span>
+     <div class="day-arrow-line" style="background:linear-gradient(to left,var(--border),transparent)"></div>
+   </div>
+
+   <!-- ════════════════ 2일차 ════════════════ -->
+   <div class="day-block day2">
+     <div class="day-label-col">
+       <div class="day-dot"></div>
+       <div class="day-num">DAY 02</div>
+       <div class="day-name">LINC<br>Architecture</div>
+       <div class="day-hours">08:30–17:30</div>
+     </div>
+     <div class="sessions-col">
+
+       <div class="session s-linc">
+         <div class="sess-id">2-a</div>
+         <div class="sess-body">
+           <div class="sess-title">LINC Architecture 이해 — RPC · Data Store · Data App</div>
+           <div class="sess-desc">
+             LINC 핵심 구성요소가 제품 내에서 어떻게 상호작용하는지 이해한다.<br>
+             <b>RPC</b> (Inter comm. 원리 · Adapter · Interface), <b>Data Store</b> 동작 원리,<br>
+             <b>Data App</b> (blackbox · SDS · superset) 개념을 학습한다.<br>
+             공통 제어 흐름: <b>Script → Engine → Data → App</b> 을 설명할 수 있다.
+           </div>
+           <div class="sess-tags">
+             <span class="tag tag-theory">이론</span>
+             <span class="tag tag-person">1~2교시</span>
+             <span class="tag tag-person">하승우 리더</span>
+           </div>
+         </div>
+       </div>
+
+       <div class="session s-linc">
+         <div class="sess-id">2-b</div>
+         <div class="sess-body">
+           <div class="sess-title">PACE Engine · LINC Studio · Script 개념 + 환경세팅(1)</div>
+           <div class="sess-desc">
+             <b>PACE Engine</b> 동작 원리를 이해하고, native function/variable을 추가해 Script와 연동·검증한다.<br>
+             <b>LINC Script</b> 실행 방식과 문법 개요를 학습한다.<br>
+             <b>LINC Studio</b> 실습 환경을 세팅(1)하고 기본 동작을 확인한다.
+           </div>
+           <div class="sess-tags">
+             <span class="tag tag-both">이론+실습</span>
+             <span class="tag tag-person">3~4교시</span>
+             <span class="tag tag-person">하승우 리더</span>
+           </div>
+         </div>
+       </div>
+
+       <div class="session s-linc">
+         <div class="sess-id">2-c</div>
+         <div class="sess-body">
+           <div class="sess-title">사업부 특화 Case Study — 리빙 · 키친 · 에솔</div>
+           <div class="sess-desc">
+             사업부별 LINC 구조 재설계 과정의 <b>문제와 설계 의사결정 배경(Why)</b>을 이해한다.<br>
+             실제 제품 사례를 통해 LINC 구조가 도메인별 요구사항에 어떻게 적용되었는지 파악한다.
+           </div>
+           <div class="sess-tags">
+             <span class="tag tag-theory">이론</span>
+             <span class="tag tag-person">7~8교시 · 40분×3회</span>
+           </div>
+         </div>
+         <div class="sess-right">
+           <div class="sess-instructor">
+             리빙 <b>이상묵 연구원</b><br>
+             키친 <b>서원욱 선임</b><br>
+             에솔 <b>권민구 책임</b>
+           </div>
+         </div>
+       </div>
+
+     </div>
+   </div>
+
+   <!-- 일차 간 화살표 -->
+   <div class="day-arrow">
+     <div class="day-arrow-line"></div>
+     <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 2v10M7 12l-3-3M7 12l3-3" stroke="#7b5cf0" stroke-width="1.5" stroke-linecap="round"/></svg>
+     <span>이론 완료 → Studio 집중 실습</span>
+     <div class="day-arrow-line" style="background:linear-gradient(to left,var(--border),transparent)"></div>
+   </div>
+
+   <!-- ════════════════ 3일차 ════════════════ -->
+   <div class="day-block day3">
+     <div class="day-label-col">
+       <div class="day-dot"></div>
+       <div class="day-num">DAY 03</div>
+       <div class="day-name">LINC<br>Studio 실습</div>
+       <div class="day-hours">08:30–17:30</div>
+     </div>
+     <div class="sessions-col">
+
+       <div class="session s-studio">
+         <div class="sess-id">3-a</div>
+         <div class="sess-body">
+           <div class="sess-title">SILS 구조 설명</div>
+           <div class="sess-desc">
+             <b>Linux SILS (Software-In-the-Loop Simulation)</b> 구조와 제품 포팅 주요 사항을 이해한다.<br>
+             실물 보드 없이 로컬 환경에서 Script 동작을 시뮬레이션하는 흐름을 파악한다.
+           </div>
+           <div class="sess-tags">
+             <span class="tag tag-both">이론+실습</span>
+             <span class="tag tag-person">1교시</span>
+             <span class="tag tag-person">이덕환 duckhwan.lee</span>
+           </div>
+         </div>
+       </div>
+
+       <div class="session s-studio">
+         <div class="sess-id">3-b</div>
+         <div class="sess-body">
+           <div class="sess-title">RPC Adaptor Layer · Command 추가 실습</div>
+           <div class="sess-desc">
+             <b>RPC Adaptor Layer</b> 구조를 이해하고 Command를 직접 추가하는 과정을 실습한다.<br>
+             Studio/Log 기반으로 <b>RPC 호출 결과를 검증</b>하는 절차를 수행한다.
+           </div>
+           <div class="sess-tags">
+             <span class="tag tag-prac">실습</span>
+             <span class="tag tag-person">2교시</span>
+             <span class="tag tag-person">하승우 / 최인달</span>
+           </div>
+         </div>
+       </div>
+
+       <div class="session s-studio">
+         <div class="sess-id">3-c</div>
+         <div class="sess-body">
+           <div class="sess-title">RPC 실습 · RPC Table 작성</div>
+           <div class="sess-desc">
+             <b>RPC Table</b> 의 구성과 주요 사항을 이해하고, Table을 직접 작성한 뒤<br>
+             RPC 통신이 정상 동작함을 확인한다.
+           </div>
+           <div class="sess-tags">
+             <span class="tag tag-prac">실습</span>
+             <span class="tag tag-person">3교시</span>
+             <span class="tag tag-person">하승우 · 박선현C · 박진영C</span>
+           </div>
+         </div>
+       </div>
+
+       <div class="session s-studio">
+         <div class="sess-id">3-d</div>
+         <div class="sess-body">
+           <div class="sess-title">IPC / Event Handler / Data Store 연계 실습</div>
+           <div class="sess-desc">
+             <b>IPC · Event Handler</b> 를 통해 Data Store에 저장하거나,<br>
+             Data Store에서 Data App이 원하는 데이터를 가져와 <b>modem app에 전달</b>하는 흐름을 실습한다.<br>
+             1-c(IPC 기초)의 심화 연계 세션.
+           </div>
+           <div class="sess-tags">
+             <span class="tag tag-prac">실습</span>
+             <span class="tag tag-person">4교시</span>
+             <span class="tag tag-person">하승우</span>
+           </div>
+         </div>
+       </div>
+
+       <div class="session s-studio">
+         <div class="sess-id">3-e</div>
+         <div class="sess-body">
+           <div class="sess-title">Data Store 실습 · Data App 연동</div>
+           <div class="sess-desc">
+             Data Store에 새로운 Field를 추가하고, <b>Event 방식</b>으로 데이터를 구현한다.<br>
+             <b>Data App</b> (blackbox · SDS · superset) 개념과 Data Store 연동 구조를 실습으로 확인한다.
+           </div>
+           <div class="sess-tags">
+             <span class="tag tag-prac">실습</span>
+             <span class="tag tag-person">5~6교시</span>
+             <span class="tag tag-person">정치선C · 박선현C · 박진영C</span>
+           </div>
+         </div>
+       </div>
+
+       <div class="session s-studio">
+         <div class="sess-id">3-f</div>
+         <div class="sess-body">
+           <div class="sess-title">LINC Script ↔ Native 연동 실습 · Studio 디버깅</div>
+           <div class="sess-desc">
+             Script와 native code 간 연동 구조를 실습하고,<br>
+             <b>LINC Studio</b> 를 이용해 Script · native code를 <b>디버깅</b>하는 방법을 이해한다.
+           </div>
+           <div class="sess-tags">
+             <span class="tag tag-both">이론+실습</span>
+             <span class="tag tag-person">7~8교시</span>
+             <span class="tag tag-person">정치선C · 박선현C · 박진영C</span>
+           </div>
+         </div>
+       </div>
+
+     </div>
+   </div>
+
+   <!-- 일차 간 화살표 -->
+   <div class="day-arrow">
+     <div class="day-arrow-line"></div>
+     <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 2v10M7 12l-3-3M7 12l3-3" stroke="#f4a261" stroke-width="1.5" stroke-linecap="round"/></svg>
+     <span>실습 완료 → 종합 역량 평가</span>
+     <div class="day-arrow-line" style="background:linear-gradient(to left,var(--border),transparent)"></div>
+   </div>
+
+   <!-- ════════════════ 4일차 ════════════════ -->
+   <div class="day-block day4">
+     <div class="day-label-col">
+       <div class="day-dot"></div>
+       <div class="day-num">DAY 04</div>
+       <div class="day-name">인증<br>심사</div>
+       <div class="day-hours">전일 · 8시간</div>
+     </div>
+     <div class="sessions-col">
+       <div class="cert-card">
+         <div class="cert-title">🏆 인증 심사 (전일)</div>
+         <div class="cert-desc">
+           <b>Script 기반 코스·행정 로직을 작성</b>해 end-to-end 동작(PACE → Data → App)을 직접 구현한다.<br>
+           실무형 인증심사를 통해 <b>RPC · PACE · Script · Data</b> 모듈 적용 능력을 종합적으로 평가받는다.
+         </div>
+         <div style="margin-top:12px; display:flex; flex-wrap:wrap; gap:6px;">
+           <span class="tag tag-eval">프로젝트 평가</span>
+           <span class="tag tag-person">CTO: 하승우 · 정치선C</span>
+           <span class="tag tag-person">리빙: 김건우S · 최홍기S</span>
+           <span class="tag tag-person">키친: 김대원S</span>
+         </div>
+       </div>
+     </div>
+   </div>
+
+ </div><!-- /flow -->
+
+ <!-- 범례 -->
+ <div class="legend">
+   <div class="leg-item"><div class="leg-dot" style="background:var(--lupa)"></div> 1일차 LUPA Platform</div>
+   <div class="leg-item"><div class="leg-dot" style="background:var(--linc)"></div> 2일차 LINC Architecture</div>
+   <div class="leg-item"><div class="leg-dot" style="background:var(--studio)"></div> 3일차 LINC Studio 실습</div>
+   <div class="leg-item"><div class="leg-dot" style="background:var(--cert)"></div> 4일차 인증 심사</div>
+   <div class="leg-item"><span class="tag tag-theory" style="font-size:9px;">이론</span></div>
+   <div class="leg-item"><span class="tag tag-prac" style="font-size:9px;">실습</span></div>
+   <div class="leg-item"><span class="tag tag-both" style="font-size:9px;">이론+실습</span></div>
+ </div>
+
+</div>
+</body>
+</html>
