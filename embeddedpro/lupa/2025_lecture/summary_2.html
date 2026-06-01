@@ -122,7 +122,7 @@
   </div>
   <div class="section"><h4>📌 학습목표</h4><ul><li>LUPA 플랫폼의 전체 구조와 역할 범위를 이해한다</li><li>LUPA 버전별 진화 과정과 브랜치 관리 정책을 파악한다</li></ul></div>
   <div class="section"><h4>📋 주요내용</h4><ul><li>LUPA 플랫폼은 가전 제품(세탁기·오븐·에어콘 등)에 탑재되는 임베디드 OS로, 빨간 점선 안쪽이 플랫폼 공통역량이며 그 바깥은 사업부 개발 영역이다</li><li>플랫폼과 앱이 분리된 구조로, SOTA(앱 업데이트)와 FOTA(플랫폼 업데이트)를 독립적으로 배포할 수 있다</li><li>버전 이력: 1.1 LTS(세탁기 첫 탑재, 장기 지원), 1.2(NAND 플래시 · IT칩 지원 추가), 2.0(DQC2 · Cortex-M85 지원)</li><li>메인 브랜치는 익일 반영되고, 1.1/1.2 안정 브랜치는 TSC 리뷰와 형상관리팀 검증을 거쳐 약 2주 소요된다</li></ul></div>
-  <div class="quiz-block" data-quiz='[{"q": "LUPA에서 플랫폼 전체를 업데이트하는 방식은?", "options": ["SOTA", "FOTA", "OTA", "LDB"], "answer": 1, "hint": "앱 업데이트는 SOTA, 플랫폼(펌웨어) 업데이트는 FOTA입니다."}, {"q": "LUPA 1.1 LTS가 처음 탑재된 제품군은?", "options": ["에어컨", "오븐", "세탁기", "냉장고"], "answer": 2, "hint": "1.1 LTS는 장기 지원(Long Term Support) 버전으로 세탁기에 처음 탑재됐습니다."}]'><div class="quiz-header" onclick="toggleQuiz(this)">🧪 퀴즈 풀기 <span class="quiz-count">(2문제)</span><span class="quiz-arrow">▶</span></div><div class="quiz-body" style="display:none"></div></div>
+  <div class="quiz-block" data-quiz-idx="0"><div class="quiz-header" onclick="toggleQuiz(this)">🧪 퀴즈 풀기 <span class="quiz-count">(2문제)</span><span class="quiz-arrow">▶</span></div><div class="quiz-body" style="display:none"></div></div>
   <details class="transcript-toggle">
     <summary>📝 Transcript 원문 보기</summary>
     <div class="transcript-content">
@@ -261,7 +261,7 @@
   </div>
   <div class="section"><h4>📌 학습목표</h4><ul><li>LUPA 소스 빌드 및 릴리즈 절차를 이해하고 실제 환경을 구성할 수 있다</li><li>lupa-product.yml 파일의 역할과 칩셋별 다운로드 도구를 파악한다</li></ul></div>
   <div class="section"><h4>📋 주요내용</h4><ul><li>빌드 절차: 소스 다운로드 → 환경변수 설정 → 제품/칩셋 선택 → `lupa release` 명령 실행 → SOC별 전용 툴로 타겟에 다운로드</li><li>DQC 타겟은 UDTOOL, IT 타겟은 CTO 자체 개발 FlashMate 툴을 사용한다</li><li>lupa-product.yml 파일에서 빌드인 앱 목록, 폰트, 바이너리명, 메모리 힙 크기 등 제품별 구성을 정의한다</li><li>SDK는 플랫폼 헤더와 LUPA API 점프 테이블을 포함하며, 앱 개발자는 SDK만으로 플랫폼 내부 코드에 접근 없이 앱을 작성할 수 있다</li></ul></div>
-  <div class="quiz-block" data-quiz='[{"q": "`lupa release` 명령 실행 후 DQC 타겟에 이미지를 내려받을 때 사용하는 전용 툴은?", "options": ["FlashMate", "UDTOOL", "LDB", "OpenOCD"], "answer": 1, "hint": "IT 타겟은 FlashMate(CTO 자체 개발), DQC 타겟은 UDTOOL을 사용합니다."}, {"q": "lupa-product.yml 파일에서 설정할 수 없는 항목은?", "options": ["빌드인 앱 목록", "메모리 힙 크기", "Git 커밋 해시", "바이너리 파일명"], "answer": 2, "hint": "lupa-product.yml은 제품 빌드 구성 파일로, Git 이력 정보는 포함하지 않습니다."}]'><div class="quiz-header" onclick="toggleQuiz(this)">🧪 퀴즈 풀기 <span class="quiz-count">(2문제)</span><span class="quiz-arrow">▶</span></div><div class="quiz-body" style="display:none"></div></div>
+  <div class="quiz-block" data-quiz-idx="1"><div class="quiz-header" onclick="toggleQuiz(this)">🧪 퀴즈 풀기 <span class="quiz-count">(2문제)</span><span class="quiz-arrow">▶</span></div><div class="quiz-body" style="display:none"></div></div>
   <details class="transcript-toggle">
     <summary>📝 Transcript 원문 보기</summary>
     <div class="transcript-content">
@@ -343,7 +343,7 @@
   </div>
   <div class="section"><h4>📌 학습목표</h4><ul><li>LUPA 소스 디렉토리 구조와 핵심 컴포넌트의 역할을 이해한다</li><li>MPU 기반 메모리 보호 메커니즘과 파일 시스템 구성을 파악한다</li></ul></div>
   <div class="section"><h4>📋 주요내용</h4><ul><li>소스 디렉토리: arch / boards / drivers / framework / kernel / product / extension / apps 로 계층 구성</li><li>RTOS로 FreeRTOS를 채택한 이유: Zephyr에서 전환, DQC SDK가 FreeRTOS를 공식 지원하기 때문</li><li>CMSIS(Common Microcontroller Software Interface Standard)는 ARM이 제공하는 HAL 레이어로, LUPA가 이를 활용해 칩셋 독립적인 드라이버를 구성한다</li><li>POSIX API를 추가로 지원하며, LUPA API는 보안 처리(권한 상승)를 포함한다</li><li>파일 시스템: NOR 플래시 → LittleFS, NAND 플래시 → LTFFS(LG CTO 자체 개발)</li><li>MPU(메모리 보호 유닛)로 각 앱의 메모리 영역을 격리하여, 앱이 다른 앱의 영역을 침범하면 크래시가 발생한다</li></ul></div>
-  <div class="quiz-block" data-quiz='[{"q": "LUPA가 Zephyr 대신 FreeRTOS를 채택한 주된 이유는?", "options": ["라이선스 비용이 없어서", "DQC SDK가 FreeRTOS를 공식 지원해서", "메모리 사용량이 더 적어서", "POSIX API 지원이 더 넓어서"], "answer": 1, "hint": "칩셋 공급사(DQC)의 SDK가 FreeRTOS를 공식 지원하는 것이 결정적 이유였습니다."}, {"q": "NAND 플래시에서 사용하는 LUPA 파일 시스템은?", "options": ["LittleFS", "LTFFS", "ROMFS", "FAT32"], "answer": 1, "hint": "NOR→LittleFS, NAND→LTFFS(LG CTO 자체 개발)입니다."}]'><div class="quiz-header" onclick="toggleQuiz(this)">🧪 퀴즈 풀기 <span class="quiz-count">(2문제)</span><span class="quiz-arrow">▶</span></div><div class="quiz-body" style="display:none"></div></div>
+  <div class="quiz-block" data-quiz-idx="2"><div class="quiz-header" onclick="toggleQuiz(this)">🧪 퀴즈 풀기 <span class="quiz-count">(2문제)</span><span class="quiz-arrow">▶</span></div><div class="quiz-body" style="display:none"></div></div>
   <details class="transcript-toggle">
     <summary>📝 Transcript 원문 보기</summary>
     <div class="transcript-content">
@@ -489,7 +489,7 @@
   </div>
   <div class="section"><h4>📌 학습목표</h4><ul><li>LUPA 부팅 시퀀스와 드라이버 초기화 순서를 이해한다</li><li>디바이스 트리와 시리얼 드라이버 구조 및 IOCTL 사용법을 파악한다</li></ul></div>
   <div class="section"><h4>📋 주요내용</h4><ul><li>부팅 시퀀스: PRE_KERNEL1 → PRE_KERNEL2 → POST_INIT Thread → POST_KERNEL → APPLICATION 순으로 초기화</li><li>sys_init 매크로로 드라이버·서비스의 초기화 우선순위를 지정하며, 패키지 매니저(PM_INIT) → 어플리케이션 매니저(AM_INIT) 순으로 앱이 실행된다</li><li>Generic 드라이버 API(예: I2C_READ)는 디바이스 트리 설정에 따라 내부적으로 특정 칩 드라이버로 자동 매핑된다</li><li>UART·SPI 등 시리얼 드라이버는 pseudo 파일 시스템(/dev/modem 등)으로 노출되며, POSIX open/read/write로 접근한다</li><li>디바이스 트리는 칩셋 기본 트리 위에 보드·제품 overlay 파일을 덮어씌우는 방식으로 구성한다</li><li>DMA UART에서는 FIONREAD만 지원하고 FIONWRITE/FIONSPACE는 미지원이므로, DMA 모드 여부에 따라 IOCTL 사용에 주의가 필요하다</li><li>IOCTL로 UART 블로킹 모드 전환(FIONBIO), 보레이트 조회(TCGET)/변경(TCSET) 등 세부 설정을 제어할 수 있다</li></ul></div>
-  <div class="quiz-block" data-quiz='[{"q": "DMA 모드 UART에서 지원되지 않는 IOCTL 요청은?", "options": ["FIONBIO", "FIONREAD", "FIONWRITE", "TCGET"], "answer": 2, "hint": "DMA UART는 FIONREAD만 지원하고 FIONWRITE/FIONSPACE는 동작하지 않습니다."}, {"q": "LUPA 부팅 시퀀스에서 패키지 매니저(PM_INIT)가 초기화되는 단계는?", "options": ["PRE_KERNEL1", "PRE_KERNEL2", "POST_KERNEL", "APPLICATION"], "answer": 3, "hint": "부팅 순서: PRE_KERNEL1 → PRE_KERNEL2 → POST_INIT → POST_KERNEL → APPLICATION"}]'><div class="quiz-header" onclick="toggleQuiz(this)">🧪 퀴즈 풀기 <span class="quiz-count">(2문제)</span><span class="quiz-arrow">▶</span></div><div class="quiz-body" style="display:none"></div></div>
+  <div class="quiz-block" data-quiz-idx="3"><div class="quiz-header" onclick="toggleQuiz(this)">🧪 퀴즈 풀기 <span class="quiz-count">(2문제)</span><span class="quiz-arrow">▶</span></div><div class="quiz-body" style="display:none"></div></div>
   <details class="transcript-toggle">
     <summary>📝 Transcript 원문 보기</summary>
     <div class="transcript-content">
@@ -656,7 +656,7 @@
   </div>
   <div class="section"><h4>📌 학습목표</h4><ul><li>LUPA가 제공하는 주요 플랫폼 서비스의 역할과 상호작용을 이해한다</li><li>세팅 서비스의 데이터 유형(RO/RW/Volatile)과 파워 스테이트 관리를 파악한다</li></ul></div>
   <div class="section"><h4>📋 주요내용</h4><ul><li>컴퍼지터(Compositor): 그래픽 출력 및 터치·키 입력 이벤트를 앱에 전달하는 서비스</li><li>파워 매니저: 파워 스테이트(1=Partial ON, 2=ON, 3/4=Shutdown) 관리, GUI 앱 실행을 위해 반드시 스테이트를 2로 변경해야 함</li><li>세팅 서비스의 데이터 유형: RO(config.bin에 저장, 읽기 전용), RW(파일 시스템에 저장, 재부팅 후에도 유지), Volatile(런타임 전역 변수, 재부팅 시 초기화)</li><li>세팅값의 카테고리(예: RW.Category.Home)를 통해 현재 활성화된 홈 앱을 동적으로 교체할 수 있다</li><li>LDB 대문 서비스(LDB Daemon): 콘솔 UART를 공유하다가 LDB 패킷이 들어오면 콘솔을 일시 정지하고 파일 전송을 처리한다</li><li>FOTA 매니저, 디바이스 매니저, 로그 서비스, 콘솔 서비스가 플랫폼 기본 서비스로 항상 실행된다</li></ul></div>
-  <div class="quiz-block" data-quiz='[{"q": "GUI 앱이 화면에 표시되려면 파워 스테이트를 몇으로 변경해야 하는가?", "options": ["0", "1", "2", "3"], "answer": 2, "hint": "스테이트 1=Partial ON(화면 꺼짐), 2=ON(LCD 켜짐, 홈앱 실행)입니다."}, {"q": "재부팅 후에도 값이 유지되는 세팅 데이터 유형은?", "options": ["RO", "RW", "Volatile", "BOOT"], "answer": 1, "hint": "RW는 파일 시스템에 저장되어 재부팅 후에도 유지되고, Volatile은 런타임에만 유지됩니다."}]'><div class="quiz-header" onclick="toggleQuiz(this)">🧪 퀴즈 풀기 <span class="quiz-count">(2문제)</span><span class="quiz-arrow">▶</span></div><div class="quiz-body" style="display:none"></div></div>
+  <div class="quiz-block" data-quiz-idx="4"><div class="quiz-header" onclick="toggleQuiz(this)">🧪 퀴즈 풀기 <span class="quiz-count">(2문제)</span><span class="quiz-arrow">▶</span></div><div class="quiz-body" style="display:none"></div></div>
   <details class="transcript-toggle">
     <summary>📝 Transcript 원문 보기</summary>
     <div class="transcript-content">
@@ -748,8 +748,8 @@
     <a href="#" onclick="seekTo(4760);return false;" class="yt-link">▶ 이 구간 재생</a>
   </div>
   <div class="section"><h4>📌 학습목표</h4><ul><li>LDB CLI와 콘솔 Shell Command를 활용하여 타겟을 제어하고 상태를 확인할 수 있다</li><li>dmesg, PS, meminfo 등 시스템 진단 명령으로 개발 중 문제를 분석할 수 있다</li></ul></div>
-  <div class="section"><h4>📋 주요내용</h4><ul><li>LDB 주요 명령: push(PC→타겟 파일 전송), pull(타겟→PC), shell(명령 실행), install/uninstall(패키지 관리)</li><li>앱 관리 명령: app list(설치 앱 목록 및 상태), app start <패키지명>(앱 실행), app quit(앱 종료)</li><li>input key <코드>(키 이벤트 발생), input tap <x> <y>(터치 이벤트 발생)으로 물리 입력 없이 테스트 가능</li><li>settings list/get/set 명령으로 세팅값 조회 및 변경 가능; 콘솔 기본 패스워드는 @LUPA123</li><li>dmesg: 부팅부터 현재까지의 커널 로그 조회(최대 16KB 순환 저장)</li><li>PS: 전체 스레드 목록 및 CPU 사용률 확인, meminfo: OS 힙·플랫폼 힙·각 앱의 메모리 주소·스택 사용량 확인</li><li>tree 명령으로 전체 가상 파일 시스템 구조를 트리 형태로 출력할 수 있다</li></ul></div>
-  <div class="quiz-block" data-quiz='[{"q": "타겟에서 현재 스레드별 CPU 사용률을 확인하는 Shell Command는?", "options": ["dmesg", "ps", "meminfo", "app list"], "answer": 1, "hint": "ps(Processor Status)로 전체 스레드 목록과 CPU 사용률을 볼 수 있습니다."}, {"q": "LDB 명령 중 PC에 있는 파일을 타겟으로 전송하는 명령은?", "options": ["pull", "push", "install", "shell"], "answer": 1, "hint": "push=PC→타겟, pull=타겟→PC 방향입니다."}]'><div class="quiz-header" onclick="toggleQuiz(this)">🧪 퀴즈 풀기 <span class="quiz-count">(2문제)</span><span class="quiz-arrow">▶</span></div><div class="quiz-body" style="display:none"></div></div>
+  <div class="section"><h4>📋 주요내용</h4><ul><li>LDB 주요 명령: push(PC→타겟 파일 전송), pull(타겟→PC), shell(명령 실행), install/uninstall(패키지 관리)</li><li>앱 관리 명령: app list(설치 앱 목록 및 상태), app start &lt;패키지명&gt;(앱 실행), app quit(앱 종료)</li><li>input key &lt;코드&gt;(키 이벤트 발생), input tap &lt;x&gt; &lt;y&gt;(터치 이벤트 발생)으로 물리 입력 없이 테스트 가능</li><li>settings list/get/set 명령으로 세팅값 조회 및 변경 가능; 콘솔 기본 패스워드는 @LUPA123</li><li>dmesg: 부팅부터 현재까지의 커널 로그 조회(최대 16KB 순환 저장)</li><li>PS: 전체 스레드 목록 및 CPU 사용률 확인, meminfo: OS 힙·플랫폼 힙·각 앱의 메모리 주소·스택 사용량 확인</li><li>tree 명령으로 전체 가상 파일 시스템 구조를 트리 형태로 출력할 수 있다</li></ul></div>
+  <div class="quiz-block" data-quiz-idx="5"><div class="quiz-header" onclick="toggleQuiz(this)">🧪 퀴즈 풀기 <span class="quiz-count">(2문제)</span><span class="quiz-arrow">▶</span></div><div class="quiz-body" style="display:none"></div></div>
   <details class="transcript-toggle">
     <summary>📝 Transcript 원문 보기</summary>
     <div class="transcript-content">
@@ -903,7 +903,7 @@
   </div>
   <div class="section"><h4>📌 학습목표</h4><ul><li>manifest.xml을 통해 앱의 카테고리·타입·스택 크기를 올바르게 설정할 수 있다</li><li>빌드 산출물(ELF, LPK, 디스어셈블리)의 용도를 이해하고 메모리 모델을 파악한다</li></ul></div>
   <div class="section"><h4>📋 주요내용</h4><ul><li>manifest.xml에서 패키지명, 버전, 카테고리, 타입(persistent 등), 우선순위, 스택 크기를 설정한다</li><li>동일 카테고리의 앱은 한 번에 1개만 로딩 가능하며, 세팅값(예: RW.Category.Home)으로 활성 앱을 지정한다</li><li>빌드 산출물: ELF(GDB 등 디버거 연동), LPK(타겟 설치 패키지), 디스어셈블리 파일(크래시 분석용)</li><li>LUPA 스레드 모델: OS 스레드 → 플랫폼 스레드 → 플랫폼/시스템/유저 앱 → 유저 앱의 Child 스레드 계층 구조</li><li>DQC 타겟의 LUPA 앱 메모리 영역은 약 1.5MB로 매우 제한적이므로 앱 크기 최적화가 중요하다; IT/DQC2는 SRAM이 64MB로 훨씬 여유롭다</li><li>LUPA API(유저 모드, 권한 상승 없음)와 LUPA syscall(커널 모드로 임시 권한 상승)의 차이를 이해하고, syscall 중 크래시 시 시스템 전체가 재부팅될 수 있음을 주의한다</li></ul></div>
-  <div class="quiz-block" data-quiz='[{"q": "DQC 타겟에서 LUPA 앱이 실행될 수 있는 메모리 영역의 일반적인 크기는?", "options": ["512KB", "1MB", "1.5MB", "16MB"], "answer": 2, "hint": "DQC의 전체 SRAM은 3.5MB이며, 플랫폼·힙·그래픽 버퍼를 제외하면 앱 영역은 약 1.5MB입니다."}, {"q": "LUPA syscall로 호출된 API 실행 중 크래시가 발생하면 어떻게 되는가?", "options": ["해당 앱만 종료된다", "시스템 전체가 재부팅된다", "해당 스레드만 종료된다", "아무 일도 일어나지 않는다"], "answer": 1, "hint": "syscall은 커널 모드로 권한 상승 후 실행되므로, 크래시 시 앱이 아닌 전체 시스템이 영향을 받습니다."}]'><div class="quiz-header" onclick="toggleQuiz(this)">🧪 퀴즈 풀기 <span class="quiz-count">(2문제)</span><span class="quiz-arrow">▶</span></div><div class="quiz-body" style="display:none"></div></div>
+  <div class="quiz-block" data-quiz-idx="6"><div class="quiz-header" onclick="toggleQuiz(this)">🧪 퀴즈 풀기 <span class="quiz-count">(2문제)</span><span class="quiz-arrow">▶</span></div><div class="quiz-body" style="display:none"></div></div>
   <details class="transcript-toggle">
     <summary>📝 Transcript 원문 보기</summary>
     <div class="transcript-content">
@@ -1128,7 +1128,7 @@
   </div>
   <div class="section"><h4>📌 학습목표</h4><ul><li>LUPA IPC 메커니즘(Setting, Event, Message Queue, Property)의 특성과 사용법을 이해한다</li><li>Property API를 활용하여 앱 간 데이터를 공유하고 콜백을 연동할 수 있다</li></ul></div>
   <div class="section"><h4>📋 주요내용</h4><ul><li>pthread로 자식 스레드 생성 가능(최대 4개); 스레드 속성(스택 크기, 우선순위)을 설정한 뒤 pthread_create 호출</li><li>이벤트(Event): 1:N 단방향 브로드캐스트, create → connect → receive(timeout 설정 가능) → destroy 흐름</li><li>메시지 큐(MQ): 양방향 가능하지만 보내는 쪽 사이즈 ≤ 큐 정의 사이즈 규칙 필수; 수신 측이 처리를 못하면 큐 full 장애 발생</li><li>프로퍼티(Property): 공유 메모리 기반의 IPC로, ID 정의 시 타입·크기·방향(READ/WRITE/RW)을 지정</li><li>프로퍼티 서버는 register_property로 저장소를 생성하고 update_property_value로 값을 갱신한다</li><li>클라이언트 앱은 get_property 또는 subscribe_property_with_event로 값 변경 시 자동 콜백을 받을 수 있다</li><li>실무에서는 대부분 Property API를 가장 많이 활용하며, 사업부에서도 공통 헤더에 프로퍼티 ID를 정의하여 공유한다</li></ul></div>
-  <div class="quiz-block" data-quiz='[{"q": "하나의 앱에서 생성할 수 있는 pthread(자식 스레드)의 최대 개수는?", "options": ["2개", "4개", "8개", "제한 없음"], "answer": 1, "hint": "메모리·리소스 제한으로 앱 하나당 최대 4개의 자식 스레드만 생성 가능합니다."}, {"q": "Property subscribe 시 값이 바뀔 때 자동으로 실행되는 것은?", "options": ["이벤트 루프", "콜백 함수", "메시지 큐", "시그널 핸들러"], "answer": 1, "hint": "subscribe_property_with_event 등록 시 값 변경이 감지되면 등록한 콜백이 자동 호출됩니다."}]'><div class="quiz-header" onclick="toggleQuiz(this)">🧪 퀴즈 풀기 <span class="quiz-count">(2문제)</span><span class="quiz-arrow">▶</span></div><div class="quiz-body" style="display:none"></div></div>
+  <div class="quiz-block" data-quiz-idx="7"><div class="quiz-header" onclick="toggleQuiz(this)">🧪 퀴즈 풀기 <span class="quiz-count">(2문제)</span><span class="quiz-arrow">▶</span></div><div class="quiz-body" style="display:none"></div></div>
   <details class="transcript-toggle">
     <summary>📝 Transcript 원문 보기</summary>
     <div class="transcript-content">
@@ -1346,7 +1346,7 @@
   </div>
   <div class="section"><h4>📌 학습목표</h4><ul><li>크래시 로그(레지스터 덤프)와 디스어셈블리 파일을 활용하여 오류 위치를 파악할 수 있다</li><li>LUPA Studio Project Wizard로 Non-GUI 앱을 생성하고 타겟에 배포하는 절차를 익힌다</li></ul></div>
   <div class="section"><h4>📋 주요내용</h4><ul><li>크래시 발생 시 콘솔에 레지스터 덤프(PC, LR, R0~R15)와 Current Entry 주소가 출력된다</li><li>디버깅 공식: (크래시 PC 주소) − (앱 로드 시작 주소) = 상대 주소 → 디스어셈블리 파일에서 해당 위치의 명령어를 확인</li><li>앱 로드 주소는 meminfo 명령으로 확인하며, 실행 때마다 달라질 수 있으므로 크래시 당시 값을 반드시 기록해야 한다</li><li>LUPA Studio Project Wizard에서 Non-GUI Hello World 앱을 생성하고, manifest.xml에서 카테고리·타입을 제거하면 수동 실행/종료가 가능하다</li><li>실습 예제 3개: UART-Timestamp(PC↔타겟 UART 통신), PropService(키 이벤트→Property 업데이트), PropApp(Property 콜백 수신 및 출력)</li><li>서지훈 책임의 이후 강의에서 J-Link/OpenOCD를 이용한 하드웨어 디버거 연동 방법을 상세히 다룰 예정이다</li></ul></div>
-  <div class="quiz-block" data-quiz='[{"q": "크래시 로그에서 PC=0x2018281A, 앱 로드 주소=0x20182800일 때, 디스어셈블리에서 찾아야 할 상대 주소는?", "options": ["0x1A", "0x281A", "0x2800", "0x18281A"], "answer": 0, "hint": "상대 주소 = PC − 앱 로드 시작 주소 = 0x2018281A − 0x20182800 = 0x1A"}]'><div class="quiz-header" onclick="toggleQuiz(this)">🧪 퀴즈 풀기 <span class="quiz-count">(1문제)</span><span class="quiz-arrow">▶</span></div><div class="quiz-body" style="display:none"></div></div>
+  <div class="quiz-block" data-quiz-idx="8"><div class="quiz-header" onclick="toggleQuiz(this)">🧪 퀴즈 풀기 <span class="quiz-count">(1문제)</span><span class="quiz-arrow">▶</span></div><div class="quiz-body" style="display:none"></div></div>
   <details class="transcript-toggle">
     <summary>📝 Transcript 원문 보기</summary>
     <div class="transcript-content">
@@ -1451,7 +1451,7 @@
   </div>
   <div class="section"><h4>📌 학습목표</h4><ul><li>UART 수신 → Property 업데이트 → 콜백 출력으로 이어지는 앱 간 연동 흐름을 구현할 수 있다</li><li>pthread를 활용하여 UART 수신과 이벤트 처리를 동시에 수행하는 구조를 설계한다</li></ul></div>
   <div class="section"><h4>📋 주요내용</h4><ul><li>UART-Timestamp 앱: 보레이트 9600 설정 후 무한 루프로 4바이트 수신 → 콘솔에 타임스탬프 출력; Python PC 프로그램으로 COM 포트를 통해 현재 시각 전송</li><li>PropService 앱: 키 이벤트(confirm key=133) 수신 → 카운터 값 증가 → update_property_value 호출로 Property 갱신</li><li>PropApp: 동일 Property ID로 subscribe → 값 변경 시 콜백 자동 실행 → 변경된 값을 콘솔에 출력</li><li>최종 실습 목표: UART-Timestamp + PropService를 1개의 앱으로 통합하고, UART 수신 루프는 pthread로 분리하여 총 2개 앱으로 구성</li><li>보드에 따라 UART 데이터가 뒤죽박죽으로 들어오는 노이즈 문제가 있을 수 있으며, 그라운드·DMA 설정을 점검해야 한다</li><li>실제 제품 개발 시에는 수신 패킷 크기 검증, 가변 길이 처리, 에러 코드 리턴 처리를 반드시 추가해야 한다</li></ul></div>
-  <div class="quiz-block" data-quiz='[{"q": "UART 수신 앱과 Property 업데이트를 하나의 앱으로 통합할 때, UART 수신 루프를 분리하는 방법으로 적합한 것은?", "options": ["별도 프로세스 fork", "pthread 자식 스레드", "메시지 큐 폴링", "인터럽트 핸들러"], "answer": 1, "hint": "LUPA 앱은 단일 프로세스 구조이므로 pthread로 자식 스레드를 만들어 UART 루프를 돌립니다."}]'><div class="quiz-header" onclick="toggleQuiz(this)">🧪 퀴즈 풀기 <span class="quiz-count">(1문제)</span><span class="quiz-arrow">▶</span></div><div class="quiz-body" style="display:none"></div></div>
+  <div class="quiz-block" data-quiz-idx="9"><div class="quiz-header" onclick="toggleQuiz(this)">🧪 퀴즈 풀기 <span class="quiz-count">(1문제)</span><span class="quiz-arrow">▶</span></div><div class="quiz-body" style="display:none"></div></div>
   <details class="transcript-toggle">
     <summary>📝 Transcript 원문 보기</summary>
     <div class="transcript-content">
@@ -1553,15 +1553,17 @@
   <script>
     var VIDEO_ID = 'rkC4VSFwG4g';
     var isLocal = location.protocol === 'file:';
+    var QUIZ_DATA = {"0": [{"q": "LUPA에서 플랫폼 전체를 업데이트하는 방식은?", "options": ["SOTA", "FOTA", "OTA", "LDB"], "answer": 1, "hint": "앱 업데이트는 SOTA, 플랫폼(펌웨어) 업데이트는 FOTA입니다."}, {"q": "LUPA 1.1 LTS가 처음 탑재된 제품군은?", "options": ["에어컨", "오븐", "세탁기", "냉장고"], "answer": 2, "hint": "1.1 LTS는 장기 지원(Long Term Support) 버전으로 세탁기에 처음 탑재됐습니다."}], "1": [{"q": "`lupa release` 명령 실행 후 DQC 타겟에 이미지를 내려받을 때 사용하는 전용 툴은?", "options": ["FlashMate", "UDTOOL", "LDB", "OpenOCD"], "answer": 1, "hint": "IT 타겟은 FlashMate(CTO 자체 개발), DQC 타겟은 UDTOOL을 사용합니다."}, {"q": "lupa-product.yml 파일에서 설정할 수 없는 항목은?", "options": ["빌드인 앱 목록", "메모리 힙 크기", "Git 커밋 해시", "바이너리 파일명"], "answer": 2, "hint": "lupa-product.yml은 제품 빌드 구성 파일로, Git 이력 정보는 포함하지 않습니다."}], "2": [{"q": "LUPA가 Zephyr 대신 FreeRTOS를 채택한 주된 이유는?", "options": ["라이선스 비용이 없어서", "DQC SDK가 FreeRTOS를 공식 지원해서", "메모리 사용량이 더 적어서", "POSIX API 지원이 더 넓어서"], "answer": 1, "hint": "칩셋 공급사(DQC)의 SDK가 FreeRTOS를 공식 지원하는 것이 결정적 이유였습니다."}, {"q": "NAND 플래시에서 사용하는 LUPA 파일 시스템은?", "options": ["LittleFS", "LTFFS", "ROMFS", "FAT32"], "answer": 1, "hint": "NOR→LittleFS, NAND→LTFFS(LG CTO 자체 개발)입니다."}], "3": [{"q": "DMA 모드 UART에서 지원되지 않는 IOCTL 요청은?", "options": ["FIONBIO", "FIONREAD", "FIONWRITE", "TCGET"], "answer": 2, "hint": "DMA UART는 FIONREAD만 지원하고 FIONWRITE/FIONSPACE는 동작하지 않습니다."}, {"q": "LUPA 부팅 시퀀스에서 패키지 매니저(PM_INIT)가 초기화되는 단계는?", "options": ["PRE_KERNEL1", "PRE_KERNEL2", "POST_KERNEL", "APPLICATION"], "answer": 3, "hint": "부팅 순서: PRE_KERNEL1 → PRE_KERNEL2 → POST_INIT → POST_KERNEL → APPLICATION"}], "4": [{"q": "GUI 앱이 화면에 표시되려면 파워 스테이트를 몇으로 변경해야 하는가?", "options": ["0", "1", "2", "3"], "answer": 2, "hint": "스테이트 1=Partial ON(화면 꺼짐), 2=ON(LCD 켜짐, 홈앱 실행)입니다."}, {"q": "재부팅 후에도 값이 유지되는 세팅 데이터 유형은?", "options": ["RO", "RW", "Volatile", "BOOT"], "answer": 1, "hint": "RW는 파일 시스템에 저장되어 재부팅 후에도 유지되고, Volatile은 런타임에만 유지됩니다."}], "5": [{"q": "타겟에서 현재 스레드별 CPU 사용률을 확인하는 Shell Command는?", "options": ["dmesg", "ps", "meminfo", "app list"], "answer": 1, "hint": "ps(Processor Status)로 전체 스레드 목록과 CPU 사용률을 볼 수 있습니다."}, {"q": "LDB 명령 중 PC에 있는 파일을 타겟으로 전송하는 명령은?", "options": ["pull", "push", "install", "shell"], "answer": 1, "hint": "push=PC→타겟, pull=타겟→PC 방향입니다."}], "6": [{"q": "DQC 타겟에서 LUPA 앱이 실행될 수 있는 메모리 영역의 일반적인 크기는?", "options": ["512KB", "1MB", "1.5MB", "16MB"], "answer": 2, "hint": "DQC의 전체 SRAM은 3.5MB이며, 플랫폼·힙·그래픽 버퍼를 제외하면 앱 영역은 약 1.5MB입니다."}, {"q": "LUPA syscall로 호출된 API 실행 중 크래시가 발생하면 어떻게 되는가?", "options": ["해당 앱만 종료된다", "시스템 전체가 재부팅된다", "해당 스레드만 종료된다", "아무 일도 일어나지 않는다"], "answer": 1, "hint": "syscall은 커널 모드로 권한 상승 후 실행되므로, 크래시 시 앱이 아닌 전체 시스템이 영향을 받습니다."}], "7": [{"q": "하나의 앱에서 생성할 수 있는 pthread(자식 스레드)의 최대 개수는?", "options": ["2개", "4개", "8개", "제한 없음"], "answer": 1, "hint": "메모리·리소스 제한으로 앱 하나당 최대 4개의 자식 스레드만 생성 가능합니다."}, {"q": "Property subscribe 시 값이 바뀔 때 자동으로 실행되는 것은?", "options": ["이벤트 루프", "콜백 함수", "메시지 큐", "시그널 핸들러"], "answer": 1, "hint": "subscribe_property_with_event 등록 시 값 변경이 감지되면 등록한 콜백이 자동 호출됩니다."}], "8": [{"q": "크래시 로그에서 PC=0x2018281A, 앱 로드 주소=0x20182800일 때, 디스어셈블리에서 찾아야 할 상대 주소는?", "options": ["0x1A", "0x281A", "0x2800", "0x18281A"], "answer": 0, "hint": "상대 주소 = PC − 앱 로드 시작 주소 = 0x2018281A − 0x20182800 = 0x1A"}], "9": [{"q": "UART 수신 앱과 Property 업데이트를 하나의 앱으로 통합할 때, UART 수신 루프를 분리하는 방법으로 적합한 것은?", "options": ["별도 프로세스 fork", "pthread 자식 스레드", "메시지 큐 폴링", "인터럽트 핸들러"], "answer": 1, "hint": "LUPA 앱은 단일 프로세스 구조이므로 pthread로 자식 스레드를 만들어 UART 루프를 돌립니다."}]};
     var area = document.getElementById('video-area');
 
     if (isLocal) {
-      area.innerHTML = '<a href="https://youtu.be/' + VIDEO_ID + '" target="_blank" class="thumb-link">' +
-        '<img src="https://img.youtube.com/vi/' + VIDEO_ID + '/hqdefault.jpg" alt="YouTube" style="width:100%;border-radius:10px;">' +
-        '<div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:64px;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,0.6);">▶</div></a>';
-      area.style.position = 'relative';
+      area.innerHTML = '<div style="position:relative;">' +
+        '<a href="https://youtu.be/' + VIDEO_ID + '" target="_blank">' +
+        '<img src="https://img.youtube.com/vi/' + VIDEO_ID + '/hqdefault.jpg" alt="YouTube" style="width:100%;border-radius:10px;display:block;">' +
+        '<div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:64px;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,0.6);">▶</div></a></div>';
     } else {
-      area.innerHTML = '<iframe id="yt-player" src="https://www.youtube-nocookie.com/embed/' + VIDEO_ID + '?rel=0&modestbranding=1" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;"></iframe>';
+      area.innerHTML = '<iframe id="yt-player" src="https://www.youtube-nocookie.com/embed/' + VIDEO_ID + '?rel=0&modestbranding=1" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;"></iframe>' +
+        '<a href="https://youtu.be/' + VIDEO_ID + '" target="_blank" id="yt-fallback" style="position:absolute;bottom:10px;right:10px;background:rgba(0,0,0,0.7);color:#fff;padding:6px 12px;border-radius:4px;font-size:12px;text-decoration:none;z-index:5;">▶ YouTube에서 보기</a>';
     }
 
     function seekTo(seconds, cardId) {
@@ -1613,51 +1615,61 @@
       body.style.display = isOpen ? 'none' : 'block';
       arrow.classList.toggle('open', !isOpen);
       if (!isOpen && body.innerHTML === '') {
-        var questions = JSON.parse(header.parentElement.dataset.quiz);
-        renderQuiz(body, questions, 0);
+        var idx = header.parentElement.dataset.quizIdx;
+        var questions = QUIZ_DATA[idx];
+        if (questions) renderQuiz(body, questions, 0);
       }
     }
-    function renderQuiz(body, questions, idx) {
-      if (idx >= questions.length) {
+    function renderQuiz(body, questions, qIdx) {
+      body.dataset.qIdx = qIdx;
+      if (qIdx >= questions.length) {
         var score = parseInt(body.dataset.score || 0);
-        body.innerHTML = '<div class="quiz-result">🎉 완료! ' + score + ' / ' + questions.length + ' 정답<br><button class="quiz-btn quiz-btn-retry" onclick="retryQuiz(this,' + JSON.stringify(questions).replace(/"/g,'&quot;') + ')">다시 풀기</button></div>';
+        body.innerHTML = '<div class="quiz-result">🎉 완료! ' + score + ' / ' + questions.length + ' 정답<br><button class="quiz-btn quiz-btn-retry" onclick="retryQuiz(this)">다시 풀기</button></div>';
         return;
       }
-      var q = questions[idx];
+      var q = questions[qIdx];
       var opts = q.options.map(function(o, i) {
-        return '<li onclick="checkAnswer(this,' + i + ',' + q.answer + ','' + (q.hint||'').replace(/'/g,"\'") + '',' + JSON.stringify(questions).replace(/"/g,'&quot;') + ',' + idx + ')">' + o + '</li>';
+        return '<li onclick="checkAnswer(this,' + i + ')">' + o + '</li>';
       }).join('');
       body.innerHTML =
-        '<div class="quiz-question"><span class="q-num">Q' + (idx+1) + '.</span>' + q.q + '</div>' +
+        '<div class="quiz-question"><span class="q-num">Q' + (qIdx+1) + '.</span>' + q.q + '</div>' +
         '<ul class="quiz-options">' + opts + '</ul>' +
-        '<div class="quiz-hint" id="quiz-hint-' + idx + '">' + (q.hint||'') + '</div>' +
-        '<div class="quiz-nav" style="display:none"><button class="quiz-btn quiz-btn-next" onclick="nextQuestion(this,' + JSON.stringify(questions).replace(/"/g,'&quot;') + ',' + idx + ')">다음 문제 →</button></div>';
+        '<div class="quiz-hint">' + (q.hint||'') + '</div>' +
+        '<div class="quiz-nav" style="display:none"><button class="quiz-btn quiz-btn-next" onclick="nextQuestion(this)">다음 문제 →</button></div>';
     }
-    function checkAnswer(li, chosen, answer, hint, questions, idx) {
+    function _quizCtx(el) {
+      var body = el.closest('.quiz-body');
+      var block = body.closest('.quiz-block');
+      var questions = QUIZ_DATA[block.dataset.quizIdx];
+      var qIdx = parseInt(body.dataset.qIdx || 0);
+      return { body: body, questions: questions, qIdx: qIdx };
+    }
+    function checkAnswer(li, chosen) {
       var ul = li.parentElement;
       if (ul.querySelector('.correct, .wrong')) return;
-      var body = ul.closest('.quiz-body');
-      var score = parseInt(body.dataset.score || 0);
-      if (chosen === answer) {
+      var ctx = _quizCtx(li);
+      var q = ctx.questions[ctx.qIdx];
+      var score = parseInt(ctx.body.dataset.score || 0);
+      if (chosen === q.answer) {
         li.classList.add('correct');
-        body.dataset.score = score + 1;
+        ctx.body.dataset.score = score + 1;
       } else {
         li.classList.add('wrong');
-        ul.children[answer].classList.add('correct');
+        ul.children[q.answer].classList.add('correct');
       }
-      var hintEl = body.querySelector('.quiz-hint');
-      if (hintEl && hint) hintEl.style.display = 'block';
-      var nav = body.querySelector('.quiz-nav');
+      var hintEl = ctx.body.querySelector('.quiz-hint');
+      if (hintEl && q.hint) hintEl.style.display = 'block';
+      var nav = ctx.body.querySelector('.quiz-nav');
       if (nav) nav.style.display = 'flex';
     }
-    function nextQuestion(btn, questions, idx) {
-      var body = btn.closest('.quiz-body');
-      renderQuiz(body, questions, idx + 1);
+    function nextQuestion(btn) {
+      var ctx = _quizCtx(btn);
+      renderQuiz(ctx.body, ctx.questions, ctx.qIdx + 1);
     }
-    function retryQuiz(btn, questions) {
-      var body = btn.closest('.quiz-body');
-      body.dataset.score = 0;
-      renderQuiz(body, questions, 0);
+    function retryQuiz(btn) {
+      var ctx = _quizCtx(btn);
+      ctx.body.dataset.score = 0;
+      renderQuiz(ctx.body, ctx.questions, 0);
     }
   </script>
 </body>
