@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LUPA 강의 요약</title>
+<title>LUPA 강의 2회차 요약</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f5f5f5; color: #333; display: flex; min-height: 100vh; }
@@ -79,8 +79,8 @@
   </nav>
   <main class="main">
     <div class="header">
-      <h1>LUPA Studio 강의 요약</h1>
-      <p>LG LUPA 임베디드 플랫폼 교육 · 강사: 김윤관 책임</p>
+      <h1>LUPA 강의 2회차 요약</h1>
+      <p>LG LUPA 임베디드 플랫폼 교육 · 강사: 이상민 책임</p>
     </div>
     <div class="video-container">
       <div class="video-toggle" onclick="toggleVideo()">
@@ -96,8 +96,8 @@
     <span class="time-range">⏱ 00:00:02 ~ 00:16:20</span>
     <a href="#" onclick="seekTo(2);return false;" class="yt-link">▶ 이 구간 재생</a>
   </div>
-  <div class="section"><h4>📌 학습목표</h4><ul><li>LUPA 플랫폼의 구조와 기능을 이해할 수 있다.</li><li>LUPA Studio를 사용하여 애플리케이션을 개발하고 실행할 수 있다.</li><li>LUPA의 다양한 버전과 그 특징을 설명할 수 있다.</li><li>LUPA 플랫폼에서 소프트웨어 업데이트 방법을 이해할 수 있다.</li></ul></div>
-  <div class="section"><h4>📋 주요내용</h4><ul><li>LUPA 플랫폼은 공통 기능을 제공하며, 각 사업부의 요구에 따라 애플리케이션이 개발된다.</li><li>플랫폼 업데이트는 SOTA와 FOTA 방식을 통해 이루어지며, LUPA의 버전 관리가 중요하다.</li><li>LUPA의 주요 버전은 1.1, 1.2, 2.0이며, 각 버전은 특정 기능과 개선 사항을 포함하고 있다.</li><li>LUPA Studio를 통해 GUI 기반의 애플리케이션을 쉽게 개발할 수 있다.</li><li>다국어 지원 기능을 통해 지역 설정에 따라 언어 문자열을 표시할 수 있다.</li></ul></div>
+  <div class="section"><h4>📌 학습목표</h4><ul><li>LUPA 플랫폼의 전체 구조와 역할 범위를 이해한다</li><li>LUPA 버전별 진화 과정과 브랜치 관리 정책을 파악한다</li></ul></div>
+  <div class="section"><h4>📋 주요내용</h4><ul><li>LUPA 플랫폼은 가전 제품(세탁기·오븐·에어콘 등)에 탑재되는 임베디드 OS로, 빨간 점선 안쪽이 플랫폼 공통역량이며 그 바깥은 사업부 개발 영역이다</li><li>플랫폼과 앱이 분리된 구조로, SOTA(앱 업데이트)와 FOTA(플랫폼 업데이트)를 독립적으로 배포할 수 있다</li><li>버전 이력: 1.1 LTS(세탁기 첫 탑재, 장기 지원), 1.2(NAND 플래시 · IT칩 지원 추가), 2.0(DQC2 · Cortex-M85 지원)</li><li>메인 브랜치는 익일 반영되고, 1.1/1.2 안정 브랜치는 TSC 리뷰와 형상관리팀 검증을 거쳐 약 2주 소요된다</li></ul></div>
   <details class="transcript-toggle">
     <summary>📝 Transcript 원문 보기</summary>
     <div class="transcript-content">
@@ -234,8 +234,8 @@
     <span class="time-range">⏱ 00:16:20 ~ 00:27:18</span>
     <a href="#" onclick="seekTo(980);return false;" class="yt-link">▶ 이 구간 재생</a>
   </div>
-  <div class="section"><h4>📌 학습목표</h4><ul><li>LUPA 플랫폼 소스를 다운로드하고 빌드하는 방법을 이해한다.</li><li>LUPA Studio를 사용하여 SDK를 설치하고 활성화하는 방법을 배운다.</li><li>LUPA 플랫폼에서 다양한 SOC별 다운로드 툴을 사용하는 방법을 익힌다.</li><li>어플리케이션과 플랫폼 간의 상호작용을 이해하고, 앱이 어떻게 동작하는지 설명할 수 있다.</li></ul></div>
-  <div class="section"><h4>📋 주요내용</h4><ul><li>LUPA 플랫폼 소스를 다운로드한 후 환경 변수를 설정하고 모델을 선택하여 빌드한다.</li><li>LUPA 릴리즈 명령을 사용하여 최종 아웃풋 이미지를 생성하고 보드에 다운로드한다.</li><li>각 SOC별로 다른 다운로드 툴을 사용해야 하며, DQC와 IT에 대한 툴이 다름을 인지한다.</li><li>LUPA Studio를 통해 SDK를 설치하고 활성화하여 앱 개발을 진행할 수 있다.</li><li>LUPA 플랫폼의 RTOS는 FreeRTOS로, CMSIS HAL 레이어를 통해 RTOS 변경 시 API 호출을 일관되게 유지한다.</li></ul></div>
+  <div class="section"><h4>📌 학습목표</h4><ul><li>LUPA 소스 빌드 및 릴리즈 절차를 이해하고 실제 환경을 구성할 수 있다</li><li>lupa-product.yml 파일의 역할과 칩셋별 다운로드 도구를 파악한다</li></ul></div>
+  <div class="section"><h4>📋 주요내용</h4><ul><li>빌드 절차: 소스 다운로드 → 환경변수 설정 → 제품/칩셋 선택 → `lupa release` 명령 실행 → SOC별 전용 툴로 타겟에 다운로드</li><li>DQC 타겟은 UDTOOL, IT 타겟은 CTO 자체 개발 FlashMate 툴을 사용한다</li><li>lupa-product.yml 파일에서 빌드인 앱 목록, 폰트, 바이너리명, 메모리 힙 크기 등 제품별 구성을 정의한다</li><li>SDK는 플랫폼 헤더와 LUPA API 점프 테이블을 포함하며, 앱 개발자는 SDK만으로 플랫폼 내부 코드에 접근 없이 앱을 작성할 수 있다</li></ul></div>
   <details class="transcript-toggle">
     <summary>📝 Transcript 원문 보기</summary>
     <div class="transcript-content">
@@ -315,8 +315,8 @@
     <span class="time-range">⏱ 00:27:18 ~ 00:46:00</span>
     <a href="#" onclick="seekTo(1638);return false;" class="yt-link">▶ 이 구간 재생</a>
   </div>
-  <div class="section"><h4>📌 학습목표</h4><ul><li>메모리 보호 기능의 개념을 이해하고 설명할 수 있다.</li><li>LUPA 플랫폼에서 메모리 프로텍션 기능을 설정하는 방법을 설명할 수 있다.</li><li>디바이스 트리와 관련된 메모리 설정을 이해하고 활용할 수 있다.</li><li>제품별 메모리 구성 및 힙 사이즈 조정 방법을 설명할 수 있다.</li></ul></div>
-  <div class="section"><h4>📋 주요내용</h4><ul><li>메모리 프로텍션 기능은 애플리케이션의 메모리 공간을 보호하는 역할을 한다.</li><li>LUPA 플랫폼의 소스 디렉토리 구조와 메모리 관련 설정 방법에 대해 설명한다.</li><li>디바이스 트리는 드라이버와 인터페이스를 구성하는 데 중요한 역할을 하며, 빌드 타임에 참조된다.</li><li>제품별로 메모리 힙 사이즈를 조정할 수 있으며, 이는 애플리케이션의 필요에 따라 달라진다.</li><li>lupa-product.yml 파일을 통해 제품의 앱 및 설정을 정의할 수 있다.</li></ul></div>
+  <div class="section"><h4>📌 학습목표</h4><ul><li>LUPA 소스 디렉토리 구조와 핵심 컴포넌트의 역할을 이해한다</li><li>MPU 기반 메모리 보호 메커니즘과 파일 시스템 구성을 파악한다</li></ul></div>
+  <div class="section"><h4>📋 주요내용</h4><ul><li>소스 디렉토리: arch / boards / drivers / framework / kernel / product / extension / apps 로 계층 구성</li><li>RTOS로 FreeRTOS를 채택한 이유: Zephyr에서 전환, DQC SDK가 FreeRTOS를 공식 지원하기 때문</li><li>CMSIS(Common Microcontroller Software Interface Standard)는 ARM이 제공하는 HAL 레이어로, LUPA가 이를 활용해 칩셋 독립적인 드라이버를 구성한다</li><li>POSIX API를 추가로 지원하며, LUPA API는 보안 처리(권한 상승)를 포함한다</li><li>파일 시스템: NOR 플래시 → LittleFS, NAND 플래시 → LTFFS(LG CTO 자체 개발)</li><li>MPU(메모리 보호 유닛)로 각 앱의 메모리 영역을 격리하여, 앱이 다른 앱의 영역을 침범하면 크래시가 발생한다</li></ul></div>
   <details class="transcript-toggle">
     <summary>📝 Transcript 원문 보기</summary>
     <div class="transcript-content">
@@ -460,8 +460,8 @@
     <span class="time-range">⏱ 00:46:00 ~ 01:09:29</span>
     <a href="#" onclick="seekTo(2760);return false;" class="yt-link">▶ 이 구간 재생</a>
   </div>
-  <div class="section"><h4>📌 학습목표</h4><ul><li>드라이버 모델의 구조와 작동 방식을 이해할 수 있다.</li><li>LUPA API를 사용하여 어플리케이션에서 디스플레이 및 입력 장치를 처리할 수 있다.</li><li>디바이스 트리를 구성하고 이를 통해 드라이버를 설정할 수 있다.</li><li>UART, SPI, GPIO와 같은 통신 프로토콜을 pseudo 파일 시스템으로 핸들링할 수 있다.</li></ul></div>
-  <div class="section"><h4>📋 주요내용</h4><ul><li>드라이버 모델은 JEPA RTS 및 리눅스의 개념을 포함하고 있다.</li><li>키 입력 처리는 인품매니저와 키 드라이버를 통해 이루어진다.</li><li>LUPA API를 사용하여 LVGL 라이브러리를 호출하여 화면을 그릴 수 있다.</li><li>파일 시스템은 NAND 플래시와 NOFLEASH에 따라 다르게 구성된다.</li><li>UART 통신은 pseudo 파일 시스템을 통해 어플리케이션에서 쉽게 핸들링할 수 있다.</li><li>디바이스 트리는 보드별로 다르게 구성되며, overlay 파일을 통해 추가 설정이 가능하다.</li></ul></div>
+  <div class="section"><h4>📌 학습목표</h4><ul><li>LUPA 부팅 시퀀스와 드라이버 초기화 순서를 이해한다</li><li>디바이스 트리와 시리얼 드라이버 구조 및 IOCTL 사용법을 파악한다</li></ul></div>
+  <div class="section"><h4>📋 주요내용</h4><ul><li>부팅 시퀀스: PRE_KERNEL1 → PRE_KERNEL2 → POST_INIT Thread → POST_KERNEL → APPLICATION 순으로 초기화</li><li>sys_init 매크로로 드라이버·서비스의 초기화 우선순위를 지정하며, 패키지 매니저(PM_INIT) → 어플리케이션 매니저(AM_INIT) 순으로 앱이 실행된다</li><li>Generic 드라이버 API(예: I2C_READ)는 디바이스 트리 설정에 따라 내부적으로 특정 칩 드라이버로 자동 매핑된다</li><li>UART·SPI 등 시리얼 드라이버는 pseudo 파일 시스템(/dev/modem 등)으로 노출되며, POSIX open/read/write로 접근한다</li><li>디바이스 트리는 칩셋 기본 트리 위에 보드·제품 overlay 파일을 덮어씌우는 방식으로 구성한다</li><li>DMA UART에서는 FIONREAD만 지원하고 FIONWRITE/FIONSPACE는 미지원이므로, DMA 모드 여부에 따라 IOCTL 사용에 주의가 필요하다</li><li>IOCTL로 UART 블로킹 모드 전환(FIONBIO), 보레이트 조회(TCGET)/변경(TCSET) 등 세부 설정을 제어할 수 있다</li></ul></div>
   <details class="transcript-toggle">
     <summary>📝 Transcript 원문 보기</summary>
     <div class="transcript-content">
@@ -626,8 +626,8 @@
     <span class="time-range">⏱ 01:09:29 ~ 01:19:20</span>
     <a href="#" onclick="seekTo(4169);return false;" class="yt-link">▶ 이 구간 재생</a>
   </div>
-  <div class="section"><h4>📌 학습목표</h4><ul><li>LUPA에서 어플리케이션 매니저와 패키지 매니저의 역할을 이해할 수 있다.</li><li>파워 매니저와 디바이스 매니저의 기능을 설명할 수 있다.</li><li>세팅 서비스의 작동 원리를 이해하고, 세팅 값을 변경할 수 있다.</li><li>OSB 스테이트와 파워 스테이트의 개념을 이해하고 활용할 수 있다.</li><li>LUPA Studio에서 앱을 빌드하고 실행하는 과정을 설명할 수 있다.</li></ul></div>
-  <div class="section"><h4>📋 주요내용</h4><ul><li>어플리케이션 매니저와 패키지 매니저는 LUPA에서 어플리케이션 설치와 실행을 관장한다.</li><li>파워 매니저는 타겟의 전원 상태를 관리하며, 서스펜드 모드로 전환하는 기능을 포함한다.</li><li>세팅 서비스는 어플리케이션에서 세팅 값을 변경할 수 있도록 API를 제공한다.</li><li>RORO와 RW 세팅 값의 차이를 이해하고, 바이너리 파일의 역할을 설명할 수 있다.</li><li>OSB 스테이트는 부팅 시 플랫폼의 전역 변수로 사용되며, 파워 스테이트는 전원 상태를 나타낸다.</li><li>LUPA Studio에서 CLI 툴을 사용하여 앱을 빌드하고 설치하는 방법을 익힌다.</li></ul></div>
+  <div class="section"><h4>📌 학습목표</h4><ul><li>LUPA가 제공하는 주요 플랫폼 서비스의 역할과 상호작용을 이해한다</li><li>세팅 서비스의 데이터 유형(RO/RW/Volatile)과 파워 스테이트 관리를 파악한다</li></ul></div>
+  <div class="section"><h4>📋 주요내용</h4><ul><li>컴퍼지터(Compositor): 그래픽 출력 및 터치·키 입력 이벤트를 앱에 전달하는 서비스</li><li>파워 매니저: 파워 스테이트(1=Partial ON, 2=ON, 3/4=Shutdown) 관리, GUI 앱 실행을 위해 반드시 스테이트를 2로 변경해야 함</li><li>세팅 서비스의 데이터 유형: RO(config.bin에 저장, 읽기 전용), RW(파일 시스템에 저장, 재부팅 후에도 유지), Volatile(런타임 전역 변수, 재부팅 시 초기화)</li><li>세팅값의 카테고리(예: RW.Category.Home)를 통해 현재 활성화된 홈 앱을 동적으로 교체할 수 있다</li><li>LDB 대문 서비스(LDB Daemon): 콘솔 UART를 공유하다가 LDB 패킷이 들어오면 콘솔을 일시 정지하고 파일 전송을 처리한다</li><li>FOTA 매니저, 디바이스 매니저, 로그 서비스, 콘솔 서비스가 플랫폼 기본 서비스로 항상 실행된다</li></ul></div>
   <details class="transcript-toggle">
     <summary>📝 Transcript 원문 보기</summary>
     <div class="transcript-content">
@@ -718,8 +718,8 @@
     <span class="time-range">⏱ 01:19:20 ~ 01:40:34</span>
     <a href="#" onclick="seekTo(4760);return false;" class="yt-link">▶ 이 구간 재생</a>
   </div>
-  <div class="section"><h4>📌 학습목표</h4><ul><li>Shell Command를 사용하여 LUPA 플랫폼에서 앱의 설치 상태를 확인할 수 있다.</li><li>LUPA API를 활용하여 어플리케이션의 설정을 읽고 변경할 수 있다.</li><li>시스템 명령어를 통해 타겟의 상태 및 자원 사용량을 점검할 수 있다.</li><li>LUPA Studio와 LDB를 활용하여 개발 환경을 설정하고 명령어를 실행할 수 있다.</li></ul></div>
-  <div class="section"><h4>📋 주요내용</h4><ul><li>App List 명령어를 사용하여 현재 설치된 앱의 상태를 확인할 수 있다.</li><li>인풋 명령어를 통해 특정 키 이벤트를 발생시킬 수 있으며, 터치 이벤트도 지원된다.</li><li>세팅 리스트를 확인하고, LUPA API를 통해 설정 값을 읽거나 변경할 수 있다.</li><li>시스템 명령어 dmesg, ps, man info 등을 사용하여 타겟의 상태 및 자원 사용량을 모니터링할 수 있다.</li><li>LUPA Studio와 LDB를 통해 명령어를 실행하고, UART 콘솔을 통해 로그를 확인할 수 있다.</li></ul></div>
+  <div class="section"><h4>📌 학습목표</h4><ul><li>LDB CLI와 콘솔 Shell Command를 활용하여 타겟을 제어하고 상태를 확인할 수 있다</li><li>dmesg, PS, meminfo 등 시스템 진단 명령으로 개발 중 문제를 분석할 수 있다</li></ul></div>
+  <div class="section"><h4>📋 주요내용</h4><ul><li>LDB 주요 명령: push(PC→타겟 파일 전송), pull(타겟→PC), shell(명령 실행), install/uninstall(패키지 관리)</li><li>앱 관리 명령: app list(설치 앱 목록 및 상태), app start <패키지명>(앱 실행), app quit(앱 종료)</li><li>input key <코드>(키 이벤트 발생), input tap <x> <y>(터치 이벤트 발생)으로 물리 입력 없이 테스트 가능</li><li>settings list/get/set 명령으로 세팅값 조회 및 변경 가능; 콘솔 기본 패스워드는 @LUPA123</li><li>dmesg: 부팅부터 현재까지의 커널 로그 조회(최대 16KB 순환 저장)</li><li>PS: 전체 스레드 목록 및 CPU 사용률 확인, meminfo: OS 힙·플랫폼 힙·각 앱의 메모리 주소·스택 사용량 확인</li><li>tree 명령으로 전체 가상 파일 시스템 구조를 트리 형태로 출력할 수 있다</li></ul></div>
   <details class="transcript-toggle">
     <summary>📝 Transcript 원문 보기</summary>
     <div class="transcript-content">
@@ -871,8 +871,8 @@
     <span class="time-range">⏱ 01:40:34 ~ 02:02:49</span>
     <a href="#" onclick="seekTo(6034);return false;" class="yt-link">▶ 이 구간 재생</a>
   </div>
-  <div class="section"><h4>📌 학습목표</h4><ul><li>LUPA Studio를 사용하여 앱 빌드 환경을 구성할 수 있다.</li><li>manifest.xml 파일을 이해하고 수정하여 앱의 속성을 설정할 수 있다.</li><li>LUPA 플랫폼의 스레드 모델을 이해하고 활용할 수 있다.</li><li>앱의 빌드 및 실행 과정을 수행할 수 있다.</li></ul></div>
-  <div class="section"><h4>📋 주요내용</h4><ul><li>LUPA Studio에서 앱을 개발하기 위해서는 manifest.xml 파일에서 패키지 이름, 버전, 카테고리 등을 설정해야 한다.</li><li>동일한 카테고리를 가진 앱은 동시에 로딩할 수 없으며, 부팅 시 표시되는 앱을 설정할 수 있다.</li><li>앱의 프로퍼티 설정은 RAW, NORMAL, HIGH, REAL TIME으로 나뉘며, 우선 순위에 따라 CPU 자원을 분배받는다.</li><li>앱 빌드 시 ELF, LPK, 디스 어셈블리 파일이 생성되며, 이 파일들은 디버깅 및 설치에 사용된다.</li><li>LUPA 플랫폼의 스레드 모델은 OS 스레드, 플랫폼 스레드, 유저 앱 스레드로 구성되어 있으며, 각각의 역할을 이해해야 한다.</li></ul></div>
+  <div class="section"><h4>📌 학습목표</h4><ul><li>manifest.xml을 통해 앱의 카테고리·타입·스택 크기를 올바르게 설정할 수 있다</li><li>빌드 산출물(ELF, LPK, 디스어셈블리)의 용도를 이해하고 메모리 모델을 파악한다</li></ul></div>
+  <div class="section"><h4>📋 주요내용</h4><ul><li>manifest.xml에서 패키지명, 버전, 카테고리, 타입(persistent 등), 우선순위, 스택 크기를 설정한다</li><li>동일 카테고리의 앱은 한 번에 1개만 로딩 가능하며, 세팅값(예: RW.Category.Home)으로 활성 앱을 지정한다</li><li>빌드 산출물: ELF(GDB 등 디버거 연동), LPK(타겟 설치 패키지), 디스어셈블리 파일(크래시 분석용)</li><li>LUPA 스레드 모델: OS 스레드 → 플랫폼 스레드 → 플랫폼/시스템/유저 앱 → 유저 앱의 Child 스레드 계층 구조</li><li>DQC 타겟의 LUPA 앱 메모리 영역은 약 1.5MB로 매우 제한적이므로 앱 크기 최적화가 중요하다; IT/DQC2는 SRAM이 64MB로 훨씬 여유롭다</li><li>LUPA API(유저 모드, 권한 상승 없음)와 LUPA syscall(커널 모드로 임시 권한 상승)의 차이를 이해하고, syscall 중 크래시 시 시스템 전체가 재부팅될 수 있음을 주의한다</li></ul></div>
   <details class="transcript-toggle">
     <summary>📝 Transcript 원문 보기</summary>
     <div class="transcript-content">
@@ -1095,8 +1095,8 @@
     <span class="time-range">⏱ 02:02:49 ~ 02:27:09</span>
     <a href="#" onclick="seekTo(7369);return false;" class="yt-link">▶ 이 구간 재생</a>
   </div>
-  <div class="section"><h4>📌 학습목표</h4><ul><li>자식 스레드를 생성하고 관리할 수 있다.</li><li>LUPA API를 사용하여 설정 값을 읽고 쓸 수 있다.</li><li>이벤트를 생성하고 처리할 수 있다.</li><li>LUPA 플랫폼의 리소스 제한을 이해하고 적절히 활용할 수 있다.</li></ul></div>
-  <div class="section"><h4>📋 주요내용</h4><ul><li>pthread를 사용하여 자식 스레드를 생성하고, 동일한 전역 변수에 접근할 수 있다.</li><li>LUPA 플랫폼에서는 최대 4개의 자식 스레드만 생성할 수 있으며, 이를 초과하면 오류가 발생한다.</li><li>LUPA API를 통해 설정 값을 가져오고 설정할 수 있으며, 읽기 전용 및 읽기/쓰기 설정의 차이를 이해해야 한다.</li><li>이벤트는 1대 다의 구조로, 어플리케이션 매니저가 앱 종료 등의 이벤트를 발생시킬 수 있다.</li><li>이벤트를 처리하기 위해서는 이벤트 핸들 리소스를 생성하고, 이를 통해 이벤트를 수신해야 한다.</li></ul></div>
+  <div class="section"><h4>📌 학습목표</h4><ul><li>LUPA IPC 메커니즘(Setting, Event, Message Queue, Property)의 특성과 사용법을 이해한다</li><li>Property API를 활용하여 앱 간 데이터를 공유하고 콜백을 연동할 수 있다</li></ul></div>
+  <div class="section"><h4>📋 주요내용</h4><ul><li>pthread로 자식 스레드 생성 가능(최대 4개); 스레드 속성(스택 크기, 우선순위)을 설정한 뒤 pthread_create 호출</li><li>이벤트(Event): 1:N 단방향 브로드캐스트, create → connect → receive(timeout 설정 가능) → destroy 흐름</li><li>메시지 큐(MQ): 양방향 가능하지만 보내는 쪽 사이즈 ≤ 큐 정의 사이즈 규칙 필수; 수신 측이 처리를 못하면 큐 full 장애 발생</li><li>프로퍼티(Property): 공유 메모리 기반의 IPC로, ID 정의 시 타입·크기·방향(READ/WRITE/RW)을 지정</li><li>프로퍼티 서버는 register_property로 저장소를 생성하고 update_property_value로 값을 갱신한다</li><li>클라이언트 앱은 get_property 또는 subscribe_property_with_event로 값 변경 시 자동 콜백을 받을 수 있다</li><li>실무에서는 대부분 Property API를 가장 많이 활용하며, 사업부에서도 공통 헤더에 프로퍼티 ID를 정의하여 공유한다</li></ul></div>
   <details class="transcript-toggle">
     <summary>📝 Transcript 원문 보기</summary>
     <div class="transcript-content">
@@ -1312,8 +1312,8 @@
     <span class="time-range">⏱ 02:27:09 ~ 02:43:50</span>
     <a href="#" onclick="seekTo(8829);return false;" class="yt-link">▶ 이 구간 재생</a>
   </div>
-  <div class="section"><h4>📌 학습목표</h4><ul><li>디버깅 과정에서 크래시 로그를 분석할 수 있다.</li><li>LUPA Studio를 사용하여 Non-GUI 애플리케이션을 생성할 수 있다.</li><li>디버깅 시 레지스터 정보를 활용하여 문제를 해결할 수 있다.</li></ul></div>
-  <div class="section"><h4>📋 주요내용</h4><ul><li>크래시 발생 시 커런트 쓰레드와 레지스터 정보를 확인하여 문제를 진단한다.</li><li>LUPA Studio의 Project Wizard를 통해 간단한 Non-GUI 애플리케이션을 생성하는 방법을 배운다.</li><li>디버깅 과정에서 프로그램 카운터와 상대 주소를 이해하고 활용하는 방법을 익힌다.</li><li>LUPA Studio에서 UART-TIME-STEMP, PROP-SERVICE, PROP-APP 등의 애플리케이션을 설치하고 실행하는 방법을 설명한다.</li></ul></div>
+  <div class="section"><h4>📌 학습목표</h4><ul><li>크래시 로그(레지스터 덤프)와 디스어셈블리 파일을 활용하여 오류 위치를 파악할 수 있다</li><li>LUPA Studio Project Wizard로 Non-GUI 앱을 생성하고 타겟에 배포하는 절차를 익힌다</li></ul></div>
+  <div class="section"><h4>📋 주요내용</h4><ul><li>크래시 발생 시 콘솔에 레지스터 덤프(PC, LR, R0~R15)와 Current Entry 주소가 출력된다</li><li>디버깅 공식: (크래시 PC 주소) − (앱 로드 시작 주소) = 상대 주소 → 디스어셈블리 파일에서 해당 위치의 명령어를 확인</li><li>앱 로드 주소는 meminfo 명령으로 확인하며, 실행 때마다 달라질 수 있으므로 크래시 당시 값을 반드시 기록해야 한다</li><li>LUPA Studio Project Wizard에서 Non-GUI Hello World 앱을 생성하고, manifest.xml에서 카테고리·타입을 제거하면 수동 실행/종료가 가능하다</li><li>실습 예제 3개: UART-Timestamp(PC↔타겟 UART 통신), PropService(키 이벤트→Property 업데이트), PropApp(Property 콜백 수신 및 출력)</li><li>서지훈 책임의 이후 강의에서 J-Link/OpenOCD를 이용한 하드웨어 디버거 연동 방법을 상세히 다룰 예정이다</li></ul></div>
   <details class="transcript-toggle">
     <summary>📝 Transcript 원문 보기</summary>
     <div class="transcript-content">
@@ -1416,8 +1416,8 @@
     <span class="time-range">⏱ 02:43:50 ~ 02:54:21</span>
     <a href="#" onclick="seekTo(9830);return false;" class="yt-link">▶ 이 구간 재생</a>
   </div>
-  <div class="section"><h4>📌 학습목표</h4><ul><li>프로포트 서비스와 APP의 통합 방법 이해하기</li><li>키 이벤트를 처리하여 프로포트 값을 업데이트하는 방법 구현하기</li><li>프로포트 APP에서 이벤트를 수신하고 콜백을 처리하는 방법 익히기</li><li>LUPA Studio를 활용하여 프로포트 관련 앱을 개발하고 실행하기</li></ul></div>
-  <div class="section"><h4>📋 주요내용</h4><ul><li>프로포트 서비스와 APP은 키 이벤트를 통해 프로포트 값을 업데이트하며, 이를 통해 동작한다.</li><li>키 이벤트 처리 시 컴폼키를 사용하여 타임스탬프를 증가시키고 프로포트 값을 업데이트한다.</li><li>프로포트 APP은 프로포트 서비스와 동일한 프로포트 ID를 사용하여 데이터를 관리한다.</li><li>이벤트 프로퍼티 체인지드 이벤트를 통해 프로포트 값의 변경을 감지하고 콜백을 실행한다.</li><li>앱 간의 통신 및 데이터 업데이트는 서브스크라이브 메커니즘을 통해 이루어진다.</li></ul></div>
+  <div class="section"><h4>📌 학습목표</h4><ul><li>UART 수신 → Property 업데이트 → 콜백 출력으로 이어지는 앱 간 연동 흐름을 구현할 수 있다</li><li>pthread를 활용하여 UART 수신과 이벤트 처리를 동시에 수행하는 구조를 설계한다</li></ul></div>
+  <div class="section"><h4>📋 주요내용</h4><ul><li>UART-Timestamp 앱: 보레이트 9600 설정 후 무한 루프로 4바이트 수신 → 콘솔에 타임스탬프 출력; Python PC 프로그램으로 COM 포트를 통해 현재 시각 전송</li><li>PropService 앱: 키 이벤트(confirm key=133) 수신 → 카운터 값 증가 → update_property_value 호출로 Property 갱신</li><li>PropApp: 동일 Property ID로 subscribe → 값 변경 시 콜백 자동 실행 → 변경된 값을 콘솔에 출력</li><li>최종 실습 목표: UART-Timestamp + PropService를 1개의 앱으로 통합하고, UART 수신 루프는 pthread로 분리하여 총 2개 앱으로 구성</li><li>보드에 따라 UART 데이터가 뒤죽박죽으로 들어오는 노이즈 문제가 있을 수 있으며, 그라운드·DMA 설정을 점검해야 한다</li><li>실제 제품 개발 시에는 수신 패킷 크기 검증, 가변 길이 처리, 에러 코드 리턴 처리를 반드시 추가해야 한다</li></ul></div>
   <details class="transcript-toggle">
     <summary>📝 Transcript 원문 보기</summary>
     <div class="transcript-content">
@@ -1517,7 +1517,7 @@
 
   </main>
   <script>
-    var VIDEO_ID = 'R0QxxJUgpD4';
+    var VIDEO_ID = 'rkC4VSFwG4g';
     var isLocal = location.protocol === 'file:';
     var area = document.getElementById('video-area');
 
