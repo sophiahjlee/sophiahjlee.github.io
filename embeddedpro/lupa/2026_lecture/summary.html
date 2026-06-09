@@ -5,104 +5,150 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>2026 임베디드 프로페셔널 1회차 요약</title>
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f5f5f5; color: #333; display: flex; min-height: 100vh; }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --blue: #3182F6;
+    --blue-light: #EBF3FE;
+    --blue-dark: #1B64DA;
+    --green: #0ECF8A;
+    --green-bg: #E8FBF4;
+    --red: #F04452;
+    --red-bg: #FEF0F1;
+    --gray-900: #191F28;
+    --gray-700: #333D4B;
+    --gray-500: #6B7684;
+    --gray-300: #B0B8C1;
+    --gray-100: #F2F4F6;
+    --gray-50: #F9FAFB;
+    --white: #FFFFFF;
+    --radius: 16px;
+    --radius-sm: 10px;
+    --shadow: 0 2px 12px rgba(0,0,0,0.06);
+    --shadow-md: 0 4px 24px rgba(0,0,0,0.10);
+  }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Pretendard", "Segoe UI", sans-serif; background: var(--gray-50); color: var(--gray-900); display: flex; min-height: 100vh; line-height: 1.6; }
 
-  /* 사이드바 */
-  .sidebar { width: 280px; background: #1a1a2e; color: #eee; padding: 20px 0; position: fixed; top: 0; left: 0; height: 100vh; overflow-y: auto; flex-shrink: 0; }
-  .sidebar h2 { padding: 0 20px 15px; font-size: 16px; color: #a0a0c0; border-bottom: 1px solid #2a2a4e; margin-bottom: 10px; }
-  .sidebar-item { display: block; padding: 10px 20px; color: #ccc; text-decoration: none; font-size: 13px; border-left: 3px solid transparent; transition: all 0.2s; }
-  .sidebar-item:hover { background: #2a2a4e; color: #fff; border-left-color: #667eea; }
-  .sidebar-dur { float: right; font-size: 11px; color: #555; font-weight: normal; }
-  .sidebar-item b { color: #667eea; margin-right: 6px; font-size: 12px; }
+  /* ── 사이드바 ── */
+  .sidebar { width: 260px; background: var(--white); border-right: 1px solid var(--gray-100); padding: 32px 0; position: fixed; top: 0; left: 0; height: 100vh; overflow-y: auto; flex-shrink: 0; }
+  .sidebar-logo { padding: 0 24px 24px; border-bottom: 1px solid var(--gray-100); margin-bottom: 8px; }
+  .sidebar-logo-badge { display: inline-block; background: var(--blue); color: #fff; font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 6px; letter-spacing: 0.5px; margin-bottom: 8px; }
+  .sidebar-logo h2 { font-size: 14px; font-weight: 700; color: var(--gray-900); line-height: 1.4; }
+  .sidebar-section { padding: 8px 0; }
+  .sidebar-item { display: flex; align-items: center; gap: 10px; padding: 9px 24px; color: var(--gray-500); text-decoration: none; font-size: 13px; font-weight: 500; border-left: 2px solid transparent; transition: all 0.15s; }
+  .sidebar-item:hover { color: var(--blue); background: var(--blue-light); border-left-color: var(--blue); }
+  .sidebar-item.active { color: var(--blue); background: var(--blue-light); border-left-color: var(--blue); }
+  .sidebar-item b { min-width: 22px; height: 22px; display: inline-flex; align-items: center; justify-content: center; background: var(--gray-100); color: var(--gray-500); border-radius: 6px; font-size: 11px; font-weight: 700; flex-shrink: 0; }
+  .sidebar-item.active b { background: var(--blue); color: #fff; }
+  .sidebar-item .sidebar-title { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .sidebar-dur { font-size: 11px; color: var(--gray-300); font-weight: 400; flex-shrink: 0; }
 
-  /* 메인 */
-  .main { margin-left: 280px; padding: 30px; flex: 1; max-width: 900px; }
-  .header { margin-bottom: 30px; }
-  .header h1 { font-size: 24px; color: #1a1a2e; margin-bottom: 8px; }
-  .header p { color: #666; font-size: 14px; }
+  /* ── 메인 ── */
+  .main { margin-left: 260px; padding: 40px 40px 80px; flex: 1; max-width: 840px; }
 
-  /* 카드 */
-  .card { background: #fff; border-radius: 10px; padding: 24px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
-  .card h3 { font-size: 18px; color: #1a1a2e; margin-bottom: 12px; }
-  .meta { display: flex; gap: 16px; align-items: center; margin-bottom: 16px; font-size: 13px; }
-  .time-range { color: #666; }
-  .yt-link { color: #667eea; text-decoration: none; font-weight: 500; }
-  .yt-link:hover { text-decoration: underline; }
+  /* ── 헤더 ── */
+  .header { margin-bottom: 32px; }
+  .header-badge { display: inline-flex; align-items: center; gap: 6px; background: var(--blue-light); color: var(--blue); font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 20px; margin-bottom: 12px; }
+  .header h1 { font-size: 26px; font-weight: 800; color: var(--gray-900); margin-bottom: 6px; letter-spacing: -0.5px; }
+  .header-sub { font-size: 14px; color: var(--gray-500); margin-bottom: 16px; }
+  .user-banner { display: inline-flex; align-items: center; gap: 6px; background: var(--gray-100); color: var(--gray-700); border-radius: 20px; padding: 4px 12px; font-size: 13px; font-weight: 600; margin-bottom: 12px; }
 
-  /* 섹션 */
-  .section { margin-bottom: 14px; }
-  .section h4 { font-size: 14px; color: #444; margin-bottom: 8px; }
-  .section ul { padding-left: 20px; }
-  .section li { font-size: 14px; line-height: 1.7; color: #555; margin-bottom: 4px; }
+  /* ── 진도바 ── */
+  .progress-bar-wrap { margin-top: 16px; }
+  .progress-bar { height: 6px; background: var(--gray-100); border-radius: 3px; overflow: hidden; }
+  .progress-bar-fill { height: 100%; background: linear-gradient(90deg, var(--blue), #7FB3FA); transition: width 0.4s ease; border-radius: 3px; }
+  .progress-label { font-size: 12px; color: var(--gray-500); margin-top: 6px; font-weight: 500; }
 
-  /* Transcript 토글 */
-  .transcript-toggle { margin-top: 12px; border-top: 1px solid #eee; padding-top: 12px; }
-  .transcript-toggle summary { cursor: pointer; font-size: 13px; color: #888; font-weight: 500; }
-  .transcript-toggle summary:hover { color: #667eea; }
-  .transcript-content { margin-top: 12px; max-height: 400px; overflow-y: auto; padding: 12px; background: #fafafa; border-radius: 6px; font-size: 13px; line-height: 1.8; }
-  .transcript-content p { margin-bottom: 4px; }
-  .ts-link { color: #667eea; text-decoration: none; font-family: monospace; font-size: 12px; }
-  .ts-link:hover { text-decoration: underline; }
-
-  /* 퀴즈 */
-  .quiz-block { margin-top: 14px; border: 1px solid #e0e7ff; border-radius: 8px; overflow: hidden; }
-  .quiz-header { background: #eef2ff; padding: 10px 16px; cursor: pointer; font-size: 14px; font-weight: 600; color: #4338ca; display: flex; align-items: center; gap: 8px; user-select: none; }
-  .quiz-header:hover { background: #e0e7ff; }
-  .quiz-arrow { margin-left: auto; transition: transform 0.2s; font-size: 12px; }
-  .quiz-arrow.open { transform: rotate(90deg); }
-  .quiz-count { font-weight: normal; color: #6366f1; font-size: 13px; }
-  .quiz-body { padding: 16px; background: #fff; }
-  .quiz-question { font-size: 15px; font-weight: 600; color: #1e1b4b; margin-bottom: 12px; }
-  .quiz-question .q-num { color: #6366f1; margin-right: 6px; }
-  .quiz-options { list-style: none; padding: 0; margin-bottom: 12px; }
-  .quiz-options li { padding: 9px 14px; margin-bottom: 6px; border: 1.5px solid #e5e7eb; border-radius: 6px; cursor: pointer; font-size: 14px; transition: all 0.15s; }
-  .quiz-options li:hover { border-color: #6366f1; background: #f5f3ff; }
-  .quiz-options li.correct { background: #d1fae5; border-color: #10b981; color: #065f46; }
-  .quiz-options li.wrong { background: #fee2e2; border-color: #ef4444; color: #991b1b; }
-  .quiz-hint { font-size: 13px; color: #6b7280; background: #f9fafb; border-left: 3px solid #6366f1; padding: 8px 12px; border-radius: 0 6px 6px 0; margin-bottom: 12px; display: none; }
-  .quiz-nav { display: flex; gap: 8px; }
-  .quiz-btn { padding: 7px 16px; border: none; border-radius: 6px; font-size: 13px; cursor: pointer; font-weight: 500; }
-  .quiz-btn-next { background: #6366f1; color: #fff; }
-  .quiz-btn-next:hover { background: #4f46e5; }
-  .quiz-btn-retry { background: #f3f4f6; color: #374151; }
-  .quiz-btn-retry:hover { background: #e5e7eb; }
-  .quiz-result { text-align: center; padding: 12px; font-size: 15px; font-weight: 600; color: #1e1b4b; }
-
-  /* YouTube 플레이어 */
-  .video-container { position: sticky; top: 0; z-index: 10; background: #f5f5f5; padding: 0 0 20px 0; margin-bottom: 10px; }
-  .video-toggle { display: flex; align-items: center; justify-content: space-between; cursor: pointer; padding: 8px 12px; background: #1a1a2e; color: #ccc; border-radius: 8px 8px 0 0; font-size: 13px; user-select: none; }
-  .video-toggle:hover { background: #2a2a4e; color: #fff; }
-  .video-toggle .arrow { transition: transform 0.2s; }
+  /* ── 영상 플레이어 ── */
+  .video-container { margin-bottom: 28px; background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; }
+  .video-toggle { display: flex; align-items: center; justify-content: space-between; cursor: pointer; padding: 14px 20px; font-size: 14px; font-weight: 600; color: var(--gray-700); user-select: none; border-bottom: 1px solid var(--gray-100); }
+  .video-toggle:hover { background: var(--gray-50); }
+  .video-toggle .arrow { font-size: 12px; color: var(--gray-300); transition: transform 0.2s; }
   .video-toggle .arrow.collapsed { transform: rotate(-90deg); }
-  .video-wrapper { position: relative; padding-bottom: 56.25%; height: 0; border-radius: 0 0 10px 10px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.15); transition: max-height 0.3s ease, padding-bottom 0.3s ease, opacity 0.3s ease; }
-  .video-wrapper.hidden { max-height: 0; padding-bottom: 0; opacity: 0; overflow: hidden; box-shadow: none; }
+  .video-wrapper { position: relative; padding-bottom: 56.25%; transition: max-height 0.3s, padding-bottom 0.3s, opacity 0.3s; }
+  .video-wrapper.hidden { max-height: 0; padding-bottom: 0; opacity: 0; overflow: hidden; }
   .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
 
-  /* 반응형 */
+  /* ── 챕터 카드 ── */
+  .card { background: var(--white); border-radius: var(--radius); padding: 28px; margin-bottom: 16px; box-shadow: var(--shadow); border: 1.5px solid transparent; transition: border-color 0.2s, box-shadow 0.2s; }
+  .card:hover { box-shadow: var(--shadow-md); }
+  .card.chapter-done { border-color: var(--green); }
+  .card-header { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 18px; }
+  .card-num { min-width: 32px; height: 32px; background: var(--blue-light); color: var(--blue); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 800; flex-shrink: 0; margin-top: 2px; }
+  .card-done .card-num { background: var(--green-bg); color: var(--green); }
+  .card-title { font-size: 17px; font-weight: 700; color: var(--gray-900); flex: 1; letter-spacing: -0.3px; }
+  .card-meta { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; padding-bottom: 18px; border-bottom: 1px solid var(--gray-100); }
+  .time-badge { display: inline-flex; align-items: center; gap: 4px; background: var(--gray-100); color: var(--gray-500); font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 20px; }
+  .yt-link { display: inline-flex; align-items: center; gap: 4px; color: var(--blue); font-size: 12px; font-weight: 600; text-decoration: none; padding: 4px 10px; border-radius: 20px; background: var(--blue-light); transition: background 0.15s; }
+  .yt-link:hover { background: #D2E8FD; }
+
+  /* ── 섹션 (학습목표 / 주요내용) ── */
+  .section { margin-bottom: 18px; }
+  .section-label { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 700; color: var(--gray-500); text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 10px; }
+  .section ul { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+  .section li { display: flex; align-items: flex-start; gap: 8px; font-size: 14px; color: var(--gray-700); line-height: 1.6; }
+  .section li::before { content: ''; display: block; width: 6px; height: 6px; border-radius: 50%; background: var(--blue); flex-shrink: 0; margin-top: 8px; }
+  .section.objectives li::before { background: var(--blue); }
+  .section.keypoints li::before { background: var(--green); }
+
+  /* ── Transcript ── */
+  .transcript-toggle { margin-top: 18px; }
+  .transcript-toggle summary { cursor: pointer; font-size: 13px; font-weight: 600; color: var(--gray-500); padding: 8px 0; list-style: none; display: flex; align-items: center; gap: 6px; }
+  .transcript-toggle summary::before { content: '▶'; font-size: 10px; transition: transform 0.2s; }
+  .transcript-toggle[open] summary::before { transform: rotate(90deg); }
+  .transcript-toggle summary:hover { color: var(--blue); }
+  .transcript-content { margin-top: 10px; max-height: 360px; overflow-y: auto; padding: 14px 16px; background: var(--gray-50); border-radius: var(--radius-sm); font-size: 13px; line-height: 1.9; color: var(--gray-700); border: 1px solid var(--gray-100); }
+  .transcript-content p { margin-bottom: 2px; }
+  .ts-link { color: var(--blue); text-decoration: none; font-family: "SF Mono", "Fira Code", monospace; font-size: 11px; font-weight: 600; opacity: 0.8; }
+  .ts-link:hover { opacity: 1; text-decoration: underline; }
+
+  /* ── 퀴즈 ── */
+  .quiz-block { margin-top: 18px; border-radius: var(--radius-sm); overflow: hidden; border: 1.5px solid var(--blue-light); }
+  .quiz-header { background: var(--blue-light); padding: 12px 16px; cursor: pointer; font-size: 14px; font-weight: 700; color: var(--blue-dark); display: flex; align-items: center; gap: 8px; user-select: none; }
+  .quiz-header:hover { background: #D2E8FD; }
+  .quiz-arrow { margin-left: auto; font-size: 11px; transition: transform 0.2s; color: var(--blue); }
+  .quiz-arrow.open { transform: rotate(90deg); }
+  .quiz-count { font-weight: 500; font-size: 13px; color: var(--blue); }
+  .quiz-body { padding: 20px; background: var(--white); }
+  .quiz-question { font-size: 15px; font-weight: 700; color: var(--gray-900); margin-bottom: 14px; line-height: 1.5; }
+  .quiz-question .q-num { color: var(--blue); margin-right: 6px; font-size: 13px; background: var(--blue-light); padding: 2px 7px; border-radius: 5px; }
+  .quiz-options { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px; }
+  .quiz-options li { padding: 11px 16px; border: 1.5px solid var(--gray-100); border-radius: var(--radius-sm); cursor: pointer; font-size: 14px; font-weight: 500; color: var(--gray-700); transition: all 0.15s; background: var(--gray-50); }
+  .quiz-options li:hover { border-color: var(--blue); background: var(--blue-light); color: var(--blue-dark); }
+  .quiz-options li.correct { background: var(--green-bg); border-color: var(--green); color: #0A7A52; font-weight: 700; }
+  .quiz-options li.wrong { background: var(--red-bg); border-color: var(--red); color: #A61325; }
+  .quiz-hint { font-size: 13px; color: var(--gray-500); background: var(--gray-50); border-left: 3px solid var(--blue); padding: 10px 14px; border-radius: 0 var(--radius-sm) var(--radius-sm) 0; margin-bottom: 14px; display: none; line-height: 1.6; }
+  .quiz-nav { display: flex; gap: 8px; }
+  .quiz-btn { padding: 8px 18px; border: none; border-radius: var(--radius-sm); font-size: 13px; cursor: pointer; font-weight: 700; transition: background 0.15s; }
+  .quiz-btn-next { background: var(--blue); color: #fff; }
+  .quiz-btn-next:hover { background: var(--blue-dark); }
+  .quiz-btn-retry { background: var(--gray-100); color: var(--gray-700); }
+  .quiz-btn-retry:hover { background: var(--gray-100); filter: brightness(0.95); }
+  .quiz-result { text-align: center; padding: 16px; font-size: 16px; font-weight: 800; color: var(--gray-900); }
+  .quiz-result .score-badge { display: inline-block; background: var(--green-bg); color: #0A7A52; border-radius: 12px; padding: 6px 18px; font-size: 22px; margin-bottom: 12px; }
+
+  /* ── 챕터 완료 ── */
+  .chapter-check { display: inline-flex; align-items: center; gap: 8px; margin-top: 18px; font-size: 13px; color: var(--gray-500); cursor: pointer; user-select: none; font-weight: 500; padding: 8px 14px; border-radius: 20px; border: 1.5px solid var(--gray-100); transition: all 0.15s; }
+  .chapter-check:hover { border-color: var(--green); color: var(--green); background: var(--green-bg); }
+  .chapter-check input { width: 16px; height: 16px; accent-color: var(--green); cursor: pointer; }
+  .chapter-check.done { border-color: var(--green); color: var(--green); background: var(--green-bg); font-weight: 700; }
+
+  /* ── 반응형 ── */
   @media (max-width: 768px) {
     .sidebar { display: none; }
-    .main { margin-left: 0; padding: 16px; }
+    .main { margin-left: 0; padding: 20px 16px 60px; }
+    .header h1 { font-size: 20px; }
+    .card { padding: 20px; }
   }
-
-  /* 챕터 완료 체크박스 */
-  .chapter-check { display: inline-flex; align-items: center; gap: 6px; margin-top: 14px; font-size: 13px; color: #6b7280; cursor: pointer; user-select: none; }
-  .chapter-check input { width: 16px; height: 16px; accent-color: #6366f1; cursor: pointer; }
-  .chapter-check.done span { color: #10b981; font-weight: 600; }
-  .card.chapter-done { border-left: 4px solid #10b981; }
-
-  /* 유저 배너 + 진도바 */
-  .user-banner { display: inline-flex; align-items: center; gap: 6px; background: #eef2ff; color: #4338ca; border-radius: 20px; padding: 3px 12px; font-size: 13px; font-weight: 600; margin-top: 6px; }
-  .progress-bar-wrap { margin-top: 12px; }
-  .progress-bar { height: 6px; background: #e5e7eb; border-radius: 3px; overflow: hidden; }
-  .progress-bar-fill { height: 100%; background: linear-gradient(90deg, #6366f1, #a78bfa); transition: width 0.4s; }
-  .progress-label { font-size: 12px; color: #6b7280; margin-top: 4px; }
 </style>
 </head>
 <body>
   <nav class="sidebar">
-    <h2>📚 목차</h2>
-    <a href="#chapter-0" class="sidebar-item" onclick="seekTo(2,'chapter-0');return false;" data-seconds="2" data-chapter-idx="0"><b>01</b> 강사 소개 및 교육 개요<span class="sidebar-dur">8분</span></a>
+    <div class="sidebar-logo">
+      <div class="sidebar-logo-badge">LUPA EDU</div>
+      <h2>2026 임베디드 프로페셔널 1회차 요약</h2>
+    </div>
+    <div class="sidebar-section">
+      <a href="#chapter-0" class="sidebar-item" onclick="seekTo(2,'chapter-0');return false;" data-seconds="2" data-chapter-idx="0"><b>01</b> 강사 소개 및 교육 개요<span class="sidebar-dur">8분</span></a>
 <a href="#chapter-1" class="sidebar-item" onclick="seekTo(522,'chapter-1');return false;" data-seconds="522" data-chapter-idx="1"><b>02</b> LED 컨트롤 매니저 버전 1.0과 2.0 비교<span class="sidebar-dur">4분</span></a>
 <a href="#chapter-2" class="sidebar-item" onclick="seekTo(775,'chapter-2');return false;" data-seconds="775" data-chapter-idx="2"><b>03</b> LED 맵 구조 및 디바이스 정의 방식 설명<span class="sidebar-dur">1분</span></a>
 <a href="#chapter-3" class="sidebar-item" onclick="seekTo(852,'chapter-3');return false;" data-seconds="852" data-chapter-idx="3"><b>04</b> 여러 LED 디바이스 구분 및 핸들 할당 방식 설명<span class="sidebar-dur">6분</span></a>
@@ -128,32 +174,37 @@
 <a href="#chapter-23" class="sidebar-item" onclick="seekTo(7063,'chapter-23');return false;" data-seconds="7063" data-chapter-idx="23"><b>24</b> 보드 및 피에조 버저 구조 설명<span class="sidebar-dur">3분</span></a>
 <a href="#chapter-24" class="sidebar-item" onclick="seekTo(7253,'chapter-24');return false;" data-seconds="7253" data-chapter-idx="24"><b>25</b> 마지막 실습 안내<span class="sidebar-dur">0분</span></a>
 
+    </div>
   </nav>
   <main class="main">
     <div class="header">
+      <div class="header-badge">📚 강의 요약</div>
       <h1>2026 임베디드 프로페셔널 1회차 요약</h1>
-      <p>LG LUPA 임베디드 플랫폼 교육 · 강사: 신동순 책임</p>
+      <div class="header-sub">LG LUPA 임베디드 플랫폼 교육 · 강사: 신동순 책임</div>
     </div>
     <div class="video-container">
       <div class="video-toggle" onclick="toggleVideo()">
-        <span>🎬 강의 영상</span>
+        <span>🎬 강의 영상 보기</span>
         <span class="arrow" id="video-arrow">▼</span>
       </div>
       <div class="video-wrapper" id="video-area"></div>
     </div>
     
 <div class="card" id="chapter-0">
-  <h3>1. 강사 소개 및 교육 개요</h3>  <!-- 번호 = 사이드바 번호와 동일 -->
-  <div class="meta">
-    <span class="time-range">⏱ 00:00:02 ~ 00:08:42</span>
-    <a href="#" onclick="seekTo(2);return false;" class="yt-link">▶ 이 구간 재생</a>
+  <div class="card-header">
+    <div class="card-num">1</div>
+    <div class="card-title">강사 소개 및 교육 개요</div>
   </div>
-  <div class="section"><h4>📌 학습목표</h4><ul><li>LED 컨트롤 아키텍처의 초기 구조와 동작 원리를 설명할 수 있다.</li><li>매트릭스 LED 제어 방식과 GPIO 연결 구조를 이해하고 설명할 수 있다.</li><li>LED 컨트롤 매니저의 역할과 애플리케이션에서의 API 호출 흐름을 이해할 수 있다.</li><li>LED 제어(온, 오프, 블링크) 동작과 초기화 과정을 설명할 수 있다.</li></ul></div>
-  <div class="section"><h4>📋 주요내용</h4><ul><li>LED 컨트롤 아키텍처의 초기 구조와 매트릭스 LED 제어 방식에 대해 설명함.</li><li>매트릭스 LED는 GPIO 포트의 제한을 극복하기 위해 플러스/마이너스 라인을 활용하여 여러 LED를 제어함.</li><li>LED 컨트롤 매니저는 LED 앱에서 API를 통해 호출되며, LED 맵 정보를 받아 각 LED 인덱스에 대해 초기화 및 제어를 수행함.</li><li>LED 제어는 온, 오프, 블링크 동작으로 구성되며, 애플리케이션에서 제어 요청이 오면 설정 처리부에서 동작을 처리함.</li><li>부팅 초기화 과정에서 LED 맵 정보를 기반으로 LED 인덱스별 구조체 초기화가 이루어짐.</li></ul></div>
+  <div class="card-meta">
+    <span class="time-badge">⏱ 00:00:02 ~ 00:08:42</span>
+    <a href="#" onclick="seekTo(2);return false;" class="yt-link">▶ 재생</a>
+  </div>
+  <div class="section objectives"><div class="section-label">🎯 학습목표</div><ul><li>LED 컨트롤 아키텍처의 초기 구조와 동작 원리를 설명할 수 있다.</li><li>매트릭스 LED 제어 방식과 GPIO 연결 구조를 이해하고 설명할 수 있다.</li><li>LED 컨트롤 매니저의 역할과 애플리케이션에서의 API 호출 흐름을 이해할 수 있다.</li><li>LED 제어(온, 오프, 블링크) 동작과 초기화 과정을 설명할 수 있다.</li></ul></div>
+  <div class="section keypoints"><div class="section-label">📋 주요내용</div><ul><li>LED 컨트롤 아키텍처의 초기 구조와 매트릭스 LED 제어 방식에 대해 설명함.</li><li>매트릭스 LED는 GPIO 포트의 제한을 극복하기 위해 플러스/마이너스 라인을 활용하여 여러 LED를 제어함.</li><li>LED 컨트롤 매니저는 LED 앱에서 API를 통해 호출되며, LED 맵 정보를 받아 각 LED 인덱스에 대해 초기화 및 제어를 수행함.</li><li>LED 제어는 온, 오프, 블링크 동작으로 구성되며, 애플리케이션에서 제어 요청이 오면 설정 처리부에서 동작을 처리함.</li><li>부팅 초기화 과정에서 LED 맵 정보를 기반으로 LED 인덱스별 구조체 초기화가 이루어짐.</li></ul></div>
   <div class="quiz-block" data-quiz-idx="0"><div class="quiz-header" onclick="toggleQuiz(this)">🧪 퀴즈 풀기 <span class="quiz-count">(5문제)</span><span class="quiz-arrow">▶</span></div><div class="quiz-body" style="display:none"></div></div>
-  <label class="chapter-check" data-chapter-idx="0"><input type="checkbox" onchange="onChapterCheck(this,0)"> <span>✅ 이 챕터 학습 완료</span></label>
+  <label class="chapter-check" data-chapter-idx="0"><input type="checkbox" onchange="onChapterCheck(this,0)"> <span>학습 완료</span></label>
   <details class="transcript-toggle">
-    <summary>📝 Transcript 원문 보기</summary>
+    <summary>원문 보기</summary>
     <div class="transcript-content">
       <p><a href="#" onclick="seekTo(2);return false;" class="ts-link">[00:00:02]</a> 안녕하세요, LED를 담당하게 되신 동순 책임이라고 합니다.</p>
 <p><a href="#" onclick="seekTo(7);return false;" class="ts-link">[00:00:07]</a> 반갑습니다.</p>
@@ -299,17 +350,20 @@
 </div>
 
 <div class="card" id="chapter-1">
-  <h3>2. LED 컨트롤 매니저 버전 1.0과 2.0 비교</h3>  <!-- 번호 = 사이드바 번호와 동일 -->
-  <div class="meta">
-    <span class="time-range">⏱ 00:08:42 ~ 00:12:55</span>
-    <a href="#" onclick="seekTo(522);return false;" class="yt-link">▶ 이 구간 재생</a>
+  <div class="card-header">
+    <div class="card-num">2</div>
+    <div class="card-title">LED 컨트롤 매니저 버전 1.0과 2.0 비교</div>
   </div>
-  <div class="section"><h4>📌 학습목표</h4><ul><li>LED 컨트롤 매니저 버전 1.0과 2.0의 구조적 차이점을 설명할 수 있다.</li><li>LED 컨트롤 매니저 2.0 API를 활용하여 다양한 LED 타입을 효과적으로 제어할 수 있다.</li><li>LED 드라이버 레이어 추가의 목적과 적용 방법을 이해하고 설명할 수 있다.</li><li>HAL, LED 컨트롤 매니저, LED 드라이버의 역할 분리를 이해할 수 있다.</li></ul></div>
-  <div class="section"><h4>📋 주요내용</h4><ul><li>LED 컨트롤 매니저 1.0은 앱에서 LED 배치 정보를 설정할 수 있었으나 2.0에서는 해당 기능이 제거됨.</li><li>1.0 구조에서는 LED 컨트롤 매니저가 앱과 HAL을 단순 연결하는 역할이었으나, 2.0에서는 핵심 로직이 LED 컨트롤 매니저로 이동함.</li><li>2.0 구조에서는 HAL이 LED 드라이버와 LED 컨트롤 매니저를 연결해주는 역할로 축소되고, LED 드라이버 레이어가 새롭게 추가되어 다양한 LED 타입(RGB, GPIO 등)을 효과적으로 제어할 수 있게 됨.</li><li>기존 Direct LED와 매트릭스 LED 구분이 어려웠던 문제를 2.0 구조에서 해결함.</li><li>신규 칩이나 드라이버가 추가될 때, 정의된 API만 구현하면 빠르게 적용할 수 있도록 구조가 개선됨.</li><li>HAL의 핵심 기능이 프레임워크(LED 컨트롤 매니저)로 분리되어 각 레이어별 역할이 명확해짐.</li></ul></div>
+  <div class="card-meta">
+    <span class="time-badge">⏱ 00:08:42 ~ 00:12:55</span>
+    <a href="#" onclick="seekTo(522);return false;" class="yt-link">▶ 재생</a>
+  </div>
+  <div class="section objectives"><div class="section-label">🎯 학습목표</div><ul><li>LED 컨트롤 매니저 버전 1.0과 2.0의 구조적 차이점을 설명할 수 있다.</li><li>LED 컨트롤 매니저 2.0 API를 활용하여 다양한 LED 타입을 효과적으로 제어할 수 있다.</li><li>LED 드라이버 레이어 추가의 목적과 적용 방법을 이해하고 설명할 수 있다.</li><li>HAL, LED 컨트롤 매니저, LED 드라이버의 역할 분리를 이해할 수 있다.</li></ul></div>
+  <div class="section keypoints"><div class="section-label">📋 주요내용</div><ul><li>LED 컨트롤 매니저 1.0은 앱에서 LED 배치 정보를 설정할 수 있었으나 2.0에서는 해당 기능이 제거됨.</li><li>1.0 구조에서는 LED 컨트롤 매니저가 앱과 HAL을 단순 연결하는 역할이었으나, 2.0에서는 핵심 로직이 LED 컨트롤 매니저로 이동함.</li><li>2.0 구조에서는 HAL이 LED 드라이버와 LED 컨트롤 매니저를 연결해주는 역할로 축소되고, LED 드라이버 레이어가 새롭게 추가되어 다양한 LED 타입(RGB, GPIO 등)을 효과적으로 제어할 수 있게 됨.</li><li>기존 Direct LED와 매트릭스 LED 구분이 어려웠던 문제를 2.0 구조에서 해결함.</li><li>신규 칩이나 드라이버가 추가될 때, 정의된 API만 구현하면 빠르게 적용할 수 있도록 구조가 개선됨.</li><li>HAL의 핵심 기능이 프레임워크(LED 컨트롤 매니저)로 분리되어 각 레이어별 역할이 명확해짐.</li></ul></div>
   <div class="quiz-block" data-quiz-idx="1"><div class="quiz-header" onclick="toggleQuiz(this)">🧪 퀴즈 풀기 <span class="quiz-count">(5문제)</span><span class="quiz-arrow">▶</span></div><div class="quiz-body" style="display:none"></div></div>
-  <label class="chapter-check" data-chapter-idx="1"><input type="checkbox" onchange="onChapterCheck(this,1)"> <span>✅ 이 챕터 학습 완료</span></label>
+  <label class="chapter-check" data-chapter-idx="1"><input type="checkbox" onchange="onChapterCheck(this,1)"> <span>학습 완료</span></label>
   <details class="transcript-toggle">
-    <summary>📝 Transcript 원문 보기</summary>
+    <summary>원문 보기</summary>
     <div class="transcript-content">
       <p><a href="#" onclick="seekTo(522);return false;" class="ts-link">[00:08:42]</a> 그런데 지금 기존 동작을 말씀을 드렸고</p>
 <p><a href="#" onclick="seekTo(527);return false;" class="ts-link">[00:08:47]</a> 그 기존 동작은 버전 1.0이라고 표현을 하고 있습니다.</p>
@@ -381,17 +435,20 @@
 </div>
 
 <div class="card" id="chapter-2">
-  <h3>3. LED 맵 구조 및 디바이스 정의 방식 설명</h3>  <!-- 번호 = 사이드바 번호와 동일 -->
-  <div class="meta">
-    <span class="time-range">⏱ 00:12:55 ~ 00:14:12</span>
-    <a href="#" onclick="seekTo(775);return false;" class="yt-link">▶ 이 구간 재생</a>
+  <div class="card-header">
+    <div class="card-num">3</div>
+    <div class="card-title">LED 맵 구조 및 디바이스 정의 방식 설명</div>
   </div>
-  <div class="section"><h4>📌 학습목표</h4><ul><li>LED 맵 구조를 이해하고 각 LED의 인덱스 및 역할을 설명할 수 있다.</li><li>버전 1.0과 2.0에서 LED 맵 및 디바이스 정의 방식의 차이점을 비교할 수 있다.</li><li>LUPA 플랫폼에서 디바이스에 LED 맵 정보를 정의하는 방법을 설명할 수 있다.</li></ul></div>
-  <div class="section"><h4>📋 주요내용</h4><ul><li>버전 1.0에서는 어플리케이션에서 LED 맵을 1차 배열 형태로 직접 지정하며, 각 LED 인덱스가 특정 기능(예: 와이파이, 원격 제어, 확인 등)에 할당된다.</li><li>세탁기 예시에서 상단 4개 LED는 각각 하나씩 인덱스를 차지하고, 하단 4개 LED는 확인 표시 등 특정 기능을 위해 할당된다.</li><li>버전 2.0에서는 LED 맵 정보가 디바이스 쪽에서 정의되도록 개선되어, 디바이스 정의 방식이 더 명확하고 체계적으로 변경되었다.</li><li>LED의 물리적 할당과 기능별 인덱스 지정 방식에 대해 설명하였다.</li><li>버전 2.0의 개선점은 LED 맵 정의의 일관성과 관리의 용이성에 있다.</li></ul></div>
+  <div class="card-meta">
+    <span class="time-badge">⏱ 00:12:55 ~ 00:14:12</span>
+    <a href="#" onclick="seekTo(775);return false;" class="yt-link">▶ 재생</a>
+  </div>
+  <div class="section objectives"><div class="section-label">🎯 학습목표</div><ul><li>LED 맵 구조를 이해하고 각 LED의 인덱스 및 역할을 설명할 수 있다.</li><li>버전 1.0과 2.0에서 LED 맵 및 디바이스 정의 방식의 차이점을 비교할 수 있다.</li><li>LUPA 플랫폼에서 디바이스에 LED 맵 정보를 정의하는 방법을 설명할 수 있다.</li></ul></div>
+  <div class="section keypoints"><div class="section-label">📋 주요내용</div><ul><li>버전 1.0에서는 어플리케이션에서 LED 맵을 1차 배열 형태로 직접 지정하며, 각 LED 인덱스가 특정 기능(예: 와이파이, 원격 제어, 확인 등)에 할당된다.</li><li>세탁기 예시에서 상단 4개 LED는 각각 하나씩 인덱스를 차지하고, 하단 4개 LED는 확인 표시 등 특정 기능을 위해 할당된다.</li><li>버전 2.0에서는 LED 맵 정보가 디바이스 쪽에서 정의되도록 개선되어, 디바이스 정의 방식이 더 명확하고 체계적으로 변경되었다.</li><li>LED의 물리적 할당과 기능별 인덱스 지정 방식에 대해 설명하였다.</li><li>버전 2.0의 개선점은 LED 맵 정의의 일관성과 관리의 용이성에 있다.</li></ul></div>
   <div class="quiz-block" data-quiz-idx="2"><div class="quiz-header" onclick="toggleQuiz(this)">🧪 퀴즈 풀기 <span class="quiz-count">(5문제)</span><span class="quiz-arrow">▶</span></div><div class="quiz-body" style="display:none"></div></div>
-  <label class="chapter-check" data-chapter-idx="2"><input type="checkbox" onchange="onChapterCheck(this,2)"> <span>✅ 이 챕터 학습 완료</span></label>
+  <label class="chapter-check" data-chapter-idx="2"><input type="checkbox" onchange="onChapterCheck(this,2)"> <span>학습 완료</span></label>
   <details class="transcript-toggle">
-    <summary>📝 Transcript 원문 보기</summary>
+    <summary>원문 보기</summary>
     <div class="transcript-content">
       <p><a href="#" onclick="seekTo(775);return false;" class="ts-link">[00:12:55]</a> 그다음에 앞에서 말씀드렸던 건데요.</p>
 <p><a href="#" onclick="seekTo(778);return false;" class="ts-link">[00:12:58]</a> 버전 1.0에서는 어플리케이션 쪽에서 이렇게 LED 맵에 대해서 지정을 해주고 있습니다.</p>
@@ -416,17 +473,20 @@
 </div>
 
 <div class="card" id="chapter-3">
-  <h3>4. 여러 LED 디바이스 구분 및 핸들 할당 방식 설명</h3>  <!-- 번호 = 사이드바 번호와 동일 -->
-  <div class="meta">
-    <span class="time-range">⏱ 00:14:12 ~ 00:20:58</span>
-    <a href="#" onclick="seekTo(852);return false;" class="yt-link">▶ 이 구간 재생</a>
+  <div class="card-header">
+    <div class="card-num">4</div>
+    <div class="card-title">여러 LED 디바이스 구분 및 핸들 할당 방식 설명</div>
   </div>
-  <div class="section"><h4>📌 학습목표</h4><ul><li>여러 LED 디바이스가 존재할 때 각각을 구분하고 핸들을 할당하는 방법을 이해하고 적용할 수 있다.</li><li>LED 드라이버와 HAL의 역할 및 API 매핑 방식을 설명할 수 있다.</li><li>LED 디바이스의 카테고리와 네임 정보를 활용하여 어플리케이션에서 디바이스를 식별하고 제어할 수 있다.</li><li>HAL 버전별 LED 인덱스 시작 방식과 추가된 LED 타입을 구분할 수 있다.</li></ul></div>
-  <div class="section"><h4>📋 주요내용</h4><ul><li>LED 디바이스가 여러 개일 경우, 각각의 드라이버에 핸들 값을 할당하여 구분하며, 핸들은 인덱스 0부터 순차적으로 부여된다.</li><li>LED 컨트롤 매니저가 드라이버와 HAL에서 전달된 정보를 바탕으로 핸들을 부여하고, 어플리케이션은 네임과 카테고리 값을 이용해 디바이스를 식별한다.</li><li>HAL은 드라이버에서 구현된 API를 프레임워크로 전달하며, ON/OFF/DRIVING/COLOR 등의 기능이 API로 매핑된다.</li><li>CPU 점유율 문제를 해결하기 위해 write-channel API가 도입되어 여러 LED 요청을 한 번에 처리할 수 있다.</li><li>HAL 버전 1.0과 2.0에서 LED 인덱스 시작 번호와 LED 타입(Direct GPIO LED, Direct PWM LED 등)이 다르게 정의된다.</li><li>매트릭스 LED와 Direct LED, Direct GPIO LED, Direct PWM LED 등 다양한 LED 카테고리가 존재하며, 연결 방식에 따라 구분된다.</li><li>어플리케이션에서는 주로 디바이스 네임을 이용해 LED 디바이스를 구분하고 현재 값을 보고한다.</li></ul></div>
+  <div class="card-meta">
+    <span class="time-badge">⏱ 00:14:12 ~ 00:20:58</span>
+    <a href="#" onclick="seekTo(852);return false;" class="yt-link">▶ 재생</a>
+  </div>
+  <div class="section objectives"><div class="section-label">🎯 학습목표</div><ul><li>여러 LED 디바이스가 존재할 때 각각을 구분하고 핸들을 할당하는 방법을 이해하고 적용할 수 있다.</li><li>LED 드라이버와 HAL의 역할 및 API 매핑 방식을 설명할 수 있다.</li><li>LED 디바이스의 카테고리와 네임 정보를 활용하여 어플리케이션에서 디바이스를 식별하고 제어할 수 있다.</li><li>HAL 버전별 LED 인덱스 시작 방식과 추가된 LED 타입을 구분할 수 있다.</li></ul></div>
+  <div class="section keypoints"><div class="section-label">📋 주요내용</div><ul><li>LED 디바이스가 여러 개일 경우, 각각의 드라이버에 핸들 값을 할당하여 구분하며, 핸들은 인덱스 0부터 순차적으로 부여된다.</li><li>LED 컨트롤 매니저가 드라이버와 HAL에서 전달된 정보를 바탕으로 핸들을 부여하고, 어플리케이션은 네임과 카테고리 값을 이용해 디바이스를 식별한다.</li><li>HAL은 드라이버에서 구현된 API를 프레임워크로 전달하며, ON/OFF/DRIVING/COLOR 등의 기능이 API로 매핑된다.</li><li>CPU 점유율 문제를 해결하기 위해 write-channel API가 도입되어 여러 LED 요청을 한 번에 처리할 수 있다.</li><li>HAL 버전 1.0과 2.0에서 LED 인덱스 시작 번호와 LED 타입(Direct GPIO LED, Direct PWM LED 등)이 다르게 정의된다.</li><li>매트릭스 LED와 Direct LED, Direct GPIO LED, Direct PWM LED 등 다양한 LED 카테고리가 존재하며, 연결 방식에 따라 구분된다.</li><li>어플리케이션에서는 주로 디바이스 네임을 이용해 LED 디바이스를 구분하고 현재 값을 보고한다.</li></ul></div>
   <div class="quiz-block" data-quiz-idx="3"><div class="quiz-header" onclick="toggleQuiz(this)">🧪 퀴즈 풀기 <span class="quiz-count">(5문제)</span><span class="quiz-arrow">▶</span></div><div class="quiz-body" style="display:none"></div></div>
-  <label class="chapter-check" data-chapter-idx="3"><input type="checkbox" onchange="onChapterCheck(this,3)"> <span>✅ 이 챕터 학습 완료</span></label>
+  <label class="chapter-check" data-chapter-idx="3"><input type="checkbox" onchange="onChapterCheck(this,3)"> <span>학습 완료</span></label>
   <details class="transcript-toggle">
-    <summary>📝 Transcript 원문 보기</summary>
+    <summary>원문 보기</summary>
     <div class="transcript-content">
       <p><a href="#" onclick="seekTo(852);return false;" class="ts-link">[00:14:12]</a> 다음으로, 아까 디바이스를 구분할 때, 카테고리가 하나라고 했고</p>
 <p><a href="#" onclick="seekTo(859);return false;" class="ts-link">[00:14:19]</a> 카테고리에서는 매트릭스 LED랑 Direct LED만 있다고 말씀드렸는데</p>
@@ -533,17 +593,20 @@
 </div>
 
 <div class="card" id="chapter-4">
-  <h3>5. LED 드라이버에 대한 설명 시작</h3>  <!-- 번호 = 사이드바 번호와 동일 -->
-  <div class="meta">
-    <span class="time-range">⏱ 00:20:58 ~ 00:27:31</span>
-    <a href="#" onclick="seekTo(1258);return false;" class="yt-link">▶ 이 구간 재생</a>
+  <div class="card-header">
+    <div class="card-num">5</div>
+    <div class="card-title">LED 드라이버에 대한 설명 시작</div>
   </div>
-  <div class="section"><h4>📌 학습목표</h4><ul><li>LED 드라이버의 주요 API(on, off, blink, getInfo)의 기능과 사용법을 설명할 수 있다.</li><li>LED 디바이스 및 RGB LED의 구조와 인덱스, 컬러 매핑 방식을 이해하고 적용할 수 있다.</li><li>LED 컨트롤 매니저를 통해 LED 핸들 및 컬러 값을 설정하고 제어할 수 있다.</li></ul></div>
-  <div class="section"><h4>📋 주요내용</h4><ul><li>LED 드라이버는 on, off, blink, getInfo 등 다양한 API를 제공하며, getInfo는 LED 디바이스 정보를 프라임 어플리케이션에서 가져올 때 사용된다.</li><li>LED 디바이스 인포와 LED 인포 스트럭처를 통해 LED의 개수, 컬러(RGB) 값, 밝기 등 정보를 관리하며, RGB LED는 0~255의 컬러 레벨을 설정할 수 있다.</li><li>디바이스 트리에서 child node(label: RGB, 0, 1 등)와 인덱스, 컬러 매핑(초록, 빨강, 파랑)을 정의하며, 각 포트별로 LED가 배치된다.</li><li>LED 컨트롤 매니저에서 핸들 값을 부여하고, LED 구조체에 네임, 카테고리, 넘버, 컬러 맥스 등 정보를 할당한다.</li><li>ColourMapping을 통해 각 LED의 컬러 순서와 값을 지정하고, setColor API를 호출하여 핸들 및 인덱스, 컬러 값을 전달해 LED를 제어한다.</li><li>LED 리스트 구조체를 통해 현재 시스템에 존재하는 LED 디바이스와 핸들 정보를 확인할 수 있다.</li></ul></div>
+  <div class="card-meta">
+    <span class="time-badge">⏱ 00:20:58 ~ 00:27:31</span>
+    <a href="#" onclick="seekTo(1258);return false;" class="yt-link">▶ 재생</a>
+  </div>
+  <div class="section objectives"><div class="section-label">🎯 학습목표</div><ul><li>LED 드라이버의 주요 API(on, off, blink, getInfo)의 기능과 사용법을 설명할 수 있다.</li><li>LED 디바이스 및 RGB LED의 구조와 인덱스, 컬러 매핑 방식을 이해하고 적용할 수 있다.</li><li>LED 컨트롤 매니저를 통해 LED 핸들 및 컬러 값을 설정하고 제어할 수 있다.</li></ul></div>
+  <div class="section keypoints"><div class="section-label">📋 주요내용</div><ul><li>LED 드라이버는 on, off, blink, getInfo 등 다양한 API를 제공하며, getInfo는 LED 디바이스 정보를 프라임 어플리케이션에서 가져올 때 사용된다.</li><li>LED 디바이스 인포와 LED 인포 스트럭처를 통해 LED의 개수, 컬러(RGB) 값, 밝기 등 정보를 관리하며, RGB LED는 0~255의 컬러 레벨을 설정할 수 있다.</li><li>디바이스 트리에서 child node(label: RGB, 0, 1 등)와 인덱스, 컬러 매핑(초록, 빨강, 파랑)을 정의하며, 각 포트별로 LED가 배치된다.</li><li>LED 컨트롤 매니저에서 핸들 값을 부여하고, LED 구조체에 네임, 카테고리, 넘버, 컬러 맥스 등 정보를 할당한다.</li><li>ColourMapping을 통해 각 LED의 컬러 순서와 값을 지정하고, setColor API를 호출하여 핸들 및 인덱스, 컬러 값을 전달해 LED를 제어한다.</li><li>LED 리스트 구조체를 통해 현재 시스템에 존재하는 LED 디바이스와 핸들 정보를 확인할 수 있다.</li></ul></div>
   <div class="quiz-block" data-quiz-idx="4"><div class="quiz-header" onclick="toggleQuiz(this)">🧪 퀴즈 풀기 <span class="quiz-count">(5문제)</span><span class="quiz-arrow">▶</span></div><div class="quiz-body" style="display:none"></div></div>
-  <label class="chapter-check" data-chapter-idx="4"><input type="checkbox" onchange="onChapterCheck(this,4)"> <span>✅ 이 챕터 학습 완료</span></label>
+  <label class="chapter-check" data-chapter-idx="4"><input type="checkbox" onchange="onChapterCheck(this,4)"> <span>학습 완료</span></label>
   <details class="transcript-toggle">
-    <summary>📝 Transcript 원문 보기</summary>
+    <summary>원문 보기</summary>
     <div class="transcript-content">
       <p><a href="#" onclick="seekTo(1258);return false;" class="ts-link">[00:20:58]</a> 단으로 LED 드라이버에 대해서 설명을 드리겠습니다.</p>
 <p><a href="#" onclick="seekTo(1262);return false;" class="ts-link">[00:21:02]</a> LED 드라이버의 API입니다. LED 드라이버 API는 on, off, blink, getInfo가 있습니다.</p>
@@ -610,17 +673,20 @@
 </div>
 
 <div class="card" id="chapter-5">
-  <h3>6. 어플리케이션에서 SK API를 이용한 LED 디바이스 제어 및 실습 소개</h3>  <!-- 번호 = 사이드바 번호와 동일 -->
-  <div class="meta">
-    <span class="time-range">⏱ 00:27:31 ~ 00:32:58</span>
-    <a href="#" onclick="seekTo(1651);return false;" class="yt-link">▶ 이 구간 재생</a>
+  <div class="card-header">
+    <div class="card-num">6</div>
+    <div class="card-title">어플리케이션에서 SK API를 이용한 LED 디바이스 제어 및 실습 소개</div>
   </div>
-  <div class="section"><h4>📌 학습목표</h4><ul><li>SK API를 활용하여 어플리케이션에서 LED 디바이스를 제어할 수 있다.</li><li>LED의 상태, 밝기, 컬러, blink 등 다양한 속성을 SK API로 설정 및 변경할 수 있다.</li><li>LED 컨트롤 매니저의 우선순위와 동작 원칙을 이해하고 적용할 수 있다.</li><li>실습 보드에서 LED 배치와 실습 방법을 설명할 수 있다.</li></ul></div>
-  <div class="section"><h4>📋 주요내용</h4><ul><li>SK API의 종류와 각 API의 기능(LED 상태 조회, 밝기/컬러 값 설정, blink/fade 등)을 설명함.</li><li>LED 컨트롤 setBlinkTime, setColor, setFade, fixSetting 등 주요 API 사용법과 동작 원리를 소개함.</li><li>LED 컨트롤 매니저 설계 시 적용되는 4가지 우선순위 원칙(off 초기화, 기존 설정 유지, state extension, state 동시 설정 불가)을 설명함.</li><li>fixSetting API 사용 시 CPU 부하와 전체 LED 인덱스 broadcast 동작의 중요성을 강조함.</li><li>실습 보드에서 LED 배치와 실습 진행 방법을 안내함.</li><li>카테고리별 핸들 값 리턴 및 동일 카테고리 처리 방식에 대해 설명함.</li></ul></div>
+  <div class="card-meta">
+    <span class="time-badge">⏱ 00:27:31 ~ 00:32:58</span>
+    <a href="#" onclick="seekTo(1651);return false;" class="yt-link">▶ 재생</a>
+  </div>
+  <div class="section objectives"><div class="section-label">🎯 학습목표</div><ul><li>SK API를 활용하여 어플리케이션에서 LED 디바이스를 제어할 수 있다.</li><li>LED의 상태, 밝기, 컬러, blink 등 다양한 속성을 SK API로 설정 및 변경할 수 있다.</li><li>LED 컨트롤 매니저의 우선순위와 동작 원칙을 이해하고 적용할 수 있다.</li><li>실습 보드에서 LED 배치와 실습 방법을 설명할 수 있다.</li></ul></div>
+  <div class="section keypoints"><div class="section-label">📋 주요내용</div><ul><li>SK API의 종류와 각 API의 기능(LED 상태 조회, 밝기/컬러 값 설정, blink/fade 등)을 설명함.</li><li>LED 컨트롤 setBlinkTime, setColor, setFade, fixSetting 등 주요 API 사용법과 동작 원리를 소개함.</li><li>LED 컨트롤 매니저 설계 시 적용되는 4가지 우선순위 원칙(off 초기화, 기존 설정 유지, state extension, state 동시 설정 불가)을 설명함.</li><li>fixSetting API 사용 시 CPU 부하와 전체 LED 인덱스 broadcast 동작의 중요성을 강조함.</li><li>실습 보드에서 LED 배치와 실습 진행 방법을 안내함.</li><li>카테고리별 핸들 값 리턴 및 동일 카테고리 처리 방식에 대해 설명함.</li></ul></div>
   <div class="quiz-block" data-quiz-idx="5"><div class="quiz-header" onclick="toggleQuiz(this)">🧪 퀴즈 풀기 <span class="quiz-count">(5문제)</span><span class="quiz-arrow">▶</span></div><div class="quiz-body" style="display:none"></div></div>
-  <label class="chapter-check" data-chapter-idx="5"><input type="checkbox" onchange="onChapterCheck(this,5)"> <span>✅ 이 챕터 학습 완료</span></label>
+  <label class="chapter-check" data-chapter-idx="5"><input type="checkbox" onchange="onChapterCheck(this,5)"> <span>학습 완료</span></label>
   <details class="transcript-toggle">
-    <summary>📝 Transcript 원문 보기</summary>
+    <summary>원문 보기</summary>
     <div class="transcript-content">
       <p><a href="#" onclick="seekTo(1651);return false;" class="ts-link">[00:27:31]</a> 실제 이제 어플리케이션 쪽에서</p>
 <p><a href="#" onclick="seekTo(1655);return false;" class="ts-link">[00:27:35]</a> SK API를 사용을 해서</p>
@@ -691,17 +757,20 @@
 </div>
 
 <div class="card" id="chapter-6">
-  <h3>7. 실습 보드 설명</h3>  <!-- 번호 = 사이드바 번호와 동일 -->
-  <div class="meta">
-    <span class="time-range">⏱ 00:32:58 ~ 00:37:05</span>
-    <a href="#" onclick="seekTo(1978);return false;" class="yt-link">▶ 이 구간 재생</a>
+  <div class="card-header">
+    <div class="card-num">7</div>
+    <div class="card-title">실습 보드 설명</div>
   </div>
-  <div class="section"><h4>📌 학습목표</h4><ul><li>GVX 실습 보드의 주요 칩과 LED 연결 구조를 설명할 수 있다.</li><li>BU548L 및 ADT8700A 칩에 연결된 LED의 제어 방식과 역할을 이해하고 구분할 수 있다.</li><li>Scan-line과 데이터 라인을 활용한 Matrix LED 제어 원리를 설명할 수 있다.</li><li>실습 보드의 각 포트와 LED 제어 방법을 실제로 적용할 수 있다.</li></ul></div>
-  <div class="section"><h4>📋 주요내용</h4><ul><li>GVX 실습 보드에는 BU548L 칩과 ADT8700A 칩이 있으며, BU548L에는 2개의 LED가, ADT8700A에는 다수의 LED가 연결되어 있다.</li><li>ADT8700A 칩의 LED는 NOB LED, 7SEGMENT LED(25개), 포스/옵션 LED 등 다양한 기능을 표현하며, Matrix LED 구조로 scan-line과 데이터 라인을 통해 제어된다.</li><li>LED 제어는 scan-line을 빠르게 전환하여 사람이 지속적으로 켜진 것으로 인지하게 하며, 60Hz 이상의 주파수로 동작해야 한다.</li><li>각 데이터 라인별로 알키 값을 제어할 수 있으며, 이는 드라이버에서 구현되고 앱이나 펌프에서는 알키 값만 적용하면 된다.</li><li>실습 보드에는 인코더 주변에 20개의 LED가 있으며, 상단에는 BU548L에 연결된 2개의 LED가 있어 각각 제어가 필요하다.</li></ul></div>
+  <div class="card-meta">
+    <span class="time-badge">⏱ 00:32:58 ~ 00:37:05</span>
+    <a href="#" onclick="seekTo(1978);return false;" class="yt-link">▶ 재생</a>
+  </div>
+  <div class="section objectives"><div class="section-label">🎯 학습목표</div><ul><li>GVX 실습 보드의 주요 칩과 LED 연결 구조를 설명할 수 있다.</li><li>BU548L 및 ADT8700A 칩에 연결된 LED의 제어 방식과 역할을 이해하고 구분할 수 있다.</li><li>Scan-line과 데이터 라인을 활용한 Matrix LED 제어 원리를 설명할 수 있다.</li><li>실습 보드의 각 포트와 LED 제어 방법을 실제로 적용할 수 있다.</li></ul></div>
+  <div class="section keypoints"><div class="section-label">📋 주요내용</div><ul><li>GVX 실습 보드에는 BU548L 칩과 ADT8700A 칩이 있으며, BU548L에는 2개의 LED가, ADT8700A에는 다수의 LED가 연결되어 있다.</li><li>ADT8700A 칩의 LED는 NOB LED, 7SEGMENT LED(25개), 포스/옵션 LED 등 다양한 기능을 표현하며, Matrix LED 구조로 scan-line과 데이터 라인을 통해 제어된다.</li><li>LED 제어는 scan-line을 빠르게 전환하여 사람이 지속적으로 켜진 것으로 인지하게 하며, 60Hz 이상의 주파수로 동작해야 한다.</li><li>각 데이터 라인별로 알키 값을 제어할 수 있으며, 이는 드라이버에서 구현되고 앱이나 펌프에서는 알키 값만 적용하면 된다.</li><li>실습 보드에는 인코더 주변에 20개의 LED가 있으며, 상단에는 BU548L에 연결된 2개의 LED가 있어 각각 제어가 필요하다.</li></ul></div>
   <div class="quiz-block" data-quiz-idx="6"><div class="quiz-header" onclick="toggleQuiz(this)">🧪 퀴즈 풀기 <span class="quiz-count">(5문제)</span><span class="quiz-arrow">▶</span></div><div class="quiz-body" style="display:none"></div></div>
-  <label class="chapter-check" data-chapter-idx="6"><input type="checkbox" onchange="onChapterCheck(this,6)"> <span>✅ 이 챕터 학습 완료</span></label>
+  <label class="chapter-check" data-chapter-idx="6"><input type="checkbox" onchange="onChapterCheck(this,6)"> <span>학습 완료</span></label>
   <details class="transcript-toggle">
-    <summary>📝 Transcript 원문 보기</summary>
+    <summary>원문 보기</summary>
     <div class="transcript-content">
       <p><a href="#" onclick="seekTo(1978);return false;" class="ts-link">[00:32:58]</a> 실습 보드를 설명 드리겠습니다.</p>
 <p><a href="#" onclick="seekTo(1987);return false;" class="ts-link">[00:33:07]</a> 실습 보드는 GVX인데요.</p>
@@ -743,17 +812,20 @@
 </div>
 
 <div class="card" id="chapter-7">
-  <h3>8. LED 제어 실습 안내</h3>  <!-- 번호 = 사이드바 번호와 동일 -->
-  <div class="meta">
-    <span class="time-range">⏱ 00:37:05 ~ 00:53:35</span>
-    <a href="#" onclick="seekTo(2225);return false;" class="yt-link">▶ 이 구간 재생</a>
+  <div class="card-header">
+    <div class="card-num">8</div>
+    <div class="card-title">LED 제어 실습 안내</div>
   </div>
-  <div class="section"><h4>📌 학습목표</h4><ul><li>LED 제어를 위한 LUPA 플랫폼의 LED API 사용 방법을 이해하고 구현할 수 있다.</li><li>LED 리스트 정보를 Shared 메모리에서 가져와 네임과 카테고리를 출력할 수 있다.</li><li>LED의 ON/OFF, Blink, 밝기, Fade 등 다양한 상태를 API를 통해 제어할 수 있다.</li><li>LED 상태를 읽고, 각 상태의 의미를 파악할 수 있다.</li></ul></div>
-  <div class="section"><h4>📋 주요내용</h4><ul><li>LUPA 플랫폼의 Shared 메모리에서 LED 리스트 정보를 가져오는 방법과 글로벌 변수 선언 및 활용 방식 설명.</li><li>LED 리스트를 순회하여 각 LED의 네임과 카테고리 정보를 출력하는 로직 구현.</li><li>LEDControlSetOff, LEDControlSetOn, LEDControlSetBrightness, LEDControlPixSetting 등 LED 제어 관련 API 사용법 및 동작 원리 설명.</li><li>LED의 BlinkTime 주기 설정과 Blink 상태 확인 방법, 이넘값을 통한 상태 판별 방식 안내.</li><li>LED 밝기 조절 및 Fade-in, Fade-out 동작 구현 방법 소개.</li><li>API 호출 후 msleep을 이용한 동작 유지 및 딜레이 처리 방법 설명.</li><li>룩캐스트와 픽스 세팅을 통한 LED 상태 확정 과정 설명.</li></ul></div>
+  <div class="card-meta">
+    <span class="time-badge">⏱ 00:37:05 ~ 00:53:35</span>
+    <a href="#" onclick="seekTo(2225);return false;" class="yt-link">▶ 재생</a>
+  </div>
+  <div class="section objectives"><div class="section-label">🎯 학습목표</div><ul><li>LED 제어를 위한 LUPA 플랫폼의 LED API 사용 방법을 이해하고 구현할 수 있다.</li><li>LED 리스트 정보를 Shared 메모리에서 가져와 네임과 카테고리를 출력할 수 있다.</li><li>LED의 ON/OFF, Blink, 밝기, Fade 등 다양한 상태를 API를 통해 제어할 수 있다.</li><li>LED 상태를 읽고, 각 상태의 의미를 파악할 수 있다.</li></ul></div>
+  <div class="section keypoints"><div class="section-label">📋 주요내용</div><ul><li>LUPA 플랫폼의 Shared 메모리에서 LED 리스트 정보를 가져오는 방법과 글로벌 변수 선언 및 활용 방식 설명.</li><li>LED 리스트를 순회하여 각 LED의 네임과 카테고리 정보를 출력하는 로직 구현.</li><li>LEDControlSetOff, LEDControlSetOn, LEDControlSetBrightness, LEDControlPixSetting 등 LED 제어 관련 API 사용법 및 동작 원리 설명.</li><li>LED의 BlinkTime 주기 설정과 Blink 상태 확인 방법, 이넘값을 통한 상태 판별 방식 안내.</li><li>LED 밝기 조절 및 Fade-in, Fade-out 동작 구현 방법 소개.</li><li>API 호출 후 msleep을 이용한 동작 유지 및 딜레이 처리 방법 설명.</li><li>룩캐스트와 픽스 세팅을 통한 LED 상태 확정 과정 설명.</li></ul></div>
   <div class="quiz-block" data-quiz-idx="7"><div class="quiz-header" onclick="toggleQuiz(this)">🧪 퀴즈 풀기 <span class="quiz-count">(5문제)</span><span class="quiz-arrow">▶</span></div><div class="quiz-body" style="display:none"></div></div>
-  <label class="chapter-check" data-chapter-idx="7"><input type="checkbox" onchange="onChapterCheck(this,7)"> <span>✅ 이 챕터 학습 완료</span></label>
+  <label class="chapter-check" data-chapter-idx="7"><input type="checkbox" onchange="onChapterCheck(this,7)"> <span>학습 완료</span></label>
   <details class="transcript-toggle">
-    <summary>📝 Transcript 원문 보기</summary>
+    <summary>원문 보기</summary>
     <div class="transcript-content">
       <p><a href="#" onclick="seekTo(2225);return false;" class="ts-link">[00:37:05]</a> LED 제어 실습은 총 3가지인데요. 1번 먼저 말씀드리면 아까 설명드렸던 API를 이용해서 카테고리와 네임 정보를 가지고 온 다음에 로고 출력을 하고</p>
 <p><a href="#" onclick="seekTo(2239);return false;" class="ts-link">[00:37:19]</a> 여기 써져 있는 대로 수행을 해주시면 되겠습니다. 두 번째 같은 경우에는 이제 각각 API가 API가 리퀘스트라고 말씀드렸고</p>
@@ -907,17 +979,20 @@
 </div>
 
 <div class="card" id="chapter-8">
-  <h3>9. LED 인풋 제어 소개</h3>  <!-- 번호 = 사이드바 번호와 동일 -->
-  <div class="meta">
-    <span class="time-range">⏱ 00:53:35 ~ 00:53:50</span>
-    <a href="#" onclick="seekTo(3215);return false;" class="yt-link">▶ 이 구간 재생</a>
+  <div class="card-header">
+    <div class="card-num">9</div>
+    <div class="card-title">LED 인풋 제어 소개</div>
   </div>
-  <div class="section"><h4>📌 학습목표</h4><ul><li>LUPA Studio에서 인풋 제어 기능의 개념을 이해하고 설명할 수 있다.</li><li>LUPA 앱 개발 과정에서 인풋 제어를 적용할 준비를 할 수 있다.</li></ul></div>
-  <div class="section"><h4>📋 주요내용</h4><ul><li>인풋 제어는 LUPA 앱 개발에서 중요한 기능 중 하나임을 소개하였다.</li><li>LUPA Studio를 활용하여 인풋 제어 기능을 구현할 수 있음을 안내하였다.</li><li>본 강의에서는 인풋 제어에 대한 설명이 이어질 예정임을 예고하였다.</li></ul></div>
+  <div class="card-meta">
+    <span class="time-badge">⏱ 00:53:35 ~ 00:53:50</span>
+    <a href="#" onclick="seekTo(3215);return false;" class="yt-link">▶ 재생</a>
+  </div>
+  <div class="section objectives"><div class="section-label">🎯 학습목표</div><ul><li>LUPA Studio에서 인풋 제어 기능의 개념을 이해하고 설명할 수 있다.</li><li>LUPA 앱 개발 과정에서 인풋 제어를 적용할 준비를 할 수 있다.</li></ul></div>
+  <div class="section keypoints"><div class="section-label">📋 주요내용</div><ul><li>인풋 제어는 LUPA 앱 개발에서 중요한 기능 중 하나임을 소개하였다.</li><li>LUPA Studio를 활용하여 인풋 제어 기능을 구현할 수 있음을 안내하였다.</li><li>본 강의에서는 인풋 제어에 대한 설명이 이어질 예정임을 예고하였다.</li></ul></div>
   
-  <label class="chapter-check" data-chapter-idx="8"><input type="checkbox" onchange="onChapterCheck(this,8)"> <span>✅ 이 챕터 학습 완료</span></label>
+  <label class="chapter-check" data-chapter-idx="8"><input type="checkbox" onchange="onChapterCheck(this,8)"> <span>학습 완료</span></label>
   <details class="transcript-toggle">
-    <summary>📝 Transcript 원문 보기</summary>
+    <summary>원문 보기</summary>
     <div class="transcript-content">
       <p><a href="#" onclick="seekTo(3215);return false;" class="ts-link">[00:53:35]</a> 2번째는 인풋에 대해서 말씀을 드릴 겁니다.</p>
 <p><a href="#" onclick="seekTo(3227);return false;" class="ts-link">[00:53:47]</a> 아, 인풋이 아니라 하나 더 남았습니다.</p>
@@ -927,17 +1002,20 @@
 </div>
 
 <div class="card" id="chapter-9">
-  <h3>10. LED 컨트롤 디버깅(shell 모듈) 설명</h3>  <!-- 번호 = 사이드바 번호와 동일 -->
-  <div class="meta">
-    <span class="time-range">⏱ 00:53:50 ~ 00:57:18</span>
-    <a href="#" onclick="seekTo(3230);return false;" class="yt-link">▶ 이 구간 재생</a>
+  <div class="card-header">
+    <div class="card-num">10</div>
+    <div class="card-title">LED 컨트롤 디버깅(shell 모듈) 설명</div>
   </div>
-  <div class="section"><h4>📌 학습목표</h4><ul><li>LUPA 플랫폼에서 shell 모듈을 활용하여 LED device를 디버깅하고 제어할 수 있다.</li><li>LED control shell CLI를 사용하여 LED device의 상태 및 정보를 확인할 수 있다.</li><li>LED device의 핸들번호, 카테고리, device name, color max level 등 주요 정보를 해석할 수 있다.</li><li>LED control manager의 API를 shell 모듈을 통해 호출하는 방법을 이해하고 적용할 수 있다.</li></ul></div>
-  <div class="section"><h4>📋 주요내용</h4><ul><li>LUPA에서는 디버깅을 위해 shell 모듈을 적용하며, 앱을 제외한 프레임워크나 모듈 라이브러리에서 shell 모듈을 사용할 수 있다.</li><li>shell 모듈은 CLI 환경에서 string 입력을 받아 LED control manager의 API를 직접 호출할 수 있게 해준다.</li><li>LED control shell CLI를 통해 LED device의 상태, 핸들번호, 카테고리, device name, color max level 등의 정보를 확인할 수 있다.</li><li>RGB LED의 경우 color max level 값이 표시되며, GVX 모드의 LED는 해당 값이 0으로 나타난다.</li><li>LED device DB 구조와 API 버전(1.0, 2.0)에 따라 호환성이 지원되며, LED framework에서 두 버전 모두 사용할 수 있다.</li></ul></div>
+  <div class="card-meta">
+    <span class="time-badge">⏱ 00:53:50 ~ 00:57:18</span>
+    <a href="#" onclick="seekTo(3230);return false;" class="yt-link">▶ 재생</a>
+  </div>
+  <div class="section objectives"><div class="section-label">🎯 학습목표</div><ul><li>LUPA 플랫폼에서 shell 모듈을 활용하여 LED device를 디버깅하고 제어할 수 있다.</li><li>LED control shell CLI를 사용하여 LED device의 상태 및 정보를 확인할 수 있다.</li><li>LED device의 핸들번호, 카테고리, device name, color max level 등 주요 정보를 해석할 수 있다.</li><li>LED control manager의 API를 shell 모듈을 통해 호출하는 방법을 이해하고 적용할 수 있다.</li></ul></div>
+  <div class="section keypoints"><div class="section-label">📋 주요내용</div><ul><li>LUPA에서는 디버깅을 위해 shell 모듈을 적용하며, 앱을 제외한 프레임워크나 모듈 라이브러리에서 shell 모듈을 사용할 수 있다.</li><li>shell 모듈은 CLI 환경에서 string 입력을 받아 LED control manager의 API를 직접 호출할 수 있게 해준다.</li><li>LED control shell CLI를 통해 LED device의 상태, 핸들번호, 카테고리, device name, color max level 등의 정보를 확인할 수 있다.</li><li>RGB LED의 경우 color max level 값이 표시되며, GVX 모드의 LED는 해당 값이 0으로 나타난다.</li><li>LED device DB 구조와 API 버전(1.0, 2.0)에 따라 호환성이 지원되며, LED framework에서 두 버전 모두 사용할 수 있다.</li></ul></div>
   <div class="quiz-block" data-quiz-idx="9"><div class="quiz-header" onclick="toggleQuiz(this)">🧪 퀴즈 풀기 <span class="quiz-count">(5문제)</span><span class="quiz-arrow">▶</span></div><div class="quiz-body" style="display:none"></div></div>
-  <label class="chapter-check" data-chapter-idx="9"><input type="checkbox" onchange="onChapterCheck(this,9)"> <span>✅ 이 챕터 학습 완료</span></label>
+  <label class="chapter-check" data-chapter-idx="9"><input type="checkbox" onchange="onChapterCheck(this,9)"> <span>학습 완료</span></label>
   <details class="transcript-toggle">
-    <summary>📝 Transcript 원문 보기</summary>
+    <summary>원문 보기</summary>
     <div class="transcript-content">
       <p><a href="#" onclick="seekTo(3230);return false;" class="ts-link">[00:53:50]</a> LED 컨트롤에서 디버깅을 쉽게 할 수 있게 만들어 놓은 게 있습니다.</p>
 <p><a href="#" onclick="seekTo(3235);return false;" class="ts-link">[00:53:55]</a> 그러니까 LUPA에서는 디버깅을 위해서 shell 모듈이라는 것을 적용을 해야...</p>
@@ -983,17 +1061,20 @@
 </div>
 
 <div class="card" id="chapter-10">
-  <h3>11. 짧은 실습 시작</h3>  <!-- 번호 = 사이드바 번호와 동일 -->
-  <div class="meta">
-    <span class="time-range">⏱ 00:57:18 ~ 00:57:37</span>
-    <a href="#" onclick="seekTo(3438);return false;" class="yt-link">▶ 이 구간 재생</a>
+  <div class="card-header">
+    <div class="card-num">11</div>
+    <div class="card-title">짧은 실습 시작</div>
   </div>
-  <div class="section"><h4>📌 학습목표</h4><ul><li>LUPA Studio에서 디바이스를 변경하는 방법을 이해하고 직접 변경할 수 있다.</li><li>Dump State 기능을 활용하여 프로젝트 상태를 확인할 수 있다.</li></ul></div>
-  <div class="section"><h4>📋 주요내용</h4><ul><li>Alice의 Hand1이라고 입력하면 Alice device 1번으로 변경된다.</li><li>LUPA Studio에서 디바이스 변경이 실시간으로 반영되는 것을 확인할 수 있다.</li><li>Dump State 기능을 통해 프로젝트의 상태 정보를 확인할 수 있다.</li></ul></div>
+  <div class="card-meta">
+    <span class="time-badge">⏱ 00:57:18 ~ 00:57:37</span>
+    <a href="#" onclick="seekTo(3438);return false;" class="yt-link">▶ 재생</a>
+  </div>
+  <div class="section objectives"><div class="section-label">🎯 학습목표</div><ul><li>LUPA Studio에서 디바이스를 변경하는 방법을 이해하고 직접 변경할 수 있다.</li><li>Dump State 기능을 활용하여 프로젝트 상태를 확인할 수 있다.</li></ul></div>
+  <div class="section keypoints"><div class="section-label">📋 주요내용</div><ul><li>Alice의 Hand1이라고 입력하면 Alice device 1번으로 변경된다.</li><li>LUPA Studio에서 디바이스 변경이 실시간으로 반영되는 것을 확인할 수 있다.</li><li>Dump State 기능을 통해 프로젝트의 상태 정보를 확인할 수 있다.</li></ul></div>
   <div class="quiz-block" data-quiz-idx="10"><div class="quiz-header" onclick="toggleQuiz(this)">🧪 퀴즈 풀기 <span class="quiz-count">(4문제)</span><span class="quiz-arrow">▶</span></div><div class="quiz-body" style="display:none"></div></div>
-  <label class="chapter-check" data-chapter-idx="10"><input type="checkbox" onchange="onChapterCheck(this,10)"> <span>✅ 이 챕터 학습 완료</span></label>
+  <label class="chapter-check" data-chapter-idx="10"><input type="checkbox" onchange="onChapterCheck(this,10)"> <span>학습 완료</span></label>
   <details class="transcript-toggle">
-    <summary>📝 Transcript 원문 보기</summary>
+    <summary>원문 보기</summary>
     <div class="transcript-content">
       <p><a href="#" onclick="seekTo(3438);return false;" class="ts-link">[00:57:18]</a> 이제 실습을 한번 짧게 하는 게 좋을 것 같습니다.</p>
 <p><a href="#" onclick="seekTo(3441);return false;" class="ts-link">[00:57:21]</a> Alice의 Hand1이라고 입력을 하시면</p>
@@ -1007,17 +1088,20 @@
 </div>
 
 <div class="card" id="chapter-11">
-  <h3>12. LED control Manager 내부 구조 설명</h3>  <!-- 번호 = 사이드바 번호와 동일 -->
-  <div class="meta">
-    <span class="time-range">⏱ 00:57:37 ~ 01:04:45</span>
-    <a href="#" onclick="seekTo(3457);return false;" class="yt-link">▶ 이 구간 재생</a>
+  <div class="card-header">
+    <div class="card-num">12</div>
+    <div class="card-title">LED control Manager 내부 구조 설명</div>
   </div>
-  <div class="section"><h4>📌 학습목표</h4><ul><li>LED control Manager의 내부 구조와 각 스테이지(루케스트, 픽스, 백업)의 역할을 설명할 수 있다.</li><li>LED 상태(밝기, 블링크, 컬러, 페이드)를 제어하는 데이터 구조와 메모리 할당 방식을 이해하고 활용할 수 있다.</li><li>LED의 블링크 및 페이드 동작을 설정하고, 여러 디바이스에서 동기화된 블링크 타임을 적용할 수 있다.</li><li>LED 상태 정보(상세/요약)를 확인하고, 명령어를 통해 LED 상태를 변경할 수 있다.</li></ul></div>
-  <div class="section"><h4>📋 주요내용</h4><ul><li>LED control Manager는 루케스트, 픽스, 백업 스테이지로 구성되어 각 스테이지에서 LED 상태(밝기, 블링크, 컬러, 페이드)를 관리한다.</li><li>LED 상태 정보는 요약 정보와 상세 정보로 구분되며, 요약 정보로 기본 상태를 확인하고 상세 정보로 추가 상태를 확인할 수 있다.</li><li>밝기, 블링크, 컬러, 페이드 등 각 기능은 필요 시 메모리 할당을 통해 동작하며, 부팅 시에는 State Brightness만 할당된다.</li><li>블링크 동작은 소프트웨어 타이머로 제어되며, 최소 주기는 500ms이고, 여러 디바이스에서 블링크 타임을 동기화하여 적용한다.</li><li>명령어(Set Blink, Set Off, Set Time 등)을 통해 LED의 상태와 밝기, 블링크 주기 등을 실시간으로 변경할 수 있다.</li><li>페이드 동작은 지정된 시간 동안 밝기가 점진적으로 변화하며, 동작 시작 시각과 주기를 관리한다.</li><li>GVX 보드에서는 컬러 기능이 지원되지 않아 컬러 명령 시 에러를 리턴한다.</li></ul></div>
+  <div class="card-meta">
+    <span class="time-badge">⏱ 00:57:37 ~ 01:04:45</span>
+    <a href="#" onclick="seekTo(3457);return false;" class="yt-link">▶ 재생</a>
+  </div>
+  <div class="section objectives"><div class="section-label">🎯 학습목표</div><ul><li>LED control Manager의 내부 구조와 각 스테이지(루케스트, 픽스, 백업)의 역할을 설명할 수 있다.</li><li>LED 상태(밝기, 블링크, 컬러, 페이드)를 제어하는 데이터 구조와 메모리 할당 방식을 이해하고 활용할 수 있다.</li><li>LED의 블링크 및 페이드 동작을 설정하고, 여러 디바이스에서 동기화된 블링크 타임을 적용할 수 있다.</li><li>LED 상태 정보(상세/요약)를 확인하고, 명령어를 통해 LED 상태를 변경할 수 있다.</li></ul></div>
+  <div class="section keypoints"><div class="section-label">📋 주요내용</div><ul><li>LED control Manager는 루케스트, 픽스, 백업 스테이지로 구성되어 각 스테이지에서 LED 상태(밝기, 블링크, 컬러, 페이드)를 관리한다.</li><li>LED 상태 정보는 요약 정보와 상세 정보로 구분되며, 요약 정보로 기본 상태를 확인하고 상세 정보로 추가 상태를 확인할 수 있다.</li><li>밝기, 블링크, 컬러, 페이드 등 각 기능은 필요 시 메모리 할당을 통해 동작하며, 부팅 시에는 State Brightness만 할당된다.</li><li>블링크 동작은 소프트웨어 타이머로 제어되며, 최소 주기는 500ms이고, 여러 디바이스에서 블링크 타임을 동기화하여 적용한다.</li><li>명령어(Set Blink, Set Off, Set Time 등)을 통해 LED의 상태와 밝기, 블링크 주기 등을 실시간으로 변경할 수 있다.</li><li>페이드 동작은 지정된 시간 동안 밝기가 점진적으로 변화하며, 동작 시작 시각과 주기를 관리한다.</li><li>GVX 보드에서는 컬러 기능이 지원되지 않아 컬러 명령 시 에러를 리턴한다.</li></ul></div>
   <div class="quiz-block" data-quiz-idx="11"><div class="quiz-header" onclick="toggleQuiz(this)">🧪 퀴즈 풀기 <span class="quiz-count">(5문제)</span><span class="quiz-arrow">▶</span></div><div class="quiz-body" style="display:none"></div></div>
-  <label class="chapter-check" data-chapter-idx="11"><input type="checkbox" onchange="onChapterCheck(this,11)"> <span>✅ 이 챕터 학습 완료</span></label>
+  <label class="chapter-check" data-chapter-idx="11"><input type="checkbox" onchange="onChapterCheck(this,11)"> <span>학습 완료</span></label>
   <details class="transcript-toggle">
-    <summary>📝 Transcript 원문 보기</summary>
+    <summary>원문 보기</summary>
     <div class="transcript-content">
       <p><a href="#" onclick="seekTo(3457);return false;" class="ts-link">[00:57:37]</a> 이렇게 LED control Manager의 내부 구조인데요.</p>
 <p><a href="#" onclick="seekTo(3460);return false;" class="ts-link">[00:57:40]</a> 내부 구조에서 루케스트랑 픽스랑 백업이라는 것이 있습니다.</p>
@@ -1116,17 +1200,20 @@
 </div>
 
 <div class="card" id="chapter-12">
-  <h3>13. 로그 레벨 변경 및 로그 확인 방법</h3>  <!-- 번호 = 사이드바 번호와 동일 -->
-  <div class="meta">
-    <span class="time-range">⏱ 01:04:45 ~ 01:06:09</span>
-    <a href="#" onclick="seekTo(3885);return false;" class="yt-link">▶ 이 구간 재생</a>
+  <div class="card-header">
+    <div class="card-num">13</div>
+    <div class="card-title">로그 레벨 변경 및 로그 확인 방법</div>
   </div>
-  <div class="section"><h4>📌 학습목표</h4><ul><li>L-Control Manager의 로그 레벨을 변경할 수 있다.</li><li>INF 및 DBG 로그 레벨을 설정하여 상세 로그를 확인할 수 있다.</li><li>로그를 통해 디바이스 드라이버 API 호출 과정을 추적할 수 있다.</li></ul></div>
-  <div class="section"><h4>📋 주요내용</h4><ul><li>L-Control Manager에서 로그 레벨을 INF 또는 DBG로 변경할 수 있다.</li><li>DBG 레벨로 변경하면 더 상세한 로그(예: 리퀘스트 처리 과정, 함수 호출 등)를 확인할 수 있다.</li><li>로그 출력에는 L-Control SET-ON, INF, Implementation 함수 등 다양한 단계가 포함된다.</li><li>L-Control Call 인터페이스는 디바이스 드라이버의 API를 호출하며, 로그를 통해 해당 함수 호출 여부를 확인할 수 있다.</li></ul></div>
+  <div class="card-meta">
+    <span class="time-badge">⏱ 01:04:45 ~ 01:06:09</span>
+    <a href="#" onclick="seekTo(3885);return false;" class="yt-link">▶ 재생</a>
+  </div>
+  <div class="section objectives"><div class="section-label">🎯 학습목표</div><ul><li>L-Control Manager의 로그 레벨을 변경할 수 있다.</li><li>INF 및 DBG 로그 레벨을 설정하여 상세 로그를 확인할 수 있다.</li><li>로그를 통해 디바이스 드라이버 API 호출 과정을 추적할 수 있다.</li></ul></div>
+  <div class="section keypoints"><div class="section-label">📋 주요내용</div><ul><li>L-Control Manager에서 로그 레벨을 INF 또는 DBG로 변경할 수 있다.</li><li>DBG 레벨로 변경하면 더 상세한 로그(예: 리퀘스트 처리 과정, 함수 호출 등)를 확인할 수 있다.</li><li>로그 출력에는 L-Control SET-ON, INF, Implementation 함수 등 다양한 단계가 포함된다.</li><li>L-Control Call 인터페이스는 디바이스 드라이버의 API를 호출하며, 로그를 통해 해당 함수 호출 여부를 확인할 수 있다.</li></ul></div>
   <div class="quiz-block" data-quiz-idx="12"><div class="quiz-header" onclick="toggleQuiz(this)">🧪 퀴즈 풀기 <span class="quiz-count">(4문제)</span><span class="quiz-arrow">▶</span></div><div class="quiz-body" style="display:none"></div></div>
-  <label class="chapter-check" data-chapter-idx="12"><input type="checkbox" onchange="onChapterCheck(this,12)"> <span>✅ 이 챕터 학습 완료</span></label>
+  <label class="chapter-check" data-chapter-idx="12"><input type="checkbox" onchange="onChapterCheck(this,12)"> <span>학습 완료</span></label>
   <details class="transcript-toggle">
-    <summary>📝 Transcript 원문 보기</summary>
+    <summary>원문 보기</summary>
     <div class="transcript-content">
       <p><a href="#" onclick="seekTo(3885);return false;" class="ts-link">[01:04:45]</a> 그 다음에 로그 레벨을 변경할 수가 있습니다.</p>
 <p><a href="#" onclick="seekTo(3889);return false;" class="ts-link">[01:04:49]</a> L-Control Manager의 로그 레벨만 변경할 수 있고</p>
@@ -1150,17 +1237,20 @@
 </div>
 
 <div class="card" id="chapter-13">
-  <h3>14. Pix 관련 함수 및 LED Set Pix Manual 사용법</h3>  <!-- 번호 = 사이드바 번호와 동일 -->
-  <div class="meta">
-    <span class="time-range">⏱ 01:06:09 ~ 01:07:24</span>
-    <a href="#" onclick="seekTo(3969);return false;" class="yt-link">▶ 이 구간 재생</a>
+  <div class="card-header">
+    <div class="card-num">14</div>
+    <div class="card-title">Pix 관련 함수 및 LED Set Pix Manual 사용법</div>
   </div>
-  <div class="section"><h4>📌 학습목표</h4><ul><li>LED Control Manager에서 Pix 관련 함수의 동작 원리를 이해하고 설명할 수 있다.</li><li>LED Set Pix Manual을 사용하여 Pix-Setting API 호출 여부를 제어할 수 있다.</li><li>LED Set Pix와 LED Set Pix Manual을 활용하여 LED 상태를 단계별로 관리할 수 있다.</li></ul></div>
-  <div class="section"><h4>📋 주요내용</h4><ul><li>LED Control Manager의 Shared Comments에 연결된 함수는 마지막에 LED Control Pix-Setting API를 자동으로 호출한다.</li><li>LED Set Pix Manual을 사용하면 Pix-Setting API의 자동 호출을 방지할 수 있다.</li><li>LED Set Pix Manual 입력 시 Request만 업데이트되고, 실제 동작 확정은 LED Set Pix를 통해 이루어진다.</li><li>LED Set Pix를 입력하면 Request 값이 Pix 스테이지로 넘어가며, 이는 디바이스 드라이버가 제어된 상태를 의미한다.</li><li>LED Set을 다시 입력하면 기존 상태로 복구할 수 있다.</li></ul></div>
+  <div class="card-meta">
+    <span class="time-badge">⏱ 01:06:09 ~ 01:07:24</span>
+    <a href="#" onclick="seekTo(3969);return false;" class="yt-link">▶ 재생</a>
+  </div>
+  <div class="section objectives"><div class="section-label">🎯 학습목표</div><ul><li>LED Control Manager에서 Pix 관련 함수의 동작 원리를 이해하고 설명할 수 있다.</li><li>LED Set Pix Manual을 사용하여 Pix-Setting API 호출 여부를 제어할 수 있다.</li><li>LED Set Pix와 LED Set Pix Manual을 활용하여 LED 상태를 단계별로 관리할 수 있다.</li></ul></div>
+  <div class="section keypoints"><div class="section-label">📋 주요내용</div><ul><li>LED Control Manager의 Shared Comments에 연결된 함수는 마지막에 LED Control Pix-Setting API를 자동으로 호출한다.</li><li>LED Set Pix Manual을 사용하면 Pix-Setting API의 자동 호출을 방지할 수 있다.</li><li>LED Set Pix Manual 입력 시 Request만 업데이트되고, 실제 동작 확정은 LED Set Pix를 통해 이루어진다.</li><li>LED Set Pix를 입력하면 Request 값이 Pix 스테이지로 넘어가며, 이는 디바이스 드라이버가 제어된 상태를 의미한다.</li><li>LED Set을 다시 입력하면 기존 상태로 복구할 수 있다.</li></ul></div>
   <div class="quiz-block" data-quiz-idx="13"><div class="quiz-header" onclick="toggleQuiz(this)">🧪 퀴즈 풀기 <span class="quiz-count">(5문제)</span><span class="quiz-arrow">▶</span></div><div class="quiz-body" style="display:none"></div></div>
-  <label class="chapter-check" data-chapter-idx="13"><input type="checkbox" onchange="onChapterCheck(this,13)"> <span>✅ 이 챕터 학습 완료</span></label>
+  <label class="chapter-check" data-chapter-idx="13"><input type="checkbox" onchange="onChapterCheck(this,13)"> <span>학습 완료</span></label>
   <details class="transcript-toggle">
-    <summary>📝 Transcript 원문 보기</summary>
+    <summary>원문 보기</summary>
     <div class="transcript-content">
       <p><a href="#" onclick="seekTo(3969);return false;" class="ts-link">[01:06:09]</a> 그리고 Pix가 아까 말씀드렸는데 LED Control Manager에서</p>
 <p><a href="#" onclick="seekTo(3975);return false;" class="ts-link">[01:06:15]</a> Shared Comments에 연결되어 있는 함수가 있고,</p>
@@ -1186,17 +1276,20 @@
 </div>
 
 <div class="card" id="chapter-14">
-  <h3>15. LED Control Manager API 버전 설명</h3>  <!-- 번호 = 사이드바 번호와 동일 -->
-  <div class="meta">
-    <span class="time-range">⏱ 01:07:24 ~ 01:08:19</span>
-    <a href="#" onclick="seekTo(4044);return false;" class="yt-link">▶ 이 구간 재생</a>
+  <div class="card-header">
+    <div class="card-num">15</div>
+    <div class="card-title">LED Control Manager API 버전 설명</div>
   </div>
-  <div class="section"><h4>📌 학습목표</h4><ul><li>LED Control Manager에서 지원하는 API 버전(1.0, 2.0)의 차이와 사용 방법을 설명할 수 있다.</li><li>CLI(Command Line Interface)를 활용하여 LED Control Manager API를 실습할 수 있다.</li><li>LED SDK를 활용하여 LED 제어 기능을 구현할 수 있다.</li></ul></div>
-  <div class="section"><h4>📋 주요내용</h4><ul><li>LED Control Manager는 1.0과 2.0 두 가지 API 버전을 지원하며, 각각의 호출 방법이 다르다.</li><li>1.0 API를 사용하려면 LED Set API 1과 LED Set Command를 입력해야 하며, 이를 통해 1.0 API가 호출된다.</li><li>LED SDK를 사용하는 방법과 CLI를 통한 실습 방법을 안내하였다.</li><li>CLI를 활용하여 LED Control Manager API를 직접 실습할 수 있다.</li></ul></div>
+  <div class="card-meta">
+    <span class="time-badge">⏱ 01:07:24 ~ 01:08:19</span>
+    <a href="#" onclick="seekTo(4044);return false;" class="yt-link">▶ 재생</a>
+  </div>
+  <div class="section objectives"><div class="section-label">🎯 학습목표</div><ul><li>LED Control Manager에서 지원하는 API 버전(1.0, 2.0)의 차이와 사용 방법을 설명할 수 있다.</li><li>CLI(Command Line Interface)를 활용하여 LED Control Manager API를 실습할 수 있다.</li><li>LED SDK를 활용하여 LED 제어 기능을 구현할 수 있다.</li></ul></div>
+  <div class="section keypoints"><div class="section-label">📋 주요내용</div><ul><li>LED Control Manager는 1.0과 2.0 두 가지 API 버전을 지원하며, 각각의 호출 방법이 다르다.</li><li>1.0 API를 사용하려면 LED Set API 1과 LED Set Command를 입력해야 하며, 이를 통해 1.0 API가 호출된다.</li><li>LED SDK를 사용하는 방법과 CLI를 통한 실습 방법을 안내하였다.</li><li>CLI를 활용하여 LED Control Manager API를 직접 실습할 수 있다.</li></ul></div>
   <div class="quiz-block" data-quiz-idx="14"><div class="quiz-header" onclick="toggleQuiz(this)">🧪 퀴즈 풀기 <span class="quiz-count">(4문제)</span><span class="quiz-arrow">▶</span></div><div class="quiz-body" style="display:none"></div></div>
-  <label class="chapter-check" data-chapter-idx="14"><input type="checkbox" onchange="onChapterCheck(this,14)"> <span>✅ 이 챕터 학습 완료</span></label>
+  <label class="chapter-check" data-chapter-idx="14"><input type="checkbox" onchange="onChapterCheck(this,14)"> <span>학습 완료</span></label>
   <details class="transcript-toggle">
-    <summary>📝 Transcript 원문 보기</summary>
+    <summary>원문 보기</summary>
     <div class="transcript-content">
       <p><a href="#" onclick="seekTo(4044);return false;" class="ts-link">[01:07:24]</a> 그리고 LED Control Manager에서 지원하고 있는 API가</p>
 <p><a href="#" onclick="seekTo(4048);return false;" class="ts-link">[01:07:28]</a> 1.0이 있고 2.0이 있다고 말씀드렸는데</p>
@@ -1216,17 +1309,20 @@
 </div>
 
 <div class="card" id="chapter-15">
-  <h3>16. lupa-input architecture 설명 시작</h3>  <!-- 번호 = 사이드바 번호와 동일 -->
-  <div class="meta">
-    <span class="time-range">⏱ 01:08:19 ~ 01:20:34</span>
-    <a href="#" onclick="seekTo(4099);return false;" class="yt-link">▶ 이 구간 재생</a>
+  <div class="card-header">
+    <div class="card-num">16</div>
+    <div class="card-title">lupa-input architecture 설명 시작</div>
   </div>
-  <div class="section"><h4>📌 학습목표</h4><ul><li>LUPA input architecture의 레이어 구조와 각 구성 요소의 역할을 설명할 수 있다.</li><li>키 및 인코더 이벤트가 발생하고 전달되는 과정을 이해하고 설명할 수 있다.</li><li>HAL 레이어와 콜백 함수가 input manager와 드라이버 간에 어떻게 동작하는지 설명할 수 있다.</li><li>GVX 보드에서 input manager가 키와 인코더 이벤트를 처리하는 방식을 이해할 수 있다.</li></ul></div>
-  <div class="section"><h4>📋 주요내용</h4><ul><li>LUPA input architecture는 레이어 패턴으로 구성되어 있으며, 상위에 어플리케이션, 중간에 input manager와 HAL 레이어, 하위에 드라이버가 존재한다.</li><li>키, 터치, 인코더 등 입력 이벤트는 드라이버에서 발생하여 HAL 레이어를 거쳐 input manager로 전달된다.</li><li>input manager와 HAL, 드라이버 간에는 콜백 함수가 설정되어 이벤트 전달이 이루어진다.</li><li>키 이벤트 발생 시 디바이스 드라이버에서 헥사 값으로 키 값을 전달하며, pressed/released 상태도 함께 전달된다.</li><li>GVX 보드에서는 터치가 없으므로 키와 인코더 이벤트만 처리하며, 각 칩별로 사용되는 키 값이 다르다.</li><li>input manager는 이벤트를 수신하여 모듈적으로 전달하고, 키-제너레이션 기능을 통해 SDK API와 연동될 수 있다.</li><li>멀티 터치 이벤트에서는 TID, X, Y 좌표 정보가 사용되지만 GVX에서는 키와 인코더 이벤트만 활용된다.</li></ul></div>
+  <div class="card-meta">
+    <span class="time-badge">⏱ 01:08:19 ~ 01:20:34</span>
+    <a href="#" onclick="seekTo(4099);return false;" class="yt-link">▶ 재생</a>
+  </div>
+  <div class="section objectives"><div class="section-label">🎯 학습목표</div><ul><li>LUPA input architecture의 레이어 구조와 각 구성 요소의 역할을 설명할 수 있다.</li><li>키 및 인코더 이벤트가 발생하고 전달되는 과정을 이해하고 설명할 수 있다.</li><li>HAL 레이어와 콜백 함수가 input manager와 드라이버 간에 어떻게 동작하는지 설명할 수 있다.</li><li>GVX 보드에서 input manager가 키와 인코더 이벤트를 처리하는 방식을 이해할 수 있다.</li></ul></div>
+  <div class="section keypoints"><div class="section-label">📋 주요내용</div><ul><li>LUPA input architecture는 레이어 패턴으로 구성되어 있으며, 상위에 어플리케이션, 중간에 input manager와 HAL 레이어, 하위에 드라이버가 존재한다.</li><li>키, 터치, 인코더 등 입력 이벤트는 드라이버에서 발생하여 HAL 레이어를 거쳐 input manager로 전달된다.</li><li>input manager와 HAL, 드라이버 간에는 콜백 함수가 설정되어 이벤트 전달이 이루어진다.</li><li>키 이벤트 발생 시 디바이스 드라이버에서 헥사 값으로 키 값을 전달하며, pressed/released 상태도 함께 전달된다.</li><li>GVX 보드에서는 터치가 없으므로 키와 인코더 이벤트만 처리하며, 각 칩별로 사용되는 키 값이 다르다.</li><li>input manager는 이벤트를 수신하여 모듈적으로 전달하고, 키-제너레이션 기능을 통해 SDK API와 연동될 수 있다.</li><li>멀티 터치 이벤트에서는 TID, X, Y 좌표 정보가 사용되지만 GVX에서는 키와 인코더 이벤트만 활용된다.</li></ul></div>
   <div class="quiz-block" data-quiz-idx="15"><div class="quiz-header" onclick="toggleQuiz(this)">🧪 퀴즈 풀기 <span class="quiz-count">(5문제)</span><span class="quiz-arrow">▶</span></div><div class="quiz-body" style="display:none"></div></div>
-  <label class="chapter-check" data-chapter-idx="15"><input type="checkbox" onchange="onChapterCheck(this,15)"> <span>✅ 이 챕터 학습 완료</span></label>
+  <label class="chapter-check" data-chapter-idx="15"><input type="checkbox" onchange="onChapterCheck(this,15)"> <span>학습 완료</span></label>
   <details class="transcript-toggle">
-    <summary>📝 Transcript 원문 보기</summary>
+    <summary>원문 보기</summary>
     <div class="transcript-content">
       <p><a href="#" onclick="seekTo(4099);return false;" class="ts-link">[01:08:19]</a> 자, 완료가 됐습니다. 제가 생각할 때는 LED SDK를 사용하는 방법은 숙지를 하신 것 같고, 감을 잡으신 것 같고, 다음엔 input입니다.</p>
 <p><a href="#" onclick="seekTo(4116);return false;" class="ts-link">[01:08:36]</a> lupa-input architecture에 대해서 설명을 드리겠습니다.</p>
@@ -1378,17 +1474,20 @@
 </div>
 
 <div class="card" id="chapter-16">
-  <h3>17. PyG와 이벤트 데이터 전송 방식 설명</h3>  <!-- 번호 = 사이드바 번호와 동일 -->
-  <div class="meta">
-    <span class="time-range">⏱ 01:20:34 ~ 01:22:32</span>
-    <a href="#" onclick="seekTo(4834);return false;" class="yt-link">▶ 이 구간 재생</a>
+  <div class="card-header">
+    <div class="card-num">17</div>
+    <div class="card-title">PyG와 이벤트 데이터 전송 방식 설명</div>
   </div>
-  <div class="section"><h4>📌 학습목표</h4><ul><li>PyG를 활용하여 이벤트 데이터를 전송하는 방식 이해하기</li><li>이벤트 ID와 실제 데이터 구조체의 역할 및 전송 방법 설명하기</li><li>InputManager를 통해 키 이벤트가 다른 모듈로 전달되는 과정 설명하기</li></ul></div>
-  <div class="section"><h4>📋 주요내용</h4><ul><li>PyG를 통해 이벤트 input container를 low-data로 전송하며, 실제 데이터는 구조체를 복사하여 사용함</li><li>이벤트 전송 시 이벤트 버클을 통해 이벤트를 전달하며, 프레스 키패드에서는 Radata, Pressed, Released 등 여러 이벤트 ID를 사용함</li><li>Pressed는 눌렸을 때, Released는 떨어졌을 때, Radata는 상태와 상관없이 항상 전송됨</li><li>인코더 입력의 경우 Radata 이벤트만 생성하며, 이벤트 ID는 하나만 존재함</li><li>InputManager는 최종적으로 이벤트 모듈을 통해 키 이벤트를 다른 모듈로 전달함</li><li>이벤트 동작 방식과 InputManager의 역할을 이해하는 것이 키 데이터 전송의 핵심임</li></ul></div>
+  <div class="card-meta">
+    <span class="time-badge">⏱ 01:20:34 ~ 01:22:32</span>
+    <a href="#" onclick="seekTo(4834);return false;" class="yt-link">▶ 재생</a>
+  </div>
+  <div class="section objectives"><div class="section-label">🎯 학습목표</div><ul><li>PyG를 활용하여 이벤트 데이터를 전송하는 방식 이해하기</li><li>이벤트 ID와 실제 데이터 구조체의 역할 및 전송 방법 설명하기</li><li>InputManager를 통해 키 이벤트가 다른 모듈로 전달되는 과정 설명하기</li></ul></div>
+  <div class="section keypoints"><div class="section-label">📋 주요내용</div><ul><li>PyG를 통해 이벤트 input container를 low-data로 전송하며, 실제 데이터는 구조체를 복사하여 사용함</li><li>이벤트 전송 시 이벤트 버클을 통해 이벤트를 전달하며, 프레스 키패드에서는 Radata, Pressed, Released 등 여러 이벤트 ID를 사용함</li><li>Pressed는 눌렸을 때, Released는 떨어졌을 때, Radata는 상태와 상관없이 항상 전송됨</li><li>인코더 입력의 경우 Radata 이벤트만 생성하며, 이벤트 ID는 하나만 존재함</li><li>InputManager는 최종적으로 이벤트 모듈을 통해 키 이벤트를 다른 모듈로 전달함</li><li>이벤트 동작 방식과 InputManager의 역할을 이해하는 것이 키 데이터 전송의 핵심임</li></ul></div>
   <div class="quiz-block" data-quiz-idx="16"><div class="quiz-header" onclick="toggleQuiz(this)">🧪 퀴즈 풀기 <span class="quiz-count">(5문제)</span><span class="quiz-arrow">▶</span></div><div class="quiz-body" style="display:none"></div></div>
-  <label class="chapter-check" data-chapter-idx="16"><input type="checkbox" onchange="onChapterCheck(this,16)"> <span>✅ 이 챕터 학습 완료</span></label>
+  <label class="chapter-check" data-chapter-idx="16"><input type="checkbox" onchange="onChapterCheck(this,16)"> <span>학습 완료</span></label>
   <details class="transcript-toggle">
-    <summary>📝 Transcript 원문 보기</summary>
+    <summary>원문 보기</summary>
     <div class="transcript-content">
       <p><a href="#" onclick="seekTo(4834);return false;" class="ts-link">[01:20:34]</a> PyG가 뭔지 실제 데이터는 이거고</p>
 <p><a href="#" onclick="seekTo(4838);return false;" class="ts-link">[01:20:38]</a> 그때 보낼 때 이벤트는 이벤트ID는 무엇인지</p>
@@ -1421,17 +1520,20 @@
 </div>
 
 <div class="card" id="chapter-17">
-  <h3>18. 이벤트 아키텍처 및 모듈 비율 설명 시작</h3>  <!-- 번호 = 사이드바 번호와 동일 -->
-  <div class="meta">
-    <span class="time-range">⏱ 01:22:32 ~ 01:32:00</span>
-    <a href="#" onclick="seekTo(4952);return false;" class="yt-link">▶ 이 구간 재생</a>
+  <div class="card-header">
+    <div class="card-num">18</div>
+    <div class="card-title">이벤트 아키텍처 및 모듈 비율 설명 시작</div>
   </div>
-  <div class="section"><h4>📌 학습목표</h4><ul><li>이벤트 아키텍처의 송신부와 수신부 구조 및 동작 방식을 설명할 수 있다.</li><li>InputManager와 Application에서 이벤트 채널을 생성하고 연결하는 과정을 구현할 수 있다.</li><li>이벤트 모듈의 주요 함수(create, bind, connect, send, receive)의 역할과 호출 순서를 이해하고 설명할 수 있다.</li><li>터치 이벤트 등 실제 이벤트 수신 사례를 통해 데이터가 전달되는 과정을 추적할 수 있다.</li></ul></div>
-  <div class="section"><h4>📋 주요내용</h4><ul><li>이벤트 아키텍처는 송신부와 수신부로 구성되며, 각 부에서 인덱 베이스와 핸들, 채널을 생성 및 매핑한다.</li><li>InputManager에서 event create와 bind 함수를 통해 채널을 형성하고, Application에서는 create와 connect로 채널에 수신 엘리먼트를 등록한다.</li><li>이벤트 데이터는 메시지 큐를 통해 송신부에서 수신부로 전달되며, 각 함수의 호출 순서와 데이터 흐름이 명확하게 정의되어 있다.</li><li>이벤트 모듈은 double linked list 구조를 활용해 핸들과 채널, 엘리먼트의 동적 관리가 가능하다.</li><li>터치 이벤트 등 실제 사례에서 이벤트 수신부가 대기하다가 메시지 큐를 통해 데이터를 받아 처리한다.</li><li>이벤트 bind와 connect 함수 호출을 통해 송신부-이벤트, 이벤트-클라이언트 간 채널이 형성된다.</li></ul></div>
+  <div class="card-meta">
+    <span class="time-badge">⏱ 01:22:32 ~ 01:32:00</span>
+    <a href="#" onclick="seekTo(4952);return false;" class="yt-link">▶ 재생</a>
+  </div>
+  <div class="section objectives"><div class="section-label">🎯 학습목표</div><ul><li>이벤트 아키텍처의 송신부와 수신부 구조 및 동작 방식을 설명할 수 있다.</li><li>InputManager와 Application에서 이벤트 채널을 생성하고 연결하는 과정을 구현할 수 있다.</li><li>이벤트 모듈의 주요 함수(create, bind, connect, send, receive)의 역할과 호출 순서를 이해하고 설명할 수 있다.</li><li>터치 이벤트 등 실제 이벤트 수신 사례를 통해 데이터가 전달되는 과정을 추적할 수 있다.</li></ul></div>
+  <div class="section keypoints"><div class="section-label">📋 주요내용</div><ul><li>이벤트 아키텍처는 송신부와 수신부로 구성되며, 각 부에서 인덱 베이스와 핸들, 채널을 생성 및 매핑한다.</li><li>InputManager에서 event create와 bind 함수를 통해 채널을 형성하고, Application에서는 create와 connect로 채널에 수신 엘리먼트를 등록한다.</li><li>이벤트 데이터는 메시지 큐를 통해 송신부에서 수신부로 전달되며, 각 함수의 호출 순서와 데이터 흐름이 명확하게 정의되어 있다.</li><li>이벤트 모듈은 double linked list 구조를 활용해 핸들과 채널, 엘리먼트의 동적 관리가 가능하다.</li><li>터치 이벤트 등 실제 사례에서 이벤트 수신부가 대기하다가 메시지 큐를 통해 데이터를 받아 처리한다.</li><li>이벤트 bind와 connect 함수 호출을 통해 송신부-이벤트, 이벤트-클라이언트 간 채널이 형성된다.</li></ul></div>
   <div class="quiz-block" data-quiz-idx="17"><div class="quiz-header" onclick="toggleQuiz(this)">🧪 퀴즈 풀기 <span class="quiz-count">(5문제)</span><span class="quiz-arrow">▶</span></div><div class="quiz-body" style="display:none"></div></div>
-  <label class="chapter-check" data-chapter-idx="17"><input type="checkbox" onchange="onChapterCheck(this,17)"> <span>✅ 이 챕터 학습 완료</span></label>
+  <label class="chapter-check" data-chapter-idx="17"><input type="checkbox" onchange="onChapterCheck(this,17)"> <span>학습 완료</span></label>
   <details class="transcript-toggle">
-    <summary>📝 Transcript 원문 보기</summary>
+    <summary>원문 보기</summary>
     <div class="transcript-content">
       <p><a href="#" onclick="seekTo(4952);return false;" class="ts-link">[01:22:32]</a> 이벤트 아키텍처를 설명을 들을 것이고 모듈 비율을 설명드리고</p>
 <p><a href="#" onclick="seekTo(4956);return false;" class="ts-link">[01:22:36]</a> 각 과정이 어떻게 되는지 그리고 수신 사례, 터치 이벤트에 수신한 사례에 대해 설명드리겠습니다.</p>
@@ -1540,17 +1642,20 @@
 </div>
 
 <div class="card" id="chapter-18">
-  <h3>19. 실습보드 설명 및 실습 안내</h3>  <!-- 번호 = 사이드바 번호와 동일 -->
-  <div class="meta">
-    <span class="time-range">⏱ 01:32:00 ~ 01:34:01</span>
-    <a href="#" onclick="seekTo(5520);return false;" class="yt-link">▶ 이 구간 재생</a>
+  <div class="card-header">
+    <div class="card-num">19</div>
+    <div class="card-title">실습보드 설명 및 실습 안내</div>
   </div>
-  <div class="section"><h4>📌 학습목표</h4><ul><li>실습보드의 각 키와 인코더의 구성 및 연결 구조를 설명할 수 있다.</li><li>키 입력 및 인코더 이벤트가 어플리케이션에 어떻게 전달되고 출력되는지 확인할 수 있다.</li><li>특정 키 입력(예: 73번 키)에 따라 LED 동작을 제어하는 실습을 수행할 수 있다.</li></ul></div>
-  <div class="section"><h4>📋 주요내용</h4><ul><li>실습보드는 3개의 키 그룹(8개, 2개, 2개)과 인코더로 구성되어 있으며, 인코더는 커넥터를 통해 DQ-C와 연결된다.</li><li>각 키의 번호는 LED 페이지에 표시되어 있으며, 키를 누르면 input 매니저와 어플리케이션에서 이벤트가 수신되고 출력된다.</li><li>73번 키를 누를 때마다 LED 숫자가 00부터 99까지 1씩 증가하며, 99 이후에는 다시 00으로 순환되도록 구현한다.</li></ul></div>
+  <div class="card-meta">
+    <span class="time-badge">⏱ 01:32:00 ~ 01:34:01</span>
+    <a href="#" onclick="seekTo(5520);return false;" class="yt-link">▶ 재생</a>
+  </div>
+  <div class="section objectives"><div class="section-label">🎯 학습목표</div><ul><li>실습보드의 각 키와 인코더의 구성 및 연결 구조를 설명할 수 있다.</li><li>키 입력 및 인코더 이벤트가 어플리케이션에 어떻게 전달되고 출력되는지 확인할 수 있다.</li><li>특정 키 입력(예: 73번 키)에 따라 LED 동작을 제어하는 실습을 수행할 수 있다.</li></ul></div>
+  <div class="section keypoints"><div class="section-label">📋 주요내용</div><ul><li>실습보드는 3개의 키 그룹(8개, 2개, 2개)과 인코더로 구성되어 있으며, 인코더는 커넥터를 통해 DQ-C와 연결된다.</li><li>각 키의 번호는 LED 페이지에 표시되어 있으며, 키를 누르면 input 매니저와 어플리케이션에서 이벤트가 수신되고 출력된다.</li><li>73번 키를 누를 때마다 LED 숫자가 00부터 99까지 1씩 증가하며, 99 이후에는 다시 00으로 순환되도록 구현한다.</li></ul></div>
   <div class="quiz-block" data-quiz-idx="18"><div class="quiz-header" onclick="toggleQuiz(this)">🧪 퀴즈 풀기 <span class="quiz-count">(5문제)</span><span class="quiz-arrow">▶</span></div><div class="quiz-body" style="display:none"></div></div>
-  <label class="chapter-check" data-chapter-idx="18"><input type="checkbox" onchange="onChapterCheck(this,18)"> <span>✅ 이 챕터 학습 완료</span></label>
+  <label class="chapter-check" data-chapter-idx="18"><input type="checkbox" onchange="onChapterCheck(this,18)"> <span>학습 완료</span></label>
   <details class="transcript-toggle">
-    <summary>📝 Transcript 원문 보기</summary>
+    <summary>원문 보기</summary>
     <div class="transcript-content">
       <p><a href="#" onclick="seekTo(5520);return false;" class="ts-link">[01:32:00]</a> 여기까지 질문이 있으신가요? 넘어가겠습니다. 실습보드 설명 드리겠습니다. 실습보드에는 키가 3개가 존재하고 첫 번째는 8개, 그리고 두 번째는 2개, 세 번째는 2개입니다. 마지막으로 인코더는 노코더에 있는</p>
 <p><a href="#" onclick="seekTo(5558);return false;" class="ts-link">[01:32:38]</a> 인코더이고 그 인코더가 이 커넥터를 통해서 DQ-C와 연결이 되는 구조를 보시면 되겠습니다. 그리고 이 터치의 키에 대한 번호는 제가 실습했을 때 LED 페이지에 표시를 해놨습니다. 그 페이지를 확인하시면 되겠습니다. 실습입니다.</p>
@@ -1562,17 +1667,20 @@
 </div>
 
 <div class="card" id="chapter-19">
-  <h3>20. 실습 시작</h3>  <!-- 번호 = 사이드바 번호와 동일 -->
-  <div class="meta">
-    <span class="time-range">⏱ 01:34:01 ~ 01:37:38</span>
-    <a href="#" onclick="seekTo(5641);return false;" class="yt-link">▶ 이 구간 재생</a>
+  <div class="card-header">
+    <div class="card-num">20</div>
+    <div class="card-title">실습 시작</div>
   </div>
-  <div class="section"><h4>📌 학습목표</h4><ul><li>input 이벤트를 활용하여 키와 인코더 입력 데이터를 처리할 수 있다.</li><li>이벤트 ID와 채널 ID를 이용해 입력 이벤트를 구분하고 원하는 동작을 구현할 수 있다.</li><li>7segment LED를 제어하여 입력에 따라 숫자를 표시할 수 있다.</li></ul></div>
-  <div class="section"><h4>📋 주요내용</h4><ul><li>실습 파일은 HG에 input 실습으로 업로드되어 있으며, 1~3번 코드가 제공됨.</li><li>input 이벤트와 receive 함수를 통해 입력 데이터를 받아 처리하며, 이벤트 ID와 채널 ID로 입력 구분이 가능함.</li><li>이벤트 콜렉트와 ctl을 활용해 입력값을 변수에 저장하고, 채널 ID를 통해 이벤트를 구분함.</li><li>특정 키(예: 73번 키)가 pressed 상태일 때 LED 7segment count up 함수를 호출하여 숫자를 증가시킴.</li><li>7segment LED는 두 개의 테이블로 구성되어 10의 자리와 1의 자리를 각각 0~9까지 표현함.</li><li>LED 인덱스 매핑과 count up 함수 호출을 통해 LED 점등 상태를 업데이트함.</li></ul></div>
+  <div class="card-meta">
+    <span class="time-badge">⏱ 01:34:01 ~ 01:37:38</span>
+    <a href="#" onclick="seekTo(5641);return false;" class="yt-link">▶ 재생</a>
+  </div>
+  <div class="section objectives"><div class="section-label">🎯 학습목표</div><ul><li>input 이벤트를 활용하여 키와 인코더 입력 데이터를 처리할 수 있다.</li><li>이벤트 ID와 채널 ID를 이용해 입력 이벤트를 구분하고 원하는 동작을 구현할 수 있다.</li><li>7segment LED를 제어하여 입력에 따라 숫자를 표시할 수 있다.</li></ul></div>
+  <div class="section keypoints"><div class="section-label">📋 주요내용</div><ul><li>실습 파일은 HG에 input 실습으로 업로드되어 있으며, 1~3번 코드가 제공됨.</li><li>input 이벤트와 receive 함수를 통해 입력 데이터를 받아 처리하며, 이벤트 ID와 채널 ID로 입력 구분이 가능함.</li><li>이벤트 콜렉트와 ctl을 활용해 입력값을 변수에 저장하고, 채널 ID를 통해 이벤트를 구분함.</li><li>특정 키(예: 73번 키)가 pressed 상태일 때 LED 7segment count up 함수를 호출하여 숫자를 증가시킴.</li><li>7segment LED는 두 개의 테이블로 구성되어 10의 자리와 1의 자리를 각각 0~9까지 표현함.</li><li>LED 인덱스 매핑과 count up 함수 호출을 통해 LED 점등 상태를 업데이트함.</li></ul></div>
   <div class="quiz-block" data-quiz-idx="19"><div class="quiz-header" onclick="toggleQuiz(this)">🧪 퀴즈 풀기 <span class="quiz-count">(5문제)</span><span class="quiz-arrow">▶</span></div><div class="quiz-body" style="display:none"></div></div>
-  <label class="chapter-check" data-chapter-idx="19"><input type="checkbox" onchange="onChapterCheck(this,19)"> <span>✅ 이 챕터 학습 완료</span></label>
+  <label class="chapter-check" data-chapter-idx="19"><input type="checkbox" onchange="onChapterCheck(this,19)"> <span>학습 완료</span></label>
   <details class="transcript-toggle">
-    <summary>📝 Transcript 원문 보기</summary>
+    <summary>원문 보기</summary>
     <div class="transcript-content">
       <p><a href="#" onclick="seekTo(5641);return false;" class="ts-link">[01:34:01]</a> 없으시면 실습을 시작하겠습니다.</p>
 <p><a href="#" onclick="seekTo(5645);return false;" class="ts-link">[01:34:05]</a> 실습은 이제 마치고 제가 정답 파일은 올려놨습니다.</p>
@@ -1620,17 +1728,20 @@
 </div>
 
 <div class="card" id="chapter-20">
-  <h3>21. LED 7segment 동작 데모</h3>  <!-- 번호 = 사이드바 번호와 동일 -->
-  <div class="meta">
-    <span class="time-range">⏱ 01:37:38 ~ 01:38:28</span>
-    <a href="#" onclick="seekTo(5858);return false;" class="yt-link">▶ 이 구간 재생</a>
+  <div class="card-header">
+    <div class="card-num">21</div>
+    <div class="card-title">LED 7segment 동작 데모</div>
   </div>
-  <div class="section"><h4>📌 학습목표</h4><ul><li>LED 7segment의 동작을 직접 확인할 수 있다.</li><li>버튼 입력에 따라 LED 7segment 숫자가 증가하는 동작을 이해하고 설명할 수 있다.</li><li>LUPA Studio를 활용하여 하드웨어 제어 데모를 실행할 수 있다.</li></ul></div>
-  <div class="section"><h4>📋 주요내용</h4><ul><li>LED 7segment에 숫자가 표시되는 실제 동작을 시연하였다.</li><li>버튼을 한 번 누를 때마다 숫자가 1씩 증가하는 것을 확인할 수 있다.</li><li>버튼을 빠르게 누르면 숫자가 계속 증가하는 동작을 보여주었다.</li><li>다음 챕터에서 버저 제어에 대해 설명할 예정임을 안내하였다.</li></ul></div>
+  <div class="card-meta">
+    <span class="time-badge">⏱ 01:37:38 ~ 01:38:28</span>
+    <a href="#" onclick="seekTo(5858);return false;" class="yt-link">▶ 재생</a>
+  </div>
+  <div class="section objectives"><div class="section-label">🎯 학습목표</div><ul><li>LED 7segment의 동작을 직접 확인할 수 있다.</li><li>버튼 입력에 따라 LED 7segment 숫자가 증가하는 동작을 이해하고 설명할 수 있다.</li><li>LUPA Studio를 활용하여 하드웨어 제어 데모를 실행할 수 있다.</li></ul></div>
+  <div class="section keypoints"><div class="section-label">📋 주요내용</div><ul><li>LED 7segment에 숫자가 표시되는 실제 동작을 시연하였다.</li><li>버튼을 한 번 누를 때마다 숫자가 1씩 증가하는 것을 확인할 수 있다.</li><li>버튼을 빠르게 누르면 숫자가 계속 증가하는 동작을 보여주었다.</li><li>다음 챕터에서 버저 제어에 대해 설명할 예정임을 안내하였다.</li></ul></div>
   <div class="quiz-block" data-quiz-idx="20"><div class="quiz-header" onclick="toggleQuiz(this)">🧪 퀴즈 풀기 <span class="quiz-count">(4문제)</span><span class="quiz-arrow">▶</span></div><div class="quiz-body" style="display:none"></div></div>
-  <label class="chapter-check" data-chapter-idx="20"><input type="checkbox" onchange="onChapterCheck(this,20)"> <span>✅ 이 챕터 학습 완료</span></label>
+  <label class="chapter-check" data-chapter-idx="20"><input type="checkbox" onchange="onChapterCheck(this,20)"> <span>학습 완료</span></label>
   <details class="transcript-toggle">
-    <summary>📝 Transcript 원문 보기</summary>
+    <summary>원문 보기</summary>
     <div class="transcript-content">
       <p><a href="#" onclick="seekTo(5858);return false;" class="ts-link">[01:37:38]</a> 실제 동작하는 것을 확인을 보여드리겠습니다.</p>
 <p><a href="#" onclick="seekTo(5863);return false;" class="ts-link">[01:37:43]</a> 지금 0을 한번 눌렀기 때문에 0이 표시가 되고요.</p>
@@ -1645,17 +1756,20 @@
 </div>
 
 <div class="card" id="chapter-21">
-  <h3>22. 버저 출력을 위한 오디오 아키텍처 설명 시작</h3>  <!-- 번호 = 사이드바 번호와 동일 -->
-  <div class="meta">
-    <span class="time-range">⏱ 01:38:28 ~ 01:54:09</span>
-    <a href="#" onclick="seekTo(5908);return false;" class="yt-link">▶ 이 구간 재생</a>
+  <div class="card-header">
+    <div class="card-num">22</div>
+    <div class="card-title">버저 출력을 위한 오디오 아키텍처 설명 시작</div>
   </div>
-  <div class="section"><h4>📌 학습목표</h4><ul><li>버저 출력을 위한 오디오 아키텍처의 전체 구조와 각 모듈의 역할을 설명할 수 있다.</li><li>오디오 앱에서 버저 음원을 송출하는 과정을 단계별로 설명할 수 있다.</li><li>버저 제어를 위한 API와 핸들 관리 방법을 이해하고 활용할 수 있다.</li><li>PWM과 GPIO를 이용한 버저 디바이스 제어 과정을 설명할 수 있다.</li></ul></div>
-  <div class="section"><h4>📋 주요내용</h4><ul><li>오디오 앱은 음원과 BPM 정보를 가지고 있으며, 오디오 프레임워크를 통해 음원 송출을 관리한다.</li><li>오디오 프레임워크는 오디오 매니저, 라이브톤 제너레이터, 라이브톤 SDS 등 여러 모듈로 구성되어 있으며, 각 모듈이 제공하는 API를 통해 음원 타입 결정, 디코딩, 송출을 담당한다.</li><li>버저 음원은 오디오 매니저에서 버저 타입으로 지정되어 LA-MEDIA 디코더를 통해 디코딩되고, 버저 드라이버를 통해 PWM과 GPIO로 최종 제어된다.</li><li>BEEP 프로그램(주파수, 온타임, 오프타임 등)은 오디오 앱에서 관리하며, 라이브톤 제너레이터 모듈로 전달되어 등록 및 저장된다.</li><li>버저 제어를 위해 Acquire Audio Player API를 사용하여 핸들을 획득하고, 핸들을 통해 프로그램 등록, 음량, 반복, 페이드 효과 등 다양한 설정을 할 수 있다.</li><li>GVX 플랫폼에는 버저 디바이스가 탑재되어 있으며, 버저 음원만 버저 디바이스를 통해 송출되고 나머지 음원은 스피커를 통해 송출된다.</li></ul></div>
+  <div class="card-meta">
+    <span class="time-badge">⏱ 01:38:28 ~ 01:54:09</span>
+    <a href="#" onclick="seekTo(5908);return false;" class="yt-link">▶ 재생</a>
+  </div>
+  <div class="section objectives"><div class="section-label">🎯 학습목표</div><ul><li>버저 출력을 위한 오디오 아키텍처의 전체 구조와 각 모듈의 역할을 설명할 수 있다.</li><li>오디오 앱에서 버저 음원을 송출하는 과정을 단계별로 설명할 수 있다.</li><li>버저 제어를 위한 API와 핸들 관리 방법을 이해하고 활용할 수 있다.</li><li>PWM과 GPIO를 이용한 버저 디바이스 제어 과정을 설명할 수 있다.</li></ul></div>
+  <div class="section keypoints"><div class="section-label">📋 주요내용</div><ul><li>오디오 앱은 음원과 BPM 정보를 가지고 있으며, 오디오 프레임워크를 통해 음원 송출을 관리한다.</li><li>오디오 프레임워크는 오디오 매니저, 라이브톤 제너레이터, 라이브톤 SDS 등 여러 모듈로 구성되어 있으며, 각 모듈이 제공하는 API를 통해 음원 타입 결정, 디코딩, 송출을 담당한다.</li><li>버저 음원은 오디오 매니저에서 버저 타입으로 지정되어 LA-MEDIA 디코더를 통해 디코딩되고, 버저 드라이버를 통해 PWM과 GPIO로 최종 제어된다.</li><li>BEEP 프로그램(주파수, 온타임, 오프타임 등)은 오디오 앱에서 관리하며, 라이브톤 제너레이터 모듈로 전달되어 등록 및 저장된다.</li><li>버저 제어를 위해 Acquire Audio Player API를 사용하여 핸들을 획득하고, 핸들을 통해 프로그램 등록, 음량, 반복, 페이드 효과 등 다양한 설정을 할 수 있다.</li><li>GVX 플랫폼에는 버저 디바이스가 탑재되어 있으며, 버저 음원만 버저 디바이스를 통해 송출되고 나머지 음원은 스피커를 통해 송출된다.</li></ul></div>
   <div class="quiz-block" data-quiz-idx="21"><div class="quiz-header" onclick="toggleQuiz(this)">🧪 퀴즈 풀기 <span class="quiz-count">(5문제)</span><span class="quiz-arrow">▶</span></div><div class="quiz-body" style="display:none"></div></div>
-  <label class="chapter-check" data-chapter-idx="21"><input type="checkbox" onchange="onChapterCheck(this,21)"> <span>✅ 이 챕터 학습 완료</span></label>
+  <label class="chapter-check" data-chapter-idx="21"><input type="checkbox" onchange="onChapterCheck(this,21)"> <span>학습 완료</span></label>
   <details class="transcript-toggle">
-    <summary>📝 Transcript 원문 보기</summary>
+    <summary>원문 보기</summary>
     <div class="transcript-content">
       <p><a href="#" onclick="seekTo(5908);return false;" class="ts-link">[01:38:28]</a> 이제 마지막 시간입니다. 개인적으로도 기쁜 순간인데요.</p>
 <p><a href="#" onclick="seekTo(5915);return false;" class="ts-link">[01:38:35]</a> 버저 출력을 위한 오디오 아키텍처를 설명드리겠습니다.</p>
@@ -1873,17 +1987,20 @@
 </div>
 
 <div class="card" id="chapter-22">
-  <h3>23. 버저 드라이버에서의 동작 설명</h3>  <!-- 번호 = 사이드바 번호와 동일 -->
-  <div class="meta">
-    <span class="time-range">⏱ 01:54:09 ~ 01:57:43</span>
-    <a href="#" onclick="seekTo(6849);return false;" class="yt-link">▶ 이 구간 재생</a>
+  <div class="card-header">
+    <div class="card-num">23</div>
+    <div class="card-title">버저 드라이버에서의 동작 설명</div>
   </div>
-  <div class="section"><h4>📌 학습목표</h4><ul><li>버저 드라이버의 초기화 및 PIN 셋업 과정을 설명할 수 있다.</li><li>PWM을 이용한 버저 제어 방식과 주파수 설정 방법을 이해하고 구현할 수 있다.</li><li>GPIO와 ptbln을 활용하여 버저의 음량 및 동작 상태를 제어할 수 있다.</li><li>버저의 ON/OFF 및 효과(이펙트) 설정 로직을 설명할 수 있다.</li></ul></div>
-  <div class="section"><h4>📋 주요내용</h4><ul><li>버저 드라이버는 부팅 시 이니셜라이즈 과정에서 PIN을 Pulse로 설정하여 기본 상태(송출 없음)를 만든다.</li><li>버저 ON 동작에는 PWM 드라이버를 사용하며, Pulse와 PulseRead 값을 통해 주파수와 Duty를 설정한다.</li><li>음량 0% 또는 100%에서는 ptbln 대신 GPIO를 사용하여 12V 인가 여부로 음량을 제어한다.</li><li>음량이 0%나 100%가 아닐 때는 Period와 Pulse 값을 ptbln으로 설정하여 세밀한 음량 제어가 가능하다.</li><li>버저의 소리 유지 시간과 끄는 시간은 별도의 설정 값으로 관리된다.</li><li>이펙트 효과 적용 시 Echo Duty와 하드 버저넷 값이 변경되며, 이에 따라 ptbln 또는 GPIO 제어 방식이 달라진다.</li></ul></div>
+  <div class="card-meta">
+    <span class="time-badge">⏱ 01:54:09 ~ 01:57:43</span>
+    <a href="#" onclick="seekTo(6849);return false;" class="yt-link">▶ 재생</a>
+  </div>
+  <div class="section objectives"><div class="section-label">🎯 학습목표</div><ul><li>버저 드라이버의 초기화 및 PIN 셋업 과정을 설명할 수 있다.</li><li>PWM을 이용한 버저 제어 방식과 주파수 설정 방법을 이해하고 구현할 수 있다.</li><li>GPIO와 ptbln을 활용하여 버저의 음량 및 동작 상태를 제어할 수 있다.</li><li>버저의 ON/OFF 및 효과(이펙트) 설정 로직을 설명할 수 있다.</li></ul></div>
+  <div class="section keypoints"><div class="section-label">📋 주요내용</div><ul><li>버저 드라이버는 부팅 시 이니셜라이즈 과정에서 PIN을 Pulse로 설정하여 기본 상태(송출 없음)를 만든다.</li><li>버저 ON 동작에는 PWM 드라이버를 사용하며, Pulse와 PulseRead 값을 통해 주파수와 Duty를 설정한다.</li><li>음량 0% 또는 100%에서는 ptbln 대신 GPIO를 사용하여 12V 인가 여부로 음량을 제어한다.</li><li>음량이 0%나 100%가 아닐 때는 Period와 Pulse 값을 ptbln으로 설정하여 세밀한 음량 제어가 가능하다.</li><li>버저의 소리 유지 시간과 끄는 시간은 별도의 설정 값으로 관리된다.</li><li>이펙트 효과 적용 시 Echo Duty와 하드 버저넷 값이 변경되며, 이에 따라 ptbln 또는 GPIO 제어 방식이 달라진다.</li></ul></div>
   <div class="quiz-block" data-quiz-idx="22"><div class="quiz-header" onclick="toggleQuiz(this)">🧪 퀴즈 풀기 <span class="quiz-count">(5문제)</span><span class="quiz-arrow">▶</span></div><div class="quiz-body" style="display:none"></div></div>
-  <label class="chapter-check" data-chapter-idx="22"><input type="checkbox" onchange="onChapterCheck(this,22)"> <span>✅ 이 챕터 학습 완료</span></label>
+  <label class="chapter-check" data-chapter-idx="22"><input type="checkbox" onchange="onChapterCheck(this,22)"> <span>학습 완료</span></label>
   <details class="transcript-toggle">
-    <summary>📝 Transcript 원문 보기</summary>
+    <summary>원문 보기</summary>
     <div class="transcript-content">
       <p><a href="#" onclick="seekTo(6849);return false;" class="ts-link">[01:54:09]</a> 이제 버저 드라이버에서 어떤 동작을 하는지를 설명을 드리겠습니다.</p>
 <p><a href="#" onclick="seekTo(6857);return false;" class="ts-link">[01:54:17]</a> 버저 드라이버에서 하는 것은 처음에 버저 드라이버도 부팅을 할 때 이니셜라이즈해야 되는데요.</p>
@@ -1934,17 +2051,20 @@
 </div>
 
 <div class="card" id="chapter-23">
-  <h3>24. 보드 및 피에조 버저 구조 설명</h3>  <!-- 번호 = 사이드바 번호와 동일 -->
-  <div class="meta">
-    <span class="time-range">⏱ 01:57:43 ~ 02:00:53</span>
-    <a href="#" onclick="seekTo(7063);return false;" class="yt-link">▶ 이 구간 재생</a>
+  <div class="card-header">
+    <div class="card-num">24</div>
+    <div class="card-title">보드 및 피에조 버저 구조 설명</div>
   </div>
-  <div class="section"><h4>📌 학습목표</h4><ul><li>피에조 버저의 내부 구조와 동작 원리를 설명할 수 있다.</li><li>버저의 음량과 주파수(PWM)를 제어하는 방법을 이해하고 적용할 수 있다.</li><li>Fade Detect 및 페이드 임팩트 기능의 역할과 동작 방식을 설명할 수 있다.</li></ul></div>
-  <div class="section"><h4>📋 주요내용</h4><ul><li>피에조 버저는 진동판과 압전소자로 구성되어 있으며, 압전소자에 전압이 인가되면 진동판이 수축하여 소리를 발생시킨다.</li><li>버저의 음량은 인가되는 전압의 크기에 따라 제어되며, PWM 핀을 통해 주파수(프리퀀시)를 조절할 수 있다.</li><li>버저에는 두 가지 핀이 연결되어 있는데, 하나는 음량 제어용이고 다른 하나는 PWM 주파수 제어용이다.</li><li>Fade Detect 기능은 버저의 채널을 끊어 소리를 완만하게 끄거나 즉시 끄는 임팩트 효과를 제어한다.</li></ul></div>
+  <div class="card-meta">
+    <span class="time-badge">⏱ 01:57:43 ~ 02:00:53</span>
+    <a href="#" onclick="seekTo(7063);return false;" class="yt-link">▶ 재생</a>
+  </div>
+  <div class="section objectives"><div class="section-label">🎯 학습목표</div><ul><li>피에조 버저의 내부 구조와 동작 원리를 설명할 수 있다.</li><li>버저의 음량과 주파수(PWM)를 제어하는 방법을 이해하고 적용할 수 있다.</li><li>Fade Detect 및 페이드 임팩트 기능의 역할과 동작 방식을 설명할 수 있다.</li></ul></div>
+  <div class="section keypoints"><div class="section-label">📋 주요내용</div><ul><li>피에조 버저는 진동판과 압전소자로 구성되어 있으며, 압전소자에 전압이 인가되면 진동판이 수축하여 소리를 발생시킨다.</li><li>버저의 음량은 인가되는 전압의 크기에 따라 제어되며, PWM 핀을 통해 주파수(프리퀀시)를 조절할 수 있다.</li><li>버저에는 두 가지 핀이 연결되어 있는데, 하나는 음량 제어용이고 다른 하나는 PWM 주파수 제어용이다.</li><li>Fade Detect 기능은 버저의 채널을 끊어 소리를 완만하게 끄거나 즉시 끄는 임팩트 효과를 제어한다.</li></ul></div>
   <div class="quiz-block" data-quiz-idx="23"><div class="quiz-header" onclick="toggleQuiz(this)">🧪 퀴즈 풀기 <span class="quiz-count">(4문제)</span><span class="quiz-arrow">▶</span></div><div class="quiz-body" style="display:none"></div></div>
-  <label class="chapter-check" data-chapter-idx="23"><input type="checkbox" onchange="onChapterCheck(this,23)"> <span>✅ 이 챕터 학습 완료</span></label>
+  <label class="chapter-check" data-chapter-idx="23"><input type="checkbox" onchange="onChapterCheck(this,23)"> <span>학습 완료</span></label>
   <details class="transcript-toggle">
-    <summary>📝 Transcript 원문 보기</summary>
+    <summary>원문 보기</summary>
     <div class="transcript-content">
       <p><a href="#" onclick="seekTo(7063);return false;" class="ts-link">[01:57:43]</a> 이제 보드 설명을 드리겠습니다.</p>
 <p><a href="#" onclick="seekTo(7066);return false;" class="ts-link">[01:57:46]</a> 노포드에 있는 왼쪽에 있는 파란색이 버저입니다.</p>
@@ -1985,17 +2105,20 @@
 </div>
 
 <div class="card" id="chapter-24">
-  <h3>25. 마지막 실습 안내</h3>  <!-- 번호 = 사이드바 번호와 동일 -->
-  <div class="meta">
-    <span class="time-range">⏱ 02:00:53 ~ 02:01:51</span>
-    <a href="#" onclick="seekTo(7253);return false;" class="yt-link">▶ 이 구간 재생</a>
+  <div class="card-header">
+    <div class="card-num">25</div>
+    <div class="card-title">마지막 실습 안내</div>
   </div>
-  <div class="section"><h4>📌 학습목표</h4><ul><li>67번 키를 눌러 오토브 5음(523Hz)을 0.5초 온타임, 0.5초 오프타임으로 버저 출력할 수 있다.</li><li>버저 출력 종료 후 콜백 함수가 호출되어 리듬을 확인할 수 있다.</li><li>28번 키를 눌러 음량을 제어할 수 있도록 설정할 수 있다.</li></ul></div>
-  <div class="section"><h4>📋 주요내용</h4><ul><li>67번 키 입력 시 523Hz 주파수의 오토브 5음을 0.5초 온타임, 0.5초 오프타임으로 버저로 출력한다.</li><li>버저 출력이 끝나면 콜백 함수가 호출되어 리듬 확인이 가능하다.</li><li>28번 키 입력 시 음량 제어 기능을 구현해야 한다.</li><li>실습 시간은 약 20분 동안 진행되며, 이후 Q&amp;A가 이어진다.</li><li>질문은 실습 중 언제든지 자유롭게 할 수 있다.</li></ul></div>
+  <div class="card-meta">
+    <span class="time-badge">⏱ 02:00:53 ~ 02:01:51</span>
+    <a href="#" onclick="seekTo(7253);return false;" class="yt-link">▶ 재생</a>
+  </div>
+  <div class="section objectives"><div class="section-label">🎯 학습목표</div><ul><li>67번 키를 눌러 오토브 5음(523Hz)을 0.5초 온타임, 0.5초 오프타임으로 버저 출력할 수 있다.</li><li>버저 출력 종료 후 콜백 함수가 호출되어 리듬을 확인할 수 있다.</li><li>28번 키를 눌러 음량을 제어할 수 있도록 설정할 수 있다.</li></ul></div>
+  <div class="section keypoints"><div class="section-label">📋 주요내용</div><ul><li>67번 키 입력 시 523Hz 주파수의 오토브 5음을 0.5초 온타임, 0.5초 오프타임으로 버저로 출력한다.</li><li>버저 출력이 끝나면 콜백 함수가 호출되어 리듬 확인이 가능하다.</li><li>28번 키 입력 시 음량 제어 기능을 구현해야 한다.</li><li>실습 시간은 약 20분 동안 진행되며, 이후 Q&amp;A가 이어진다.</li><li>질문은 실습 중 언제든지 자유롭게 할 수 있다.</li></ul></div>
   <div class="quiz-block" data-quiz-idx="24"><div class="quiz-header" onclick="toggleQuiz(this)">🧪 퀴즈 풀기 <span class="quiz-count">(4문제)</span><span class="quiz-arrow">▶</span></div><div class="quiz-body" style="display:none"></div></div>
-  <label class="chapter-check" data-chapter-idx="24"><input type="checkbox" onchange="onChapterCheck(this,24)"> <span>✅ 이 챕터 학습 완료</span></label>
+  <label class="chapter-check" data-chapter-idx="24"><input type="checkbox" onchange="onChapterCheck(this,24)"> <span>학습 완료</span></label>
   <details class="transcript-toggle">
-    <summary>📝 Transcript 원문 보기</summary>
+    <summary>원문 보기</summary>
     <div class="transcript-content">
       <p><a href="#" onclick="seekTo(7253);return false;" class="ts-link">[02:00:53]</a> 질문 있으신가요? 없으면 마지막 실습을 하겠습니다. 실습 내용은 67번 키를 누르면 또 오토브 5음을 내는 건데요.</p>
 <p><a href="#" onclick="seekTo(7267);return false;" class="ts-link">[02:01:07]</a> 이때 주파수는 523Hz입니다.</p>
@@ -2090,7 +2213,8 @@
         var block = body.closest('.quiz-block');
         var quizIdx = block ? block.dataset.quizIdx : 0;
         _onQuizComplete(body, score, questions.length, quizIdx);
-        body.innerHTML = '<div class="quiz-result">?? 완료! ' + score + ' / ' + questions.length + ' 정답<br><button class="quiz-btn quiz-btn-retry" onclick="retryQuiz(this)">다시 풀기</button></div>';
+        var emoji = score === questions.length ? '🎉' : score >= questions.length/2 ? '👍' : '📚';
+        body.innerHTML = '<div class="quiz-result"><div class="score-badge">' + score + ' / ' + questions.length + '</div><br>' + emoji + ' ' + (score === questions.length ? '완벽해요!' : '수고하셨어요!') + '<br><button class="quiz-btn quiz-btn-retry" onclick="retryQuiz(this)" style="margin-top:12px;">다시 풀기</button></div>';
         return;
       }
       var q = questions[qIdx];
