@@ -5,129 +5,194 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>LUPA 강의 1회차 요약</title>
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f5f5f5; color: #333; display: flex; min-height: 100vh; }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --blue: #3182F6;
+    --blue-light: #EBF3FE;
+    --blue-dark: #1B64DA;
+    --green: #0ECF8A;
+    --green-bg: #E8FBF4;
+    --red: #F04452;
+    --red-bg: #FEF0F1;
+    --gray-900: #191F28;
+    --gray-700: #333D4B;
+    --gray-500: #6B7684;
+    --gray-300: #B0B8C1;
+    --gray-100: #F2F4F6;
+    --gray-50: #F9FAFB;
+    --white: #FFFFFF;
+    --radius: 16px;
+    --radius-sm: 10px;
+    --shadow: 0 2px 12px rgba(0,0,0,0.06);
+    --shadow-md: 0 4px 24px rgba(0,0,0,0.10);
+  }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Pretendard", "Segoe UI", sans-serif; background: var(--gray-50); color: var(--gray-900); display: flex; min-height: 100vh; line-height: 1.6; }
 
-  /* 사이드바 */
-  .sidebar { width: 280px; background: #1a1a2e; color: #eee; padding: 20px 0; position: fixed; top: 0; left: 0; height: 100vh; overflow-y: auto; flex-shrink: 0; }
-  .sidebar h2 { padding: 0 20px 15px; font-size: 16px; color: #a0a0c0; border-bottom: 1px solid #2a2a4e; margin-bottom: 10px; }
-  .sidebar-item { display: block; padding: 10px 20px; color: #ccc; text-decoration: none; font-size: 13px; border-left: 3px solid transparent; transition: all 0.2s; }
-  .sidebar-item:hover { background: #2a2a4e; color: #fff; border-left-color: #667eea; }
-  .sidebar-dur { float: right; font-size: 11px; color: #555; font-weight: normal; }
-  .sidebar-item b { color: #667eea; margin-right: 6px; font-size: 12px; }
+  /* ── 사이드바 ── */
+  .sidebar { width: 260px; background: var(--white); border-right: 1px solid var(--gray-100); padding: 32px 0; position: fixed; top: 0; left: 0; height: 100vh; overflow-y: auto; flex-shrink: 0; }
+  .sidebar-logo { padding: 0 24px 24px; border-bottom: 1px solid var(--gray-100); margin-bottom: 8px; }
+  .sidebar-logo-badge { display: inline-block; background: var(--blue); color: #fff; font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 6px; letter-spacing: 0.5px; margin-bottom: 8px; }
+  .sidebar-logo h2 { font-size: 14px; font-weight: 700; color: var(--gray-900); line-height: 1.4; }
+  .sidebar-section { padding: 8px 0; }
+  .sidebar-item { display: flex; align-items: center; gap: 10px; padding: 9px 24px; color: var(--gray-500); text-decoration: none; font-size: 13px; font-weight: 500; border-left: 2px solid transparent; transition: all 0.15s; }
+  .sidebar-item:hover { color: var(--blue); background: var(--blue-light); border-left-color: var(--blue); }
+  .sidebar-item.active { color: var(--blue); background: var(--blue-light); border-left-color: var(--blue); }
+  .sidebar-item b { min-width: 22px; height: 22px; display: inline-flex; align-items: center; justify-content: center; background: var(--gray-100); color: var(--gray-500); border-radius: 6px; font-size: 11px; font-weight: 700; flex-shrink: 0; }
+  .sidebar-item.active b { background: var(--blue); color: #fff; }
+  .sidebar-item .sidebar-title { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .sidebar-dur { font-size: 11px; color: var(--gray-300); font-weight: 400; flex-shrink: 0; }
 
-  /* 메인 */
-  .main { margin-left: 280px; padding: 30px; flex: 1; max-width: 900px; }
-  .header { margin-bottom: 30px; }
-  .header h1 { font-size: 24px; color: #1a1a2e; margin-bottom: 8px; }
-  .header p { color: #666; font-size: 14px; }
+  /* ── 메인 ── */
+  .main { margin-left: 260px; padding: 40px 40px 80px; flex: 1; max-width: 840px; }
 
-  /* 카드 */
-  .card { background: #fff; border-radius: 10px; padding: 24px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
-  .card h3 { font-size: 18px; color: #1a1a2e; margin-bottom: 12px; }
-  .meta { display: flex; gap: 16px; align-items: center; margin-bottom: 16px; font-size: 13px; }
-  .time-range { color: #666; }
-  .yt-link { color: #667eea; text-decoration: none; font-weight: 500; }
-  .yt-link:hover { text-decoration: underline; }
+  /* ── 헤더 ── */
+  .header { margin-bottom: 32px; }
+  .header-badge { display: inline-flex; align-items: center; gap: 6px; background: var(--blue-light); color: var(--blue); font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 20px; margin-bottom: 12px; }
+  .header h1 { font-size: 26px; font-weight: 800; color: var(--gray-900); margin-bottom: 6px; letter-spacing: -0.5px; }
+  .header-sub { font-size: 14px; color: var(--gray-500); margin-bottom: 16px; }
+  .user-banner { display: inline-flex; align-items: center; gap: 6px; background: var(--gray-100); color: var(--gray-700); border-radius: 20px; padding: 4px 12px; font-size: 13px; font-weight: 600; margin-bottom: 12px; }
 
-  /* 섹션 */
-  .section { margin-bottom: 14px; }
-  .section h4 { font-size: 14px; color: #444; margin-bottom: 8px; }
-  .section ul { padding-left: 20px; }
-  .section li { font-size: 14px; line-height: 1.7; color: #555; margin-bottom: 4px; }
+  /* ── 진도바 ── */
+  .progress-bar-wrap { margin-top: 16px; }
+  .progress-bar { height: 6px; background: var(--gray-100); border-radius: 3px; overflow: hidden; }
+  .progress-bar-fill { height: 100%; background: linear-gradient(90deg, var(--blue), #7FB3FA); transition: width 0.4s ease; border-radius: 3px; }
+  .progress-label { font-size: 12px; color: var(--gray-500); margin-top: 6px; font-weight: 500; }
 
-  /* Transcript 토글 */
-  .transcript-toggle { margin-top: 12px; border-top: 1px solid #eee; padding-top: 12px; }
-  .transcript-toggle summary { cursor: pointer; font-size: 13px; color: #888; font-weight: 500; }
-  .transcript-toggle summary:hover { color: #667eea; }
-  .transcript-content { margin-top: 12px; max-height: 400px; overflow-y: auto; padding: 12px; background: #fafafa; border-radius: 6px; font-size: 13px; line-height: 1.8; }
-  .transcript-content p { margin-bottom: 4px; }
-  .ts-link { color: #667eea; text-decoration: none; font-family: monospace; font-size: 12px; }
-  .ts-link:hover { text-decoration: underline; }
-
-  /* 퀴즈 */
-  .quiz-block { margin-top: 14px; border: 1px solid #e0e7ff; border-radius: 8px; overflow: hidden; }
-  .quiz-header { background: #eef2ff; padding: 10px 16px; cursor: pointer; font-size: 14px; font-weight: 600; color: #4338ca; display: flex; align-items: center; gap: 8px; user-select: none; }
-  .quiz-header:hover { background: #e0e7ff; }
-  .quiz-arrow { margin-left: auto; transition: transform 0.2s; font-size: 12px; }
-  .quiz-arrow.open { transform: rotate(90deg); }
-  .quiz-count { font-weight: normal; color: #6366f1; font-size: 13px; }
-  .quiz-body { padding: 16px; background: #fff; }
-  .quiz-question { font-size: 15px; font-weight: 600; color: #1e1b4b; margin-bottom: 12px; }
-  .quiz-question .q-num { color: #6366f1; margin-right: 6px; }
-  .quiz-options { list-style: none; padding: 0; margin-bottom: 12px; }
-  .quiz-options li { padding: 9px 14px; margin-bottom: 6px; border: 1.5px solid #e5e7eb; border-radius: 6px; cursor: pointer; font-size: 14px; transition: all 0.15s; }
-  .quiz-options li:hover { border-color: #6366f1; background: #f5f3ff; }
-  .quiz-options li.correct { background: #d1fae5; border-color: #10b981; color: #065f46; }
-  .quiz-options li.wrong { background: #fee2e2; border-color: #ef4444; color: #991b1b; }
-  .quiz-hint { font-size: 13px; color: #6b7280; background: #f9fafb; border-left: 3px solid #6366f1; padding: 8px 12px; border-radius: 0 6px 6px 0; margin-bottom: 12px; display: none; }
-  .quiz-nav { display: flex; gap: 8px; }
-  .quiz-btn { padding: 7px 16px; border: none; border-radius: 6px; font-size: 13px; cursor: pointer; font-weight: 500; }
-  .quiz-btn-next { background: #6366f1; color: #fff; }
-  .quiz-btn-next:hover { background: #4f46e5; }
-  .quiz-btn-retry { background: #f3f4f6; color: #374151; }
-  .quiz-btn-retry:hover { background: #e5e7eb; }
-  .quiz-result { text-align: center; padding: 12px; font-size: 15px; font-weight: 600; color: #1e1b4b; }
-
-  /* YouTube 플레이어 */
-  .video-container { position: sticky; top: 0; z-index: 10; background: #f5f5f5; padding: 0 0 20px 0; margin-bottom: 10px; }
-  .video-toggle { display: flex; align-items: center; justify-content: space-between; cursor: pointer; padding: 8px 12px; background: #1a1a2e; color: #ccc; border-radius: 8px 8px 0 0; font-size: 13px; user-select: none; }
-  .video-toggle:hover { background: #2a2a4e; color: #fff; }
-  .video-toggle .arrow { transition: transform 0.2s; }
+  /* ── 영상 플레이어 ── */
+  .video-container { margin-bottom: 28px; background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; }
+  .video-toggle { display: flex; align-items: center; justify-content: space-between; cursor: pointer; padding: 14px 20px; font-size: 14px; font-weight: 600; color: var(--gray-700); user-select: none; border-bottom: 1px solid var(--gray-100); }
+  .video-toggle:hover { background: var(--gray-50); }
+  .video-toggle .arrow { font-size: 12px; color: var(--gray-300); transition: transform 0.2s; }
   .video-toggle .arrow.collapsed { transform: rotate(-90deg); }
-  .video-wrapper { position: relative; padding-bottom: 56.25%; height: 0; border-radius: 0 0 10px 10px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.15); transition: max-height 0.3s ease, padding-bottom 0.3s ease, opacity 0.3s ease; }
-  .video-wrapper.hidden { max-height: 0; padding-bottom: 0; opacity: 0; overflow: hidden; box-shadow: none; }
+  .video-wrapper { position: relative; padding-bottom: 56.25%; transition: max-height 0.3s, padding-bottom 0.3s, opacity 0.3s; }
+  .video-wrapper.hidden { max-height: 0; padding-bottom: 0; opacity: 0; overflow: hidden; }
   .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
 
-  /* 반응형 */
+  /* ── 챕터 카드 ── */
+  .card { background: var(--white); border-radius: var(--radius); padding: 28px; margin-bottom: 16px; box-shadow: var(--shadow); border: 1.5px solid transparent; transition: border-color 0.2s, box-shadow 0.2s; }
+  .card:hover { box-shadow: var(--shadow-md); }
+  .card.chapter-done { border-color: var(--green); }
+  .card-header { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 18px; }
+  .card-num { min-width: 32px; height: 32px; background: var(--blue-light); color: var(--blue); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 800; flex-shrink: 0; margin-top: 2px; }
+  .card-done .card-num { background: var(--green-bg); color: var(--green); }
+  .card-title { font-size: 17px; font-weight: 700; color: var(--gray-900); flex: 1; letter-spacing: -0.3px; }
+  .card-meta { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; padding-bottom: 18px; border-bottom: 1px solid var(--gray-100); }
+  .time-badge { display: inline-flex; align-items: center; gap: 4px; background: var(--gray-100); color: var(--gray-500); font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 20px; }
+  .yt-link { display: inline-flex; align-items: center; gap: 4px; color: var(--blue); font-size: 12px; font-weight: 600; text-decoration: none; padding: 4px 10px; border-radius: 20px; background: var(--blue-light); transition: background 0.15s; }
+  .yt-link:hover { background: #D2E8FD; }
+
+  /* ── 섹션 (학습목표 / 주요내용) ── */
+  .section { margin-bottom: 18px; }
+  .section-label { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 700; color: var(--gray-500); text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 10px; }
+  .section ul { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+  .section li { display: flex; align-items: flex-start; gap: 8px; font-size: 14px; color: var(--gray-700); line-height: 1.6; }
+  .section li::before { content: ''; display: block; width: 6px; height: 6px; border-radius: 50%; background: var(--blue); flex-shrink: 0; margin-top: 8px; }
+  .section.objectives li::before { background: var(--blue); }
+  .section.keypoints li::before { background: var(--green); }
+
+  /* ── Transcript ── */
+  .transcript-toggle { margin-top: 18px; }
+  .transcript-toggle summary { cursor: pointer; font-size: 13px; font-weight: 600; color: var(--gray-500); padding: 8px 0; list-style: none; display: flex; align-items: center; gap: 6px; }
+  .transcript-toggle summary::before { content: '▶'; font-size: 10px; transition: transform 0.2s; }
+  .transcript-toggle[open] summary::before { transform: rotate(90deg); }
+  .transcript-toggle summary:hover { color: var(--blue); }
+  .transcript-content { margin-top: 10px; max-height: 360px; overflow-y: auto; padding: 14px 16px; background: var(--gray-50); border-radius: var(--radius-sm); font-size: 13px; line-height: 1.9; color: var(--gray-700); border: 1px solid var(--gray-100); }
+  .transcript-content p { margin-bottom: 2px; }
+  .ts-link { color: var(--blue); text-decoration: none; font-family: "SF Mono", "Fira Code", monospace; font-size: 11px; font-weight: 600; opacity: 0.8; }
+  .ts-link:hover { opacity: 1; text-decoration: underline; }
+
+  /* ── 퀴즈 ── */
+  .quiz-block { margin-top: 18px; border-radius: var(--radius-sm); overflow: hidden; border: 1.5px solid var(--blue-light); }
+  .quiz-header { background: var(--blue-light); padding: 12px 16px; cursor: pointer; font-size: 14px; font-weight: 700; color: var(--blue-dark); display: flex; align-items: center; gap: 8px; user-select: none; }
+  .quiz-header:hover { background: #D2E8FD; }
+  .quiz-arrow { margin-left: auto; font-size: 11px; transition: transform 0.2s; color: var(--blue); }
+  .quiz-arrow.open { transform: rotate(90deg); }
+  .quiz-count { font-weight: 500; font-size: 13px; color: var(--blue); }
+  .quiz-body { padding: 20px; background: var(--white); }
+  .quiz-question { font-size: 15px; font-weight: 700; color: var(--gray-900); margin-bottom: 14px; line-height: 1.5; }
+  .quiz-question .q-num { color: var(--blue); margin-right: 6px; font-size: 13px; background: var(--blue-light); padding: 2px 7px; border-radius: 5px; }
+  .quiz-options { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px; }
+  .quiz-options li { padding: 11px 16px; border: 1.5px solid var(--gray-100); border-radius: var(--radius-sm); cursor: pointer; font-size: 14px; font-weight: 500; color: var(--gray-700); transition: all 0.15s; background: var(--gray-50); }
+  .quiz-options li:hover { border-color: var(--blue); background: var(--blue-light); color: var(--blue-dark); }
+  .quiz-options li.correct { background: var(--green-bg); border-color: var(--green); color: #0A7A52; font-weight: 700; }
+  .quiz-options li.wrong { background: var(--red-bg); border-color: var(--red); color: #A61325; }
+  .quiz-hint { font-size: 13px; color: var(--gray-500); background: var(--gray-50); border-left: 3px solid var(--blue); padding: 10px 14px; border-radius: 0 var(--radius-sm) var(--radius-sm) 0; margin-bottom: 14px; display: none; line-height: 1.6; }
+  .quiz-nav { display: flex; gap: 8px; }
+  .quiz-btn { padding: 8px 18px; border: none; border-radius: var(--radius-sm); font-size: 13px; cursor: pointer; font-weight: 700; transition: background 0.15s; }
+  .quiz-btn-next { background: var(--blue); color: #fff; }
+  .quiz-btn-next:hover { background: var(--blue-dark); }
+  .quiz-btn-retry { background: var(--gray-100); color: var(--gray-700); }
+  .quiz-btn-retry:hover { background: var(--gray-100); filter: brightness(0.95); }
+  .quiz-result { text-align: center; padding: 16px; font-size: 16px; font-weight: 800; color: var(--gray-900); }
+  .quiz-result .score-badge { display: inline-block; background: var(--green-bg); color: #0A7A52; border-radius: 12px; padding: 6px 18px; font-size: 22px; margin-bottom: 12px; }
+
+  /* ── 챕터 완료 ── */
+  .chapter-check { display: inline-flex; align-items: center; gap: 8px; margin-top: 18px; font-size: 13px; color: var(--gray-500); cursor: pointer; user-select: none; font-weight: 500; padding: 8px 14px; border-radius: 20px; border: 1.5px solid var(--gray-100); transition: all 0.15s; }
+  .chapter-check:hover { border-color: var(--green); color: var(--green); background: var(--green-bg); }
+  .chapter-check input { width: 16px; height: 16px; accent-color: var(--green); cursor: pointer; }
+  .chapter-check.done { border-color: var(--green); color: var(--green); background: var(--green-bg); font-weight: 700; }
+
+  /* ── 반응형 ── */
   @media (max-width: 768px) {
     .sidebar { display: none; }
-    .main { margin-left: 0; padding: 16px; }
+    .main { margin-left: 0; padding: 20px 16px 60px; }
+    .header h1 { font-size: 20px; }
+    .card { padding: 20px; }
   }
 </style>
 </head>
 <body>
   <nav class="sidebar">
-    <h2>📚 목차</h2>
-    <a href="#chapter-0" class="sidebar-item" onclick="seekTo(0,'chapter-0');return false;" data-seconds="0"><b>01</b> 강사 소개 및 교육 개요<span class="sidebar-dur">16분</span></a>
-<a href="#chapter-1" class="sidebar-item" onclick="seekTo(1007,'chapter-1');return false;" data-seconds="1007"><b>02</b> Device Manager 소개<span class="sidebar-dur">7분</span></a>
-<a href="#chapter-2" class="sidebar-item" onclick="seekTo(1440,'chapter-2');return false;" data-seconds="1440"><b>03</b> 질문 및 답변<span class="sidebar-dur">1분</span></a>
-<a href="#chapter-3" class="sidebar-item" onclick="seekTo(1512,'chapter-3');return false;" data-seconds="1512"><b>04</b> API 가이드 뷰 소개<span class="sidebar-dur">1분</span></a>
-<a href="#chapter-4" class="sidebar-item" onclick="seekTo(1629,'chapter-4');return false;" data-seconds="1629"><b>05</b> LDB 터미널 설명<span class="sidebar-dur">1분</span></a>
-<a href="#chapter-5" class="sidebar-item" onclick="seekTo(1702,'chapter-5');return false;" data-seconds="1702"><b>06</b> 리모트 개발 환경 지원<span class="sidebar-dur">1분</span></a>
-<a href="#chapter-6" class="sidebar-item" onclick="seekTo(1764,'chapter-6');return false;" data-seconds="1764"><b>07</b> LUPA 오프스테이션 개발 설명 시작<span class="sidebar-dur">10분</span></a>
-<a href="#chapter-7" class="sidebar-item" onclick="seekTo(2385,'chapter-7');return false;" data-seconds="2385"><b>08</b> 프로젝트 생성 및 GUI 디자인 설명 시작<span class="sidebar-dur">20분</span></a>
-<a href="#chapter-8" class="sidebar-item" onclick="seekTo(3600,'chapter-8');return false;" data-seconds="3600"><b>09</b> 드라이버 API 실습 데모<span class="sidebar-dur">10분</span></a>
-<a href="#chapter-9" class="sidebar-item" onclick="seekTo(4200,'chapter-9');return false;" data-seconds="4200"><b>10</b> 플랫폼 서비스 실습 데모<span class="sidebar-dur">8분</span></a>
-<a href="#chapter-10" class="sidebar-item" onclick="seekTo(4700,'chapter-10');return false;" data-seconds="4700"><b>11</b> 실행 및 설치 진행<span class="sidebar-dur">4분</span></a>
-<a href="#chapter-11" class="sidebar-item" onclick="seekTo(4999,'chapter-11');return false;" data-seconds="4999"><b>12</b> DEBUGGING 명령 소개<span class="sidebar-dur">6분</span></a>
-<a href="#chapter-12" class="sidebar-item" onclick="seekTo(5388,'chapter-12');return false;" data-seconds="5388"><b>13</b> 강의 마무리 및 Q&A 안내<span class="sidebar-dur">84분</span></a>
+    <div class="sidebar-logo">
+      <div class="sidebar-logo-badge">LUPA EDU</div>
+      <h2>LUPA 강의 1회차 요약</h2>
+    </div>
+    <div class="sidebar-section">
+      <a href="#chapter-0" class="sidebar-item" onclick="seekTo(0,'chapter-0');return false;" data-seconds="0" data-chapter-idx="0"><b>01</b> 강사 소개 및 교육 개요<span class="sidebar-dur">16분</span></a>
+<a href="#chapter-1" class="sidebar-item" onclick="seekTo(1007,'chapter-1');return false;" data-seconds="1007" data-chapter-idx="1"><b>02</b> Device Manager 소개<span class="sidebar-dur">7분</span></a>
+<a href="#chapter-2" class="sidebar-item" onclick="seekTo(1440,'chapter-2');return false;" data-seconds="1440" data-chapter-idx="2"><b>03</b> 질문 및 답변<span class="sidebar-dur">1분</span></a>
+<a href="#chapter-3" class="sidebar-item" onclick="seekTo(1512,'chapter-3');return false;" data-seconds="1512" data-chapter-idx="3"><b>04</b> API 가이드 뷰 소개<span class="sidebar-dur">1분</span></a>
+<a href="#chapter-4" class="sidebar-item" onclick="seekTo(1629,'chapter-4');return false;" data-seconds="1629" data-chapter-idx="4"><b>05</b> LDB 터미널 설명<span class="sidebar-dur">1분</span></a>
+<a href="#chapter-5" class="sidebar-item" onclick="seekTo(1702,'chapter-5');return false;" data-seconds="1702" data-chapter-idx="5"><b>06</b> 리모트 개발 환경 지원<span class="sidebar-dur">1분</span></a>
+<a href="#chapter-6" class="sidebar-item" onclick="seekTo(1764,'chapter-6');return false;" data-seconds="1764" data-chapter-idx="6"><b>07</b> LUPA 오프스테이션 개발 설명 시작<span class="sidebar-dur">10분</span></a>
+<a href="#chapter-7" class="sidebar-item" onclick="seekTo(2385,'chapter-7');return false;" data-seconds="2385" data-chapter-idx="7"><b>08</b> 프로젝트 생성 및 GUI 디자인 설명 시작<span class="sidebar-dur">20분</span></a>
+<a href="#chapter-8" class="sidebar-item" onclick="seekTo(3600,'chapter-8');return false;" data-seconds="3600" data-chapter-idx="8"><b>09</b> 드라이버 API 실습 데모<span class="sidebar-dur">10분</span></a>
+<a href="#chapter-9" class="sidebar-item" onclick="seekTo(4200,'chapter-9');return false;" data-seconds="4200" data-chapter-idx="9"><b>10</b> 플랫폼 서비스 실습 데모<span class="sidebar-dur">8분</span></a>
+<a href="#chapter-10" class="sidebar-item" onclick="seekTo(4700,'chapter-10');return false;" data-seconds="4700" data-chapter-idx="10"><b>11</b> 실행 및 설치 진행<span class="sidebar-dur">4분</span></a>
+<a href="#chapter-11" class="sidebar-item" onclick="seekTo(4999,'chapter-11');return false;" data-seconds="4999" data-chapter-idx="11"><b>12</b> DEBUGGING 명령 소개<span class="sidebar-dur">6분</span></a>
+<a href="#chapter-12" class="sidebar-item" onclick="seekTo(5388,'chapter-12');return false;" data-seconds="5388" data-chapter-idx="12"><b>13</b> 강의 마무리 및 Q&A 안내<span class="sidebar-dur">84분</span></a>
 
+    </div>
   </nav>
   <main class="main">
     <div class="header">
+      <div class="header-badge">📚 강의 요약</div>
       <h1>LUPA 강의 1회차 요약</h1>
-      <p>LG LUPA 임베디드 플랫폼 교육 · 강사: 김윤관 책임</p>
+      <div class="header-sub">LG LUPA 임베디드 플랫폼 교육 · 강사: 김윤관 책임</div>
     </div>
     <div class="video-container">
       <div class="video-toggle" onclick="toggleVideo()">
-        <span>🎬 강의 영상</span>
+        <span>🎬 강의 영상 보기</span>
         <span class="arrow" id="video-arrow">▼</span>
       </div>
       <div class="video-wrapper" id="video-area"></div>
     </div>
     
 <div class="card" id="chapter-0">
-  <h3>1. 강사 소개 및 교육 개요</h3>  <!-- 번호 = 사이드바 번호와 동일 -->
-  <div class="meta">
-    <span class="time-range">⏱ 00:00:00 ~ 00:16:47</span>
-    <a href="#" onclick="seekTo(0);return false;" class="yt-link">▶ 이 구간 재생</a>
+  <div class="card-header">
+    <div class="card-num">1</div>
+    <div class="card-title">강사 소개 및 교육 개요</div>
   </div>
-  <div class="section"><h4>📌 학습목표</h4><ul><li>LUPA 플랫폼의 전체 아키텍처(플랫폼 공통역량 vs 사업부 영역)를 설명할 수 있다</li><li>SOTA(앱 업데이트)와 FOTA(플랫폼 업데이트)의 차이를 구분할 수 있다</li><li>LUPA 버전 이력(1.1 LTS, 1.2, 2.0)과 각 버전의 주요 변경사항을 말할 수 있다</li></ul></div>
-  <div class="section"><h4>📋 주요내용</h4><ul><li>LUPA는 LG 가전 임베디드 플랫폼으로, 빨간 점선 내부가 플랫폼 공통역량(CTO 소프트웨어 연구소 담당), 외부는 사업부 개발 영역</li><li>SOTA(Software Over The Air): 앱 단독 업데이트 / FOTA(Firmware OTA): 플랫폼 전체 업데이트 — 독립적 배포 가능</li><li>LUPA 1.1 LTS: 세탁기 최초 탑재, 장기 지원 / 1.2: NAND 플래시·IT 칩 지원 추가 / 2.0: DQC2·Cortex-M85 지원</li><li>플랫폼 소스는 메인 브랜치(익일 반영), 1.1/1.2 안정 브랜치(TSC 리뷰 + 형상관리팀 검증 약 2주 소요)</li><li>LUPA Studio는 PC 기반 통합 개발 환경으로 빌드·플래시·디버깅을 지원하며 LUPA SDK가 내장됨</li><li>DQC 보드 다운로드 툴: UDTOOL(USB Download Tool)을 사용, LUPA release 명령으로 최종 이미지 생성</li></ul></div>
+  <div class="card-meta">
+    <span class="time-badge">⏱ 00:00:00 ~ 00:16:47</span>
+    <a href="#" onclick="seekTo(0);return false;" class="yt-link">▶ 재생</a>
+  </div>
+  <div class="section objectives"><div class="section-label">🎯 학습목표</div><ul><li>LUPA 플랫폼의 전체 아키텍처(플랫폼 공통역량 vs 사업부 영역)를 설명할 수 있다</li><li>SOTA(앱 업데이트)와 FOTA(플랫폼 업데이트)의 차이를 구분할 수 있다</li><li>LUPA 버전 이력(1.1 LTS, 1.2, 2.0)과 각 버전의 주요 변경사항을 말할 수 있다</li></ul></div>
+  <div class="section keypoints"><div class="section-label">📋 주요내용</div><ul><li>LUPA는 LG 가전 임베디드 플랫폼으로, 빨간 점선 내부가 플랫폼 공통역량(CTO 소프트웨어 연구소 담당), 외부는 사업부 개발 영역</li><li>SOTA(Software Over The Air): 앱 단독 업데이트 / FOTA(Firmware OTA): 플랫폼 전체 업데이트 — 독립적 배포 가능</li><li>LUPA 1.1 LTS: 세탁기 최초 탑재, 장기 지원 / 1.2: NAND 플래시·IT 칩 지원 추가 / 2.0: DQC2·Cortex-M85 지원</li><li>플랫폼 소스는 메인 브랜치(익일 반영), 1.1/1.2 안정 브랜치(TSC 리뷰 + 형상관리팀 검증 약 2주 소요)</li><li>LUPA Studio는 PC 기반 통합 개발 환경으로 빌드·플래시·디버깅을 지원하며 LUPA SDK가 내장됨</li><li>DQC 보드 다운로드 툴: UDTOOL(USB Download Tool)을 사용, LUPA release 명령으로 최종 이미지 생성</li></ul></div>
   <div class="quiz-block" data-quiz-idx="0"><div class="quiz-header" onclick="toggleQuiz(this)">🧪 퀴즈 풀기 <span class="quiz-count">(2문제)</span><span class="quiz-arrow">▶</span></div><div class="quiz-body" style="display:none"></div></div>
+  <label class="chapter-check" data-chapter-idx="0"><input type="checkbox" onchange="onChapterCheck(this,0)"> <span>학습 완료</span></label>
   <details class="transcript-toggle">
-    <summary>📝 Transcript 원문 보기</summary>
+    <summary>원문 보기</summary>
     <div class="transcript-content">
       <p><a href="#" onclick="seekTo(2);return false;" class="ts-link">[00:00:02]</a> 안녕하세요. LUPA 플랫폼 오버뷰 담당을 하게 된 CTO 소프트옥 플랫폼 연구소의 이상민이라고 합니다.</p>
 <p><a href="#" onclick="seekTo(12);return false;" class="ts-link">[00:00:12]</a> 유아트 연결 이슈 때문에 여러분들이 안 되시는 분들이 있는 것 같은데,</p>
@@ -261,16 +326,20 @@
 </div>
 
 <div class="card" id="chapter-1">
-  <h3>2. Device Manager 소개</h3>  <!-- 번호 = 사이드바 번호와 동일 -->
-  <div class="meta">
-    <span class="time-range">⏱ 00:16:47 ~ 00:24:00</span>
-    <a href="#" onclick="seekTo(1007);return false;" class="yt-link">▶ 이 구간 재생</a>
+  <div class="card-header">
+    <div class="card-num">2</div>
+    <div class="card-title">Device Manager 소개</div>
   </div>
-  <div class="section"><h4>📌 학습목표</h4><ul><li>LUPA 빌드 환경 구성(소스 수신 → 환경변수 설정 → 제품 선택 → 빌드)을 순서대로 설명할 수 있다</li><li>LUPA release 명령으로 생성되는 이미지 종류를 나열할 수 있다</li><li>LUPA Studio의 Device Manager 기능을 활용하여 타겟 보드와 연결할 수 있다</li></ul></div>
-  <div class="section"><h4>📋 주요내용</h4><ul><li>빌드 흐름: 소스 수신 → 환경변수 설정 → 제품군/칩셋/모델 선택 → 빌드 → LUPA release로 다운로드 이미지 생성</li><li>빌드 산출물: LUPA 플랫폼 이미지 + 프리로드 시스템 앱(프리빌드 앱 포함)</li><li>LUPA release: 보드에 실제로 다운로드할 수 있는 최종 아웃풋 생성 명령</li><li>Device Manager: LUPA Studio 내에서 타겟 디바이스를 인식하고 연결 상태를 관리하는 기능</li><li>다운로드 툴(UDTOOL): USB를 통해 DQC 보드에 이미지를 직접 플래싱할 때 사용</li><li>lupa-product.yml: 제품별 빌드 구성(컴포지션, 디바이스 트리 오버레이 등)을 정의하는 파일</li></ul></div>
+  <div class="card-meta">
+    <span class="time-badge">⏱ 00:16:47 ~ 00:24:00</span>
+    <a href="#" onclick="seekTo(1007);return false;" class="yt-link">▶ 재생</a>
+  </div>
+  <div class="section objectives"><div class="section-label">🎯 학습목표</div><ul><li>LUPA 빌드 환경 구성(소스 수신 → 환경변수 설정 → 제품 선택 → 빌드)을 순서대로 설명할 수 있다</li><li>LUPA release 명령으로 생성되는 이미지 종류를 나열할 수 있다</li><li>LUPA Studio의 Device Manager 기능을 활용하여 타겟 보드와 연결할 수 있다</li></ul></div>
+  <div class="section keypoints"><div class="section-label">📋 주요내용</div><ul><li>빌드 흐름: 소스 수신 → 환경변수 설정 → 제품군/칩셋/모델 선택 → 빌드 → LUPA release로 다운로드 이미지 생성</li><li>빌드 산출물: LUPA 플랫폼 이미지 + 프리로드 시스템 앱(프리빌드 앱 포함)</li><li>LUPA release: 보드에 실제로 다운로드할 수 있는 최종 아웃풋 생성 명령</li><li>Device Manager: LUPA Studio 내에서 타겟 디바이스를 인식하고 연결 상태를 관리하는 기능</li><li>다운로드 툴(UDTOOL): USB를 통해 DQC 보드에 이미지를 직접 플래싱할 때 사용</li><li>lupa-product.yml: 제품별 빌드 구성(컴포지션, 디바이스 트리 오버레이 등)을 정의하는 파일</li></ul></div>
   <div class="quiz-block" data-quiz-idx="1"><div class="quiz-header" onclick="toggleQuiz(this)">🧪 퀴즈 풀기 <span class="quiz-count">(1문제)</span><span class="quiz-arrow">▶</span></div><div class="quiz-body" style="display:none"></div></div>
+  <label class="chapter-check" data-chapter-idx="1"><input type="checkbox" onchange="onChapterCheck(this,1)"> <span>학습 완료</span></label>
   <details class="transcript-toggle">
-    <summary>📝 Transcript 원문 보기</summary>
+    <summary>원문 보기</summary>
     <div class="transcript-content">
       <p><a href="#" onclick="seekTo(1007);return false;" class="ts-link">[00:16:47]</a> 소스를 받으신 다음에 저렇게 다운로드를 하기 위해서</p>
 <p><a href="#" onclick="seekTo(1011);return false;" class="ts-link">[00:16:51]</a> 환경 변수를 설정한다거나 타겟, 그러니까 프로덕트가 어떤 제품군인지,</p>
@@ -325,16 +394,20 @@
 </div>
 
 <div class="card" id="chapter-2">
-  <h3>3. 질문 및 답변</h3>  <!-- 번호 = 사이드바 번호와 동일 -->
-  <div class="meta">
-    <span class="time-range">⏱ 00:24:00 ~ 00:25:12</span>
-    <a href="#" onclick="seekTo(1440);return false;" class="yt-link">▶ 이 구간 재생</a>
+  <div class="card-header">
+    <div class="card-num">3</div>
+    <div class="card-title">질문 및 답변</div>
   </div>
-  <div class="section"><h4>📌 학습목표</h4><ul><li>CMSIS API와 POSIX API의 차이점과 LUPA에서의 사용 방식을 설명할 수 있다</li><li>LUPA API 구조(플랫폼 서비스 API + POSIX API)를 이해하고 적절한 API를 선택할 수 있다</li></ul></div>
-  <div class="section"><h4>📋 주요내용</h4><ul><li>CMSIS API: ARM Cortex-M 전용 소프트웨어 인터페이스 표준. RTOS 독립성을 위해 설계</li><li>POSIX API: open/read/write/close 등 UNIX 계열 표준 API. LUPA에서도 드라이버 접근에 사용</li><li>LUPA는 CMSIS API 외에도 POSIX API를 제공하여 인터넷 자료 활용 가능 (단, 일부 동작 차이 있음)</li><li>LUPA 플랫폼 서비스 API: 그래픽, 이벤트, 각종 서비스 기능을 앱에서 호출하는 고수준 API</li><li>LUPA 에러 처리: POSIX 표준과 달리 음수/0/양수 리턴 혼용, API 레퍼런스 확인 필요</li></ul></div>
+  <div class="card-meta">
+    <span class="time-badge">⏱ 00:24:00 ~ 00:25:12</span>
+    <a href="#" onclick="seekTo(1440);return false;" class="yt-link">▶ 재생</a>
+  </div>
+  <div class="section objectives"><div class="section-label">🎯 학습목표</div><ul><li>CMSIS API와 POSIX API의 차이점과 LUPA에서의 사용 방식을 설명할 수 있다</li><li>LUPA API 구조(플랫폼 서비스 API + POSIX API)를 이해하고 적절한 API를 선택할 수 있다</li></ul></div>
+  <div class="section keypoints"><div class="section-label">📋 주요내용</div><ul><li>CMSIS API: ARM Cortex-M 전용 소프트웨어 인터페이스 표준. RTOS 독립성을 위해 설계</li><li>POSIX API: open/read/write/close 등 UNIX 계열 표준 API. LUPA에서도 드라이버 접근에 사용</li><li>LUPA는 CMSIS API 외에도 POSIX API를 제공하여 인터넷 자료 활용 가능 (단, 일부 동작 차이 있음)</li><li>LUPA 플랫폼 서비스 API: 그래픽, 이벤트, 각종 서비스 기능을 앱에서 호출하는 고수준 API</li><li>LUPA 에러 처리: POSIX 표준과 달리 음수/0/양수 리턴 혼용, API 레퍼런스 확인 필요</li></ul></div>
   <div class="quiz-block" data-quiz-idx="2"><div class="quiz-header" onclick="toggleQuiz(this)">🧪 퀴즈 풀기 <span class="quiz-count">(1문제)</span><span class="quiz-arrow">▶</span></div><div class="quiz-body" style="display:none"></div></div>
+  <label class="chapter-check" data-chapter-idx="2"><input type="checkbox" onchange="onChapterCheck(this,2)"> <span>학습 완료</span></label>
   <details class="transcript-toggle">
-    <summary>📝 Transcript 원문 보기</summary>
+    <summary>원문 보기</summary>
     <div class="transcript-content">
       <p><a href="#" onclick="seekTo(1440);return false;" class="ts-link">[00:24:00]</a> CMSIS API가 기존에는 Cortex-M 소프트웨어 인터페이스 스탠다드인데, 현재는 common microcontroller 소프트웨어 인터페이스 스탠다드라고 바뀌었더라고요. 이 코드는 ARM에서 릴리즈한 코드고요.</p>
 <p><a href="#" onclick="seekTo(1458);return false;" class="ts-link">[00:24:18]</a> ARM 사이에서도 자기네들이 칩, 칩은 자기네들이 디자인을 하지만, 거기에 올라가는 RTOS들이 많기 때문에, RTOS들을 위쪽에 있는 어플리케이션에서 각각의 RTOS마다 또 다른 함수들을 실행해야 하는 그런 것들을 막기 위해서 중간에 레이어를 하나 더 둡니다.</p>
@@ -346,16 +419,20 @@
 </div>
 
 <div class="card" id="chapter-3">
-  <h3>4. API 가이드 뷰 소개</h3>  <!-- 번호 = 사이드바 번호와 동일 -->
-  <div class="meta">
-    <span class="time-range">⏱ 00:25:12 ~ 00:27:09</span>
-    <a href="#" onclick="seekTo(1512);return false;" class="yt-link">▶ 이 구간 재생</a>
+  <div class="card-header">
+    <div class="card-num">4</div>
+    <div class="card-title">API 가이드 뷰 소개</div>
   </div>
-  <div class="section"><h4>📌 학습목표</h4><ul><li>LUPA SDK 내 API 레퍼런스 문서를 LUPA Studio에서 찾고 활용할 수 있다</li><li>LUPA 개발자 사이트를 통해 API 가이드와 SDK 변경 이력을 확인할 수 있다</li></ul></div>
-  <div class="section"><h4>📋 주요내용</h4><ul><li>LUPA Studio SDK: API 헤더 파일과 라이브러리가 포함. 새 API 추가 시 SDK 버전 업</li><li>LUPA 개발자 사이트 &gt; API 레퍼런스: OS 지원 라이브러리, 프로세스 제어 API 등 공식 문서 제공</li><li>LUPA Studio의 API 가이드 뷰: IDE 내에서 바로 API 문서 조회 가능</li><li>SDK 변경 사항은 버전 릴리즈 노트로 관리되며, 신규 API 추가 시 반드시 SDK 업데이트 필요</li></ul></div>
+  <div class="card-meta">
+    <span class="time-badge">⏱ 00:25:12 ~ 00:27:09</span>
+    <a href="#" onclick="seekTo(1512);return false;" class="yt-link">▶ 재생</a>
+  </div>
+  <div class="section objectives"><div class="section-label">🎯 학습목표</div><ul><li>LUPA SDK 내 API 레퍼런스 문서를 LUPA Studio에서 찾고 활용할 수 있다</li><li>LUPA 개발자 사이트를 통해 API 가이드와 SDK 변경 이력을 확인할 수 있다</li></ul></div>
+  <div class="section keypoints"><div class="section-label">📋 주요내용</div><ul><li>LUPA Studio SDK: API 헤더 파일과 라이브러리가 포함. 새 API 추가 시 SDK 버전 업</li><li>LUPA 개발자 사이트 &gt; API 레퍼런스: OS 지원 라이브러리, 프로세스 제어 API 등 공식 문서 제공</li><li>LUPA Studio의 API 가이드 뷰: IDE 내에서 바로 API 문서 조회 가능</li><li>SDK 변경 사항은 버전 릴리즈 노트로 관리되며, 신규 API 추가 시 반드시 SDK 업데이트 필요</li></ul></div>
   <div class="quiz-block" data-quiz-idx="3"><div class="quiz-header" onclick="toggleQuiz(this)">🧪 퀴즈 풀기 <span class="quiz-count">(1문제)</span><span class="quiz-arrow">▶</span></div><div class="quiz-body" style="display:none"></div></div>
+  <label class="chapter-check" data-chapter-idx="3"><input type="checkbox" onchange="onChapterCheck(this,3)"> <span>학습 완료</span></label>
   <details class="transcript-toggle">
-    <summary>📝 Transcript 원문 보기</summary>
+    <summary>원문 보기</summary>
     <div class="transcript-content">
       <p><a href="#" onclick="seekTo(1540);return false;" class="ts-link">[00:25:40]</a> 그 제공된 라이브러리랑 API 헤더들이 여러분들이 아까 전에 하셨던 LUPA Studio의 SDK 안에 다 포함되어 있습니다.</p>
 <p><a href="#" onclick="seekTo(1550);return false;" class="ts-link">[00:25:50]</a> 만약에 그 API가 저희가 추가가 된다라면 SDK 버전도 새로운 버전이 나오게 되는 거고.</p>
@@ -370,16 +447,20 @@
 </div>
 
 <div class="card" id="chapter-4">
-  <h3>5. LDB 터미널 설명</h3>  <!-- 번호 = 사이드바 번호와 동일 -->
-  <div class="meta">
-    <span class="time-range">⏱ 00:27:09 ~ 00:28:22</span>
-    <a href="#" onclick="seekTo(1629);return false;" class="yt-link">▶ 이 구간 재생</a>
+  <div class="card-header">
+    <div class="card-num">5</div>
+    <div class="card-title">LDB 터미널 설명</div>
   </div>
-  <div class="section"><h4>📌 학습목표</h4><ul><li>LUPA Studio의 LDB 터미널을 사용해 타겟에 명령을 전송할 수 있다</li><li>LUPA 메모리 보호 기능의 개념(유저 앱 크래시 시 앱만 종료)을 설명할 수 있다</li></ul></div>
-  <div class="section"><h4>📋 주요내용</h4><ul><li>LDB(LUPA Debug Bridge): Android ADB를 참조한 LUPA 전용 디버그 브리지. PC와 타겟 간 통신</li><li>LUPA Studio의 LDB 터미널: IDE 내에서 직접 LDB 명령어를 실행할 수 있는 터미널 패널</li><li>메모리 보호: 유저 앱이 크래시해도 플랫폼 전체가 죽지 않고 해당 앱 프로세스만 종료됨</li><li>로컬 개발: 플랫폼 소스가 PC에 있을 때 LUPA Studio에서 직접 빌드·다운로드 가능</li><li>원격 개발: Git 서버나 CI 환경에서 소스를 관리하며 빌드 서버를 통해 원격 빌드 지원</li></ul></div>
+  <div class="card-meta">
+    <span class="time-badge">⏱ 00:27:09 ~ 00:28:22</span>
+    <a href="#" onclick="seekTo(1629);return false;" class="yt-link">▶ 재생</a>
+  </div>
+  <div class="section objectives"><div class="section-label">🎯 학습목표</div><ul><li>LUPA Studio의 LDB 터미널을 사용해 타겟에 명령을 전송할 수 있다</li><li>LUPA 메모리 보호 기능의 개념(유저 앱 크래시 시 앱만 종료)을 설명할 수 있다</li></ul></div>
+  <div class="section keypoints"><div class="section-label">📋 주요내용</div><ul><li>LDB(LUPA Debug Bridge): Android ADB를 참조한 LUPA 전용 디버그 브리지. PC와 타겟 간 통신</li><li>LUPA Studio의 LDB 터미널: IDE 내에서 직접 LDB 명령어를 실행할 수 있는 터미널 패널</li><li>메모리 보호: 유저 앱이 크래시해도 플랫폼 전체가 죽지 않고 해당 앱 프로세스만 종료됨</li><li>로컬 개발: 플랫폼 소스가 PC에 있을 때 LUPA Studio에서 직접 빌드·다운로드 가능</li><li>원격 개발: Git 서버나 CI 환경에서 소스를 관리하며 빌드 서버를 통해 원격 빌드 지원</li></ul></div>
   <div class="quiz-block" data-quiz-idx="4"><div class="quiz-header" onclick="toggleQuiz(this)">🧪 퀴즈 풀기 <span class="quiz-count">(1문제)</span><span class="quiz-arrow">▶</span></div><div class="quiz-body" style="display:none"></div></div>
+  <label class="chapter-check" data-chapter-idx="4"><input type="checkbox" onchange="onChapterCheck(this,4)"> <span>학습 완료</span></label>
   <details class="transcript-toggle">
-    <summary>📝 Transcript 원문 보기</summary>
+    <summary>원문 보기</summary>
     <div class="transcript-content">
       <p><a href="#" onclick="seekTo(1631);return false;" class="ts-link">[00:27:11]</a> 어플리케이션에서 실행을 하시게 되면</p>
 <p><a href="#" onclick="seekTo(1633);return false;" class="ts-link">[00:27:13]</a> 그 어플리케이션만 죽게끔</p>
@@ -401,16 +482,20 @@
 </div>
 
 <div class="card" id="chapter-5">
-  <h3>6. 리모트 개발 환경 지원</h3>  <!-- 번호 = 사이드바 번호와 동일 -->
-  <div class="meta">
-    <span class="time-range">⏱ 00:28:22 ~ 00:29:24</span>
-    <a href="#" onclick="seekTo(1702);return false;" class="yt-link">▶ 이 구간 재생</a>
+  <div class="card-header">
+    <div class="card-num">6</div>
+    <div class="card-title">리모트 개발 환경 지원</div>
   </div>
-  <div class="section"><h4>📌 학습목표</h4><ul><li>LUPA 플랫폼 소스 디렉토리 구조(chip/board/product/extension)를 이해할 수 있다</li><li>제품별 디바이스 트리 오버레이와 컴포지션 구성 방식을 설명할 수 있다</li></ul></div>
-  <div class="section"><h4>📋 주요내용</h4><ul><li>소스 디렉토리 계층: arch(아키텍처) → chip(칩셋) → board(보드) → product(제품군/모델) → extension(확장)</li><li>디바이스 트리 오버레이: 제품 폴더에서 공통 디바이스 트리를 오버레이하여 기능 ON/OFF 관리</li><li>컴포지션: 각 제품 폴더의 product.yml에서 탑재할 서비스/드라이버 구성 지정</li><li>extension 디렉토리: 제품군별 추가 플랫폼 서비스를 사업부에서 관리하는 영역</li><li>리모트 개발: GitLab/내부 CI 서버 활용. LUPA Studio에서 SSH로 원격 빌드 환경 연결 지원</li></ul></div>
+  <div class="card-meta">
+    <span class="time-badge">⏱ 00:28:22 ~ 00:29:24</span>
+    <a href="#" onclick="seekTo(1702);return false;" class="yt-link">▶ 재생</a>
+  </div>
+  <div class="section objectives"><div class="section-label">🎯 학습목표</div><ul><li>LUPA 플랫폼 소스 디렉토리 구조(chip/board/product/extension)를 이해할 수 있다</li><li>제품별 디바이스 트리 오버레이와 컴포지션 구성 방식을 설명할 수 있다</li></ul></div>
+  <div class="section keypoints"><div class="section-label">📋 주요내용</div><ul><li>소스 디렉토리 계층: arch(아키텍처) → chip(칩셋) → board(보드) → product(제품군/모델) → extension(확장)</li><li>디바이스 트리 오버레이: 제품 폴더에서 공통 디바이스 트리를 오버레이하여 기능 ON/OFF 관리</li><li>컴포지션: 각 제품 폴더의 product.yml에서 탑재할 서비스/드라이버 구성 지정</li><li>extension 디렉토리: 제품군별 추가 플랫폼 서비스를 사업부에서 관리하는 영역</li><li>리모트 개발: GitLab/내부 CI 서버 활용. LUPA Studio에서 SSH로 원격 빌드 환경 연결 지원</li></ul></div>
   <div class="quiz-block" data-quiz-idx="5"><div class="quiz-header" onclick="toggleQuiz(this)">🧪 퀴즈 풀기 <span class="quiz-count">(1문제)</span><span class="quiz-arrow">▶</span></div><div class="quiz-body" style="display:none"></div></div>
+  <label class="chapter-check" data-chapter-idx="5"><input type="checkbox" onchange="onChapterCheck(this,5)"> <span>학습 완료</span></label>
   <details class="transcript-toggle">
-    <summary>📝 Transcript 원문 보기</summary>
+    <summary>원문 보기</summary>
     <div class="transcript-content">
       <p><a href="#" onclick="seekTo(1741);return false;" class="ts-link">[00:29:01]</a> 칩세세의 보드 디렉토리, 아키텍처의 밑에 앞 밑에 이런 칩별도 들어갈 거고 보드 디렉토리도 어떤 칩이 탑재된 처음 나왔던 보드들을 보통 저희가 보드 디렉토리에다 넣어놓고 이런 것들은 이제 그 제퍼에서 썼던 디바이스트리.</p>
 
@@ -419,16 +504,20 @@
 </div>
 
 <div class="card" id="chapter-6">
-  <h3>7. LUPA 오프스테이션 개발 설명 시작</h3>  <!-- 번호 = 사이드바 번호와 동일 -->
-  <div class="meta">
-    <span class="time-range">⏱ 00:29:24 ~ 00:39:45</span>
-    <a href="#" onclick="seekTo(1764);return false;" class="yt-link">▶ 이 구간 재생</a>
+  <div class="card-header">
+    <div class="card-num">7</div>
+    <div class="card-title">LUPA 오프스테이션 개발 설명 시작</div>
   </div>
-  <div class="section"><h4>📌 학습목표</h4><ul><li>LUPA 오프스테이션(Off-Station) 개발 환경의 개념과 장점을 설명할 수 있다</li><li>플랫폼 소스 없이 SDK만으로 앱을 개발하는 흐름을 이해할 수 있다</li></ul></div>
-  <div class="section"><h4>📋 주요내용</h4><ul><li>오프스테이션 개발: 플랫폼 소스 없이 LUPA SDK만 설치하여 앱 개발 가능한 환경</li><li>LUPA Studio + SDK 조합: 플랫폼 빌드 없이 앱 개발·빌드·배포·디버깅 전 과정 가능</li><li>소스 디렉토리 구조: OS 커널, 프레임워크, 드라이버, 제품군, 컴포지션 디렉토리로 구성</li><li>제품군 디렉토리: 제품 타입 → 칩셋 → 모델명 계층. 각 제품의 컴포지션/디바이스 트리 오버레이 분리 관리</li><li>사업부는 extension 디렉토리에서 제품 전용 서비스를 추가로 관리</li></ul></div>
+  <div class="card-meta">
+    <span class="time-badge">⏱ 00:29:24 ~ 00:39:45</span>
+    <a href="#" onclick="seekTo(1764);return false;" class="yt-link">▶ 재생</a>
+  </div>
+  <div class="section objectives"><div class="section-label">🎯 학습목표</div><ul><li>LUPA 오프스테이션(Off-Station) 개발 환경의 개념과 장점을 설명할 수 있다</li><li>플랫폼 소스 없이 SDK만으로 앱을 개발하는 흐름을 이해할 수 있다</li></ul></div>
+  <div class="section keypoints"><div class="section-label">📋 주요내용</div><ul><li>오프스테이션 개발: 플랫폼 소스 없이 LUPA SDK만 설치하여 앱 개발 가능한 환경</li><li>LUPA Studio + SDK 조합: 플랫폼 빌드 없이 앱 개발·빌드·배포·디버깅 전 과정 가능</li><li>소스 디렉토리 구조: OS 커널, 프레임워크, 드라이버, 제품군, 컴포지션 디렉토리로 구성</li><li>제품군 디렉토리: 제품 타입 → 칩셋 → 모델명 계층. 각 제품의 컴포지션/디바이스 트리 오버레이 분리 관리</li><li>사업부는 extension 디렉토리에서 제품 전용 서비스를 추가로 관리</li></ul></div>
   <div class="quiz-block" data-quiz-idx="6"><div class="quiz-header" onclick="toggleQuiz(this)">🧪 퀴즈 풀기 <span class="quiz-count">(1문제)</span><span class="quiz-arrow">▶</span></div><div class="quiz-body" style="display:none"></div></div>
+  <label class="chapter-check" data-chapter-idx="6"><input type="checkbox" onchange="onChapterCheck(this,6)"> <span>학습 완료</span></label>
   <details class="transcript-toggle">
-    <summary>📝 Transcript 원문 보기</summary>
+    <summary>원문 보기</summary>
     <div class="transcript-content">
       <p><a href="#" onclick="seekTo(1764);return false;" class="ts-link">[00:29:24]</a> 그리고 드라이버들도 디바이스 트리의 각각의 인터페이스나 각각의 프리퍼를 종류별로 구성했고 그 드라이버들을 빌드를 할 때 디바이스 트리를 참조를 해서 실질적으로 빌드 타임에 이 드라이버를 쓸지 안 쓸지가 구성이 됩니다.</p>
 <p><a href="#" onclick="seekTo(1794);return false;" class="ts-link">[00:29:54]</a> 그리고 이제 그 프레임워크 소스들이 있고요. OS 커널 디렉토리.</p>
@@ -510,16 +599,20 @@
 </div>
 
 <div class="card" id="chapter-7">
-  <h3>8. 프로젝트 생성 및 GUI 디자인 설명 시작</h3>  <!-- 번호 = 사이드바 번호와 동일 -->
-  <div class="meta">
-    <span class="time-range">⏱ 00:39:45 ~ 01:00:00</span>
-    <a href="#" onclick="seekTo(2385);return false;" class="yt-link">▶ 이 구간 재생</a>
+  <div class="card-header">
+    <div class="card-num">8</div>
+    <div class="card-title">프로젝트 생성 및 GUI 디자인 설명 시작</div>
   </div>
-  <div class="section"><h4>📌 학습목표</h4><ul><li>LUPA 부팅 단계(PreKernel1/2 → PostInit → 앱 실행)를 순서대로 설명할 수 있다</li><li>SYS_INIT 매크로를 사용하여 드라이버/서비스의 초기화 시점을 지정할 수 있다</li><li>LUPA Studio에서 새 앱 프로젝트를 생성하고 GUI 레이아웃을 설계할 수 있다</li></ul></div>
-  <div class="section"><h4>📋 주요내용</h4><ul><li>부팅 단계: PreKernel1(빠른 초기화) → PreKernel2 → FreeRTOS 스케줄러 시작 → PostInit 스레드 → PostKernel → 앱 실행</li><li>SYS_INIT 매크로: 드라이버·서비스에 초기화 시점(PreKernel1/2, PostKernel 등)을 지정하는 매크로</li><li>초기화 우선순위: 같은 그룹 내 숫자로 우선순위 지정 (예: I2C 먼저, Key 드라이버 나중)</li><li>LUPA Studio 프로젝트 생성: 제품군 선택 → 앱 템플릿 선택 → GUI 에디터에서 위젯 배치</li><li>GUI 디자인: 버튼, 텍스트박스 등 위젯 드래그 앤 드롭 배치 가능</li><li>LUPA 앱 패키지: 빌드 결과물 .ldpk 파일로 패키징, LDB install 명령으로 타겟에 설치</li></ul></div>
+  <div class="card-meta">
+    <span class="time-badge">⏱ 00:39:45 ~ 01:00:00</span>
+    <a href="#" onclick="seekTo(2385);return false;" class="yt-link">▶ 재생</a>
+  </div>
+  <div class="section objectives"><div class="section-label">🎯 학습목표</div><ul><li>LUPA 부팅 단계(PreKernel1/2 → PostInit → 앱 실행)를 순서대로 설명할 수 있다</li><li>SYS_INIT 매크로를 사용하여 드라이버/서비스의 초기화 시점을 지정할 수 있다</li><li>LUPA Studio에서 새 앱 프로젝트를 생성하고 GUI 레이아웃을 설계할 수 있다</li></ul></div>
+  <div class="section keypoints"><div class="section-label">📋 주요내용</div><ul><li>부팅 단계: PreKernel1(빠른 초기화) → PreKernel2 → FreeRTOS 스케줄러 시작 → PostInit 스레드 → PostKernel → 앱 실행</li><li>SYS_INIT 매크로: 드라이버·서비스에 초기화 시점(PreKernel1/2, PostKernel 등)을 지정하는 매크로</li><li>초기화 우선순위: 같은 그룹 내 숫자로 우선순위 지정 (예: I2C 먼저, Key 드라이버 나중)</li><li>LUPA Studio 프로젝트 생성: 제품군 선택 → 앱 템플릿 선택 → GUI 에디터에서 위젯 배치</li><li>GUI 디자인: 버튼, 텍스트박스 등 위젯 드래그 앤 드롭 배치 가능</li><li>LUPA 앱 패키지: 빌드 결과물 .ldpk 파일로 패키징, LDB install 명령으로 타겟에 설치</li></ul></div>
   <div class="quiz-block" data-quiz-idx="7"><div class="quiz-header" onclick="toggleQuiz(this)">🧪 퀴즈 풀기 <span class="quiz-count">(2문제)</span><span class="quiz-arrow">▶</span></div><div class="quiz-body" style="display:none"></div></div>
+  <label class="chapter-check" data-chapter-idx="7"><input type="checkbox" onchange="onChapterCheck(this,7)"> <span>학습 완료</span></label>
   <details class="transcript-toggle">
-    <summary>📝 Transcript 원문 보기</summary>
+    <summary>원문 보기</summary>
     <div class="transcript-content">
       <p><a href="#" onclick="seekTo(2400);return false;" class="ts-link">[00:40:00]</a> 각각의 SOC별로 CPU를 초기화해 주어야 하는 부분들, 커널과 관련해서 초기화해 주는 부분들이 있고, 프리커널1, 프리커널2, 대문자로 되어 있는 포스트커널, 어플리케이션, 이런 것들이 실질적으로 디바이스드라이버나 서비스의 맨 아래에 딥하이이 되어 있거든요. 이 서비스는 어느 시점에 실행이 되는</p>
 <p><a href="#" onclick="seekTo(2430);return false;" class="ts-link">[00:40:30]</a> 서비스다, 이 드라이버는 어느 시점에 초기화를 해야 하는 드라이버다라는 거를 매크로를 통해서 이런 시점별로 구분을 해놓고 있거든요.</p>
@@ -669,16 +762,20 @@
 </div>
 
 <div class="card" id="chapter-8">
-  <h3>9. 드라이버 API 실습 데모</h3>  <!-- 번호 = 사이드바 번호와 동일 -->
-  <div class="meta">
-    <span class="time-range">⏱ 01:00:00 ~ 01:10:00</span>
-    <a href="#" onclick="seekTo(3600);return false;" class="yt-link">▶ 이 구간 재생</a>
+  <div class="card-header">
+    <div class="card-num">9</div>
+    <div class="card-title">드라이버 API 실습 데모</div>
   </div>
-  <div class="section"><h4>📌 학습목표</h4><ul><li>POSIX API(open/read/write/ioctl/close)를 사용하여 UART 드라이버를 제어할 수 있다</li><li>IOCTL 명령(FIONBIO, TCGET, TCSET)으로 UART 동작 모드와 보레이트를 설정할 수 있다</li></ul></div>
-  <div class="section"><h4>📋 주요내용</h4><ul><li>UART 오픈: open(&quot;/dev/serial0&quot;, O_RDWR) — /dev 가상 파일시스템의 Node 이름으로 접근</li><li>O_RDONLY/O_RDWR 모드: O_RDONLY는 RX 큐만, O_RDWR은 TX+RX 큐 모두 할당</li><li>UART 읽기: POSIX read() 사용. 인터넷 자료와 대부분 호환, 단 LUPA 전용 동작 차이 주의</li><li>IOCTL 주요 명령: FIONBIO(블로킹/타임아웃 설정), TCGET(보레이트 조회), TCSET(보레이트 변경)</li><li>LUPA POSIX 에러 처리: 표준 errno 방식 미완성 — API 레퍼런스 확인 필요</li><li>미지원 IOCTL: FIONWRITE(TX 버퍼 잔량 조회)는 LUPA 미지원 항목 중 하나</li></ul></div>
+  <div class="card-meta">
+    <span class="time-badge">⏱ 01:00:00 ~ 01:10:00</span>
+    <a href="#" onclick="seekTo(3600);return false;" class="yt-link">▶ 재생</a>
+  </div>
+  <div class="section objectives"><div class="section-label">🎯 학습목표</div><ul><li>POSIX API(open/read/write/ioctl/close)를 사용하여 UART 드라이버를 제어할 수 있다</li><li>IOCTL 명령(FIONBIO, TCGET, TCSET)으로 UART 동작 모드와 보레이트를 설정할 수 있다</li></ul></div>
+  <div class="section keypoints"><div class="section-label">📋 주요내용</div><ul><li>UART 오픈: open(&quot;/dev/serial0&quot;, O_RDWR) — /dev 가상 파일시스템의 Node 이름으로 접근</li><li>O_RDONLY/O_RDWR 모드: O_RDONLY는 RX 큐만, O_RDWR은 TX+RX 큐 모두 할당</li><li>UART 읽기: POSIX read() 사용. 인터넷 자료와 대부분 호환, 단 LUPA 전용 동작 차이 주의</li><li>IOCTL 주요 명령: FIONBIO(블로킹/타임아웃 설정), TCGET(보레이트 조회), TCSET(보레이트 변경)</li><li>LUPA POSIX 에러 처리: 표준 errno 방식 미완성 — API 레퍼런스 확인 필요</li><li>미지원 IOCTL: FIONWRITE(TX 버퍼 잔량 조회)는 LUPA 미지원 항목 중 하나</li></ul></div>
   <div class="quiz-block" data-quiz-idx="8"><div class="quiz-header" onclick="toggleQuiz(this)">🧪 퀴즈 풀기 <span class="quiz-count">(2문제)</span><span class="quiz-arrow">▶</span></div><div class="quiz-body" style="display:none"></div></div>
+  <label class="chapter-check" data-chapter-idx="8"><input type="checkbox" onchange="onChapterCheck(this,8)"> <span>학습 완료</span></label>
   <details class="transcript-toggle">
-    <summary>📝 Transcript 원문 보기</summary>
+    <summary>원문 보기</summary>
     <div class="transcript-content">
       <p><a href="#" onclick="seekTo(3600);return false;" class="ts-link">[01:00:00]</a> UART를 오프레이션하기 위해서는 시리얼로 만들어진 특정 Node 이름을 오픈하셔야 하고, 그 오픈을 하실 때는 POSIX API 오픈이라는 POSIX API를 통해서, DV 밑에 Node이라는 가상의 팔 시스템에 있는 Node를 오픈하면 그 디바이스 드라이버를 쓸 수 있게끔 초기화가 되는 겁니다.</p>
 <p><a href="#" onclick="seekTo(3625);return false;" class="ts-link">[01:00:25]</a> 그래서 여기서 RDWR이라고 또 이 고난을 주시면 READ ONLY로 주시거나 READ/WRITE를 주시거나 하시면 시리얼 드라이버 내부에 UART로 보내야 되는 패킷들, 아니면 UART에서 들어오는 데이터들을 저장을 할 수 있는 큐를 내부적으로 가지고 있는데 그 메모리가 READ ONLY일 때는 READ하는 메모리만 할당할 거고 READ/WRITE를 할 때는 READ을 위한 큐를 할당할 거고요.</p>
@@ -741,16 +838,20 @@
 </div>
 
 <div class="card" id="chapter-9">
-  <h3>10. 플랫폼 서비스 실습 데모</h3>  <!-- 번호 = 사이드바 번호와 동일 -->
-  <div class="meta">
-    <span class="time-range">⏱ 01:10:00 ~ 01:18:20</span>
-    <a href="#" onclick="seekTo(4200);return false;" class="yt-link">▶ 이 구간 재생</a>
+  <div class="card-header">
+    <div class="card-num">10</div>
+    <div class="card-title">플랫폼 서비스 실습 데모</div>
   </div>
-  <div class="section"><h4>📌 학습목표</h4><ul><li>Input Service를 통해 키/터치 이벤트를 앱에서 수신하는 방법을 설명할 수 있다</li><li>Power Manager의 파워스테이트 개념과 Suspend 모드 동작을 이해할 수 있다</li><li>Property Service를 활용하여 앱 간 데이터를 공유하는 실습을 수행할 수 있다</li></ul></div>
-  <div class="section"><h4>📋 주요내용</h4><ul><li>Input Service: 물리 키·터치 이벤트를 수신하여 앱에 전달. Shell에서 &quot;input key &lt;코드&gt;&quot;로 이벤트 주입 가능</li><li>Power Manager: 타겟 ON/OFF 시 파워스테이트 전환 관리, Suspend 모드 등 대기 전력 최적화 기능 관장</li><li>Property Service: 키-값 구조로 앱 간 데이터 공유, 변경 시 구독 콜백 알림</li><li>실습 흐름: property_service 앱 + property_app 실행 → input key 이벤트 → property 변경 → 화면 업데이트</li><li>App 로딩: 파워스테이트·시나리오에 따라 앱 로드/언로드가 달라져 메모리 주소가 매번 변경됨</li></ul></div>
+  <div class="card-meta">
+    <span class="time-badge">⏱ 01:10:00 ~ 01:18:20</span>
+    <a href="#" onclick="seekTo(4200);return false;" class="yt-link">▶ 재생</a>
+  </div>
+  <div class="section objectives"><div class="section-label">🎯 학습목표</div><ul><li>Input Service를 통해 키/터치 이벤트를 앱에서 수신하는 방법을 설명할 수 있다</li><li>Power Manager의 파워스테이트 개념과 Suspend 모드 동작을 이해할 수 있다</li><li>Property Service를 활용하여 앱 간 데이터를 공유하는 실습을 수행할 수 있다</li></ul></div>
+  <div class="section keypoints"><div class="section-label">📋 주요내용</div><ul><li>Input Service: 물리 키·터치 이벤트를 수신하여 앱에 전달. Shell에서 &quot;input key &lt;코드&gt;&quot;로 이벤트 주입 가능</li><li>Power Manager: 타겟 ON/OFF 시 파워스테이트 전환 관리, Suspend 모드 등 대기 전력 최적화 기능 관장</li><li>Property Service: 키-값 구조로 앱 간 데이터 공유, 변경 시 구독 콜백 알림</li><li>실습 흐름: property_service 앱 + property_app 실행 → input key 이벤트 → property 변경 → 화면 업데이트</li><li>App 로딩: 파워스테이트·시나리오에 따라 앱 로드/언로드가 달라져 메모리 주소가 매번 변경됨</li></ul></div>
   <div class="quiz-block" data-quiz-idx="9"><div class="quiz-header" onclick="toggleQuiz(this)">🧪 퀴즈 풀기 <span class="quiz-count">(2문제)</span><span class="quiz-arrow">▶</span></div><div class="quiz-body" style="display:none"></div></div>
+  <label class="chapter-check" data-chapter-idx="9"><input type="checkbox" onchange="onChapterCheck(this,9)"> <span>학습 완료</span></label>
   <details class="transcript-toggle">
-    <summary>📝 Transcript 원문 보기</summary>
+    <summary>원문 보기</summary>
     <div class="transcript-content">
       <p><a href="#" onclick="seekTo(4200);return false;" class="ts-link">[01:10:00]</a> 이게 뭐예요?</p>
 <p><a href="#" onclick="seekTo(4206);return false;" class="ts-link">[01:10:06]</a> GO GO GO GO GO GGAZ is just in the air, and Q</p>
@@ -822,16 +923,20 @@
 </div>
 
 <div class="card" id="chapter-10">
-  <h3>11. 실행 및 설치 진행</h3>  <!-- 번호 = 사이드바 번호와 동일 -->
-  <div class="meta">
-    <span class="time-range">⏱ 01:18:20 ~ 01:23:19</span>
-    <a href="#" onclick="seekTo(4700);return false;" class="yt-link">▶ 이 구간 재생</a>
+  <div class="card-header">
+    <div class="card-num">11</div>
+    <div class="card-title">실행 및 설치 진행</div>
   </div>
-  <div class="section"><h4>📌 학습목표</h4><ul><li>LDB 명령(push/pull/shell/install/uninstall)을 사용하여 앱을 타겟에 배포·관리할 수 있다</li><li>App List, App Start, App Quit 명령으로 타겟 앱 상태를 확인하고 제어할 수 있다</li></ul></div>
-  <div class="section"><h4>📋 주요내용</h4><ul><li>LDB push: PC에서 타겟으로 파일 전송 / LDB pull: 타겟에서 PC로 파일 수신</li><li>LDB shell &lt;명령&gt;: Shell Command 실행 (app list, app start 등)</li><li>LDB install &lt;패키지명&gt;: .ldpk 앱 패키지 설치 / uninstall: 제거</li><li>app list: 현재 설치된 앱 목록 및 상태 확인 / app start &lt;패키지명&gt;: 앱 실행</li><li>콘솔(테라텀/PuTTY): USB-UART로 직접 연결. 파일 전송 불가, 파일 배포 시 LDB 사용</li><li>LDPK: LUPA 앱 패키지 파일 형식. LDB install 또는 패키지 매니저 명령으로 설치</li></ul></div>
+  <div class="card-meta">
+    <span class="time-badge">⏱ 01:18:20 ~ 01:23:19</span>
+    <a href="#" onclick="seekTo(4700);return false;" class="yt-link">▶ 재생</a>
+  </div>
+  <div class="section objectives"><div class="section-label">🎯 학습목표</div><ul><li>LDB 명령(push/pull/shell/install/uninstall)을 사용하여 앱을 타겟에 배포·관리할 수 있다</li><li>App List, App Start, App Quit 명령으로 타겟 앱 상태를 확인하고 제어할 수 있다</li></ul></div>
+  <div class="section keypoints"><div class="section-label">📋 주요내용</div><ul><li>LDB push: PC에서 타겟으로 파일 전송 / LDB pull: 타겟에서 PC로 파일 수신</li><li>LDB shell &lt;명령&gt;: Shell Command 실행 (app list, app start 등)</li><li>LDB install &lt;패키지명&gt;: .ldpk 앱 패키지 설치 / uninstall: 제거</li><li>app list: 현재 설치된 앱 목록 및 상태 확인 / app start &lt;패키지명&gt;: 앱 실행</li><li>콘솔(테라텀/PuTTY): USB-UART로 직접 연결. 파일 전송 불가, 파일 배포 시 LDB 사용</li><li>LDPK: LUPA 앱 패키지 파일 형식. LDB install 또는 패키지 매니저 명령으로 설치</li></ul></div>
   <div class="quiz-block" data-quiz-idx="10"><div class="quiz-header" onclick="toggleQuiz(this)">🧪 퀴즈 풀기 <span class="quiz-count">(1문제)</span><span class="quiz-arrow">▶</span></div><div class="quiz-body" style="display:none"></div></div>
+  <label class="chapter-check" data-chapter-idx="10"><input type="checkbox" onchange="onChapterCheck(this,10)"> <span>학습 완료</span></label>
   <details class="transcript-toggle">
-    <summary>📝 Transcript 원문 보기</summary>
+    <summary>원문 보기</summary>
     <div class="transcript-content">
       <p><a href="#" onclick="seekTo(4710);return false;" class="ts-link">[01:18:30]</a> 잘 안 쓰다 보니까 대부분 그냥 Command Line으로 LDB로 바로 명령을 내리거든요.</p>
 <p><a href="#" onclick="seekTo(4714);return false;" class="ts-link">[01:18:34]</a> 그래서 이 LDB로 내릴 수 있는 명령들이 LDB로 하고 뒤에 PUSH 명령을 하면</p>
@@ -867,16 +972,20 @@
 </div>
 
 <div class="card" id="chapter-11">
-  <h3>12. DEBUGGING 명령 소개</h3>  <!-- 번호 = 사이드바 번호와 동일 -->
-  <div class="meta">
-    <span class="time-range">⏱ 01:23:19 ~ 01:29:48</span>
-    <a href="#" onclick="seekTo(4999);return false;" class="yt-link">▶ 이 구간 재생</a>
+  <div class="card-header">
+    <div class="card-num">12</div>
+    <div class="card-title">DEBUGGING 명령 소개</div>
   </div>
-  <div class="section"><h4>📌 학습목표</h4><ul><li>크래시 발생 시 로그를 분석하여 원인을 추적하는 절차를 수행할 수 있다</li><li>LUPA Studio 디버거와 LDB를 활용하여 앱 크래시 정보를 수집할 수 있다</li><li>mem info, ps 등 Shell Command로 메모리·스레드 상태를 진단할 수 있다</li></ul></div>
-  <div class="section"><h4>📋 주요내용</h4><ul><li>앱 크래시 격리: 유저 앱만 종료되고 플랫폼 유지. 스택 없이 반복 크래시 시 mem info로 원인 분석</li><li>mem info 명령: OS 힙·플랫폼 힙·각 앱의 메모리 주소 및 스택 사용량 확인</li><li>ps 명령: 전체 스레드 목록, CPU 사용률, 스택 사용량 확인</li><li>LUPA Studio 디버거: LDB 연결 후 브레이크포인트 설정, 변수 감시, 스텝 실행 지원</li><li>크래시 주소 분석: 크래시 로그 절대 주소 - 앱 로드 베이스 주소 = 상대 주소 → 맵 파일에서 함수 위치 확인</li><li>LDB 또는 테라텀 콘솔 양쪽에서 Shell Command 실행 가능</li></ul></div>
+  <div class="card-meta">
+    <span class="time-badge">⏱ 01:23:19 ~ 01:29:48</span>
+    <a href="#" onclick="seekTo(4999);return false;" class="yt-link">▶ 재생</a>
+  </div>
+  <div class="section objectives"><div class="section-label">🎯 학습목표</div><ul><li>크래시 발생 시 로그를 분석하여 원인을 추적하는 절차를 수행할 수 있다</li><li>LUPA Studio 디버거와 LDB를 활용하여 앱 크래시 정보를 수집할 수 있다</li><li>mem info, ps 등 Shell Command로 메모리·스레드 상태를 진단할 수 있다</li></ul></div>
+  <div class="section keypoints"><div class="section-label">📋 주요내용</div><ul><li>앱 크래시 격리: 유저 앱만 종료되고 플랫폼 유지. 스택 없이 반복 크래시 시 mem info로 원인 분석</li><li>mem info 명령: OS 힙·플랫폼 힙·각 앱의 메모리 주소 및 스택 사용량 확인</li><li>ps 명령: 전체 스레드 목록, CPU 사용률, 스택 사용량 확인</li><li>LUPA Studio 디버거: LDB 연결 후 브레이크포인트 설정, 변수 감시, 스텝 실행 지원</li><li>크래시 주소 분석: 크래시 로그 절대 주소 - 앱 로드 베이스 주소 = 상대 주소 → 맵 파일에서 함수 위치 확인</li><li>LDB 또는 테라텀 콘솔 양쪽에서 Shell Command 실행 가능</li></ul></div>
   <div class="quiz-block" data-quiz-idx="11"><div class="quiz-header" onclick="toggleQuiz(this)">🧪 퀴즈 풀기 <span class="quiz-count">(2문제)</span><span class="quiz-arrow">▶</span></div><div class="quiz-body" style="display:none"></div></div>
+  <label class="chapter-check" data-chapter-idx="11"><input type="checkbox" onchange="onChapterCheck(this,11)"> <span>학습 완료</span></label>
   <details class="transcript-toggle">
-    <summary>📝 Transcript 원문 보기</summary>
+    <summary>원문 보기</summary>
     <div class="transcript-content">
       <p><a href="#" onclick="seekTo(5007);return false;" class="ts-link">[01:23:27]</a> 그러면 저희는 기본적으로 컨셉은 유저 어플리케이션이 LUPA API, LUPA 시스템 코리아 아니고 그냥 유저 모드에서 실행을 하다가 죽었을 때는 그 앱만 종료를 시키거든요.</p>
 <p><a href="#" onclick="seekTo(5021);return false;" class="ts-link">[01:23:41]</a> 그러다 보면 스택을 잡게 잡으시면 동작을 하다가 앱만 계속 죽어요. 이유 없이 크래시하고 죽는데, 거기에 스택이 없을 경우, 그럴 때는 맨 인포라는 명령을 통해서 여러분들이 짜시는 프로그램에 스택은 충분한지 힙은 충분한지 이런 것들을 점검해보실 수가 있을 것 같습니다.</p>
@@ -930,16 +1039,20 @@
 </div>
 
 <div class="card" id="chapter-12">
-  <h3>13. 강의 마무리 및 Q&A 안내</h3>  <!-- 번호 = 사이드바 번호와 동일 -->
-  <div class="meta">
-    <span class="time-range">⏱ 01:29:48 ~ 02:54:21</span>
-    <a href="#" onclick="seekTo(5388);return false;" class="yt-link">▶ 이 구간 재생</a>
+  <div class="card-header">
+    <div class="card-num">13</div>
+    <div class="card-title">강의 마무리 및 Q&A 안내</div>
   </div>
-  <div class="section"><h4>📌 학습목표</h4><ul><li>Property Service를 이용한 앱 간 통신 실습 데모 흐름을 이해할 수 있다</li><li>강의에서 다룬 실습 항목(Shell Command, LDB, 디버깅)을 스스로 복습할 수 있다</li></ul></div>
-  <div class="section"><h4>📋 주요내용</h4><ul><li>Property 실습 데모: property_service 앱 + property_app 실행 → input key 이벤트 → property 변경 → 화면 업데이트</li><li>App 메모리 주소는 실행 시마다 변경됨. 크래시 분석 시 항상 현재 로드 베이스 주소 기준으로 계산</li><li>패키지 매니저: ldpk 파일 경로 지정으로 install/uninstall 가능 (LDB install과 동일 기능)</li><li>실습 시간: Shell Command 실습 약 20분 권장. LDB 또는 콘솔(테라텀/PuTTY) 중 선택 사용</li><li>Q&amp;A: UART 연결 이슈 등 실습 장애 발생 시 강사에게 문의</li></ul></div>
+  <div class="card-meta">
+    <span class="time-badge">⏱ 01:29:48 ~ 02:54:21</span>
+    <a href="#" onclick="seekTo(5388);return false;" class="yt-link">▶ 재생</a>
+  </div>
+  <div class="section objectives"><div class="section-label">🎯 학습목표</div><ul><li>Property Service를 이용한 앱 간 통신 실습 데모 흐름을 이해할 수 있다</li><li>강의에서 다룬 실습 항목(Shell Command, LDB, 디버깅)을 스스로 복습할 수 있다</li></ul></div>
+  <div class="section keypoints"><div class="section-label">📋 주요내용</div><ul><li>Property 실습 데모: property_service 앱 + property_app 실행 → input key 이벤트 → property 변경 → 화면 업데이트</li><li>App 메모리 주소는 실행 시마다 변경됨. 크래시 분석 시 항상 현재 로드 베이스 주소 기준으로 계산</li><li>패키지 매니저: ldpk 파일 경로 지정으로 install/uninstall 가능 (LDB install과 동일 기능)</li><li>실습 시간: Shell Command 실습 약 20분 권장. LDB 또는 콘솔(테라텀/PuTTY) 중 선택 사용</li><li>Q&amp;A: UART 연결 이슈 등 실습 장애 발생 시 강사에게 문의</li></ul></div>
   <div class="quiz-block" data-quiz-idx="12"><div class="quiz-header" onclick="toggleQuiz(this)">🧪 퀴즈 풀기 <span class="quiz-count">(1문제)</span><span class="quiz-arrow">▶</span></div><div class="quiz-body" style="display:none"></div></div>
+  <label class="chapter-check" data-chapter-idx="12"><input type="checkbox" onchange="onChapterCheck(this,12)"> <span>학습 완료</span></label>
   <details class="transcript-toggle">
-    <summary>📝 Transcript 원문 보기</summary>
+    <summary>원문 보기</summary>
     <div class="transcript-content">
       <p><a href="#" onclick="seekTo(5389);return false;" class="ts-link">[01:29:49]</a> APP Start라는 명령을 쓰실 수도 있고요.</p>
 <p><a href="#" onclick="seekTo(5407);return false;" class="ts-link">[01:30:07]</a> 그러면 제가 좀 전에 스타트한 앱이 로딩이 되어 있는 상태고, 이 로딩이 이제 모든 앱들을 다 메모리에 올리고 있지 않거든요.</p>
@@ -1608,6 +1721,8 @@
     var VIDEO_ID = 'R0QxxJUgpD4';
     var isLocal = location.protocol === 'file:';
     var QUIZ_DATA = {"0": [{"q": "LUPA에서 앱만 단독으로 업데이트하는 방식은?", "options": ["FOTA", "SOTA", "OTA", "LDB"], "answer": 1, "hint": "SOTA = Software OTA (앱 업데이트), FOTA = Firmware OTA (플랫폼 업데이트)"}, {"q": "LUPA 1.2 버전에서 새로 추가된 지원 항목은?", "options": ["DQC2 칩셋 지원", "NAND 플래시 및 IT 칩 지원", "Cortex-M85 지원", "LUPA Studio IDE"], "answer": 1, "hint": "1.2는 NAND 플래시와 IT 칩 지원 추가, DQC2·Cortex-M85는 2.0에서 추가됩니다."}], "1": [{"q": "DQC 보드에 이미지를 USB로 플래싱할 때 사용하는 다운로드 툴은?", "options": ["LDB", "UDTOOL", "LUPA Studio", "ADB"], "answer": 1, "hint": "UDTOOL(USB Download Tool)이 DQC 보드 전용 USB 플래싱 도구입니다."}], "2": [{"q": "LUPA에서 드라이버 파일을 열고 읽는 데 사용하는 API 계열은?", "options": ["CMSIS API", "POSIX API", "WIN32 API", "RTOS API"], "answer": 1, "hint": "open/read/write/close는 POSIX API입니다. LUPA도 이를 지원합니다."}], "3": [{"q": "LUPA Studio에서 API 문서를 IDE 내에서 바로 조회할 수 있는 기능은?", "options": ["Device Manager", "API 가이드 뷰", "LDB 터미널", "LUPA release"], "answer": 1, "hint": "LUPA Studio의 API 가이드 뷰에서 SDK에 포함된 API를 IDE 내에서 직접 확인합니다."}], "4": [{"q": "LUPA에서 유저 앱이 크래시했을 때 동작 방식은?", "options": ["시스템 전체 재부팅", "해당 앱 프로세스만 종료", "모든 앱 종료 후 재시작", "커널 패닉 발생"], "answer": 1, "hint": "LUPA의 메모리 보호 기능으로 앱 크래시 시 해당 앱만 종료, 플랫폼은 계속 동작합니다."}], "5": [{"q": "제품별로 플랫폼 기능을 ON/OFF하고 모델 전용 설정을 추가하는 메커니즘은?", "options": ["CMSIS 헤더", "디바이스 트리 오버레이", "POSIX 설정 파일", "LDB 명령"], "answer": 1, "hint": "제품 폴더의 디바이스 트리 오버레이(.dts)로 기능 구성을 재정의합니다."}], "6": [{"q": "플랫폼 소스 없이 SDK만으로 LUPA 앱을 개발하는 환경을 무엇이라 부르는가?", "options": ["온스테이션 개발", "오프스테이션 개발", "크로스 컴파일 환경", "CI/CD 환경"], "answer": 1, "hint": "Off-Station: 플랫폼 소스 없이 LUPA Studio + SDK만으로 앱 개발이 가능한 환경입니다."}], "7": [{"q": "LUPA 부팅에서 FreeRTOS 스케줄러 시작 직후 실행되는 스레드는?", "options": ["PreKernel1 스레드", "PostInit 스레드", "앱 런처 스레드", "Device Manager 스레드"], "answer": 1, "hint": "FreeRTOS startScheduler() 이후 PostInit 스레드가 PostKernel 초기화와 앱 실행을 담당합니다."}, {"q": "드라이버나 서비스의 초기화 시점을 지정하는 LUPA 매크로는?", "options": ["POSIX_INIT", "SYS_INIT", "DRIVER_SETUP", "LUPA_BOOT"], "answer": 1, "hint": "SYS_INIT 매크로로 PreKernel1/2, PostKernel 등 초기화 그룹을 지정합니다."}], "8": [{"q": "UART 포트의 보레이트를 변경할 때 사용하는 IOCTL 명령은?", "options": ["FIONBIO", "FIONWRITE", "TCGET", "TCSET"], "answer": 3, "hint": "TCSET으로 보레이트를 설정하고, TCGET으로 현재 보레이트를 조회합니다."}, {"q": "UART를 O_RDONLY로 오픈했을 때 드라이버 내부에서 할당되는 큐는?", "options": ["TX 큐만", "RX 큐만", "TX/RX 둘 다", "큐 없음"], "answer": 1, "hint": "O_RDONLY이면 읽기(RX)용 큐만, O_RDWR이면 TX와 RX 큐 모두 할당됩니다."}], "9": [{"q": "Shell Command로 물리 키 없이 모든 앱에 키 이벤트를 전달하는 명령은?", "options": ["app start <패키지명>", "input key <코드>", "ldb shell input", "property set <키>"], "answer": 1, "hint": "input key 133처럼 input key <키코드>로 Input Service를 통해 모든 앱에 키 이벤트를 전달합니다."}, {"q": "LUPA에서 앱 간 데이터를 키-값 구조로 공유하고 변경을 구독할 수 있는 서비스는?", "options": ["Event Service", "Power Manager", "Property Service", "Device Manager"], "answer": 2, "hint": "Property Service는 키-값 저장소로 앱 간 데이터 공유와 변경 콜백 구독을 지원합니다."}], "10": [{"q": "LDB 명령 중 PC에 있는 파일을 타겟으로 전송하는 명령은?", "options": ["pull", "push", "install", "shell"], "answer": 1, "hint": "push=PC에서 타겟으로 전송, pull=타겟에서 PC로 수신 방향입니다."}], "11": [{"q": "앱이 반복 크래시할 때 메모리·스택 상태를 확인하는 Shell Command는?", "options": ["ps", "dmesg", "mem info", "app list"], "answer": 2, "hint": "mem info로 각 앱의 힙·스택 사용량을 확인하여 메모리 오버플로우 원인을 추적합니다."}, {"q": "전체 스레드 목록과 CPU 사용률을 확인하는 명령은?", "options": ["mem info", "dmesg", "app list", "ps"], "answer": 3, "hint": "ps(Processor Status) 명령으로 모든 스레드의 CPU 사용률을 확인합니다."}], "12": [{"q": "LUPA에서 앱의 메모리 로드 주소가 실행마다 다른 이유는?", "options": ["앱 패키지가 매번 새로 컴파일되어서", "파워스테이트와 앱 로딩 시나리오에 따라 메모리 배치가 달라져서", "POSIX API가 랜덤 주소를 할당해서", "ASLR 보안 기능 때문에"], "answer": 1, "hint": "파워스테이트와 동작 시나리오에 따라 어떤 앱이 로드/언로드될지 달라져 베이스 주소가 변경됩니다."}]};
+    var PROGRESS_CFG = {"owner": "sophiahjlee", "repo": "sophiahjlee.github.io", "token": "", "video_id": "R0QxxJUgpD4"};
+    var TOTAL_CHAPTERS = 13;
     var area = document.getElementById('video-area');
 
     if (isLocal) {
@@ -1678,7 +1793,11 @@
       body.dataset.qIdx = qIdx;
       if (qIdx >= questions.length) {
         var score = parseInt(body.dataset.score || 0);
-        body.innerHTML = '<div class="quiz-result">🎉 완료! ' + score + ' / ' + questions.length + ' 정답<br><button class="quiz-btn quiz-btn-retry" onclick="retryQuiz(this)">다시 풀기</button></div>';
+        var block = body.closest('.quiz-block');
+        var quizIdx = block ? block.dataset.quizIdx : 0;
+        _onQuizComplete(body, score, questions.length, quizIdx);
+        var emoji = score === questions.length ? '🎉' : score >= questions.length/2 ? '👍' : '📚';
+        body.innerHTML = '<div class="quiz-result"><div class="score-badge">' + score + ' / ' + questions.length + '</div><br>' + emoji + ' ' + (score === questions.length ? '완벽해요!' : '수고하셨어요!') + '<br><button class="quiz-btn quiz-btn-retry" onclick="retryQuiz(this)" style="margin-top:12px;">다시 풀기</button></div>';
         return;
       }
       var q = questions[qIdx];
@@ -1725,6 +1844,142 @@
       ctx.body.dataset.score = 0;
       renderQuiz(ctx.body, ctx.questions, 0);
     }
+
+    // ── 진도 추적 ───────────────────────────────────────────────
+    function _getUser() {
+      return {
+        name: localStorage.getItem('lupa_user') || '',
+        uid:  localStorage.getItem('lupa_uid')  || '',
+        dept: localStorage.getItem('lupa_dept') || ''
+      };
+    }
+
+    // URL 파라미터 → localStorage 저장 + 배너/진도바 표시
+    (function() {
+      var params = new URLSearchParams(location.search);
+      var user = params.get('user') || localStorage.getItem('lupa_user');
+      var uid  = params.get('uid')  || localStorage.getItem('lupa_uid');
+      var dept = params.get('dept') || localStorage.getItem('lupa_dept') || '';
+      if (params.get('user')) {
+        localStorage.setItem('lupa_user', user);
+        localStorage.setItem('lupa_uid',  uid || user);
+        localStorage.setItem('lupa_dept', dept);
+      }
+      var headerP = document.querySelector('.header p');
+      if (headerP && user) {
+        var banner = document.createElement('div');
+        banner.className = 'user-banner';
+        banner.innerHTML = '?? ' + user + (dept ? ' (' + dept + ')' : '');
+        headerP.parentNode.insertBefore(banner, headerP.nextSibling);
+      }
+      // 진도바 삽입
+      var progressWrap = document.createElement('div');
+      progressWrap.className = 'progress-bar-wrap';
+      progressWrap.innerHTML = '<div class="progress-bar"><div class="progress-bar-fill" id="prog-fill" style="width:0%"></div></div><div class="progress-label" id="prog-label">0 / ' + TOTAL_CHAPTERS + ' 챕터 완료</div>';
+      var header = document.querySelector('.header');
+      if (header) header.appendChild(progressWrap);
+    })();
+
+    function _updateProgressBar() {
+      var done = document.querySelectorAll('.chapter-check.done').length;
+      var pct = TOTAL_CHAPTERS > 0 ? Math.round(done / TOTAL_CHAPTERS * 100) : 0;
+      var fill = document.getElementById('prog-fill');
+      var label = document.getElementById('prog-label');
+      if (fill) fill.style.width = pct + '%';
+      if (label) label.textContent = done + ' / ' + TOTAL_CHAPTERS + ' 챕터 완료';
+      // 사이드바 항목 완료 표시
+      document.querySelectorAll('.chapter-check').forEach(function(el) {
+        var idx = parseInt(el.dataset.chapterIdx);
+        var sideItem = document.querySelector('.sidebar-item[data-chapter-idx="' + idx + '"]');
+        if (sideItem) sideItem.style.borderLeftColor = el.classList.contains('done') ? '#10b981' : '';
+      });
+    }
+
+    function onChapterCheck(checkbox, chapterIdx) {
+      var label = checkbox.closest('.chapter-check');
+      var card  = checkbox.closest('.card');
+      label.classList.toggle('done', checkbox.checked);
+      if (card) card.classList.toggle('chapter-done', checkbox.checked);
+      _updateProgressBar();
+      var update = checkbox.checked
+        ? { chapter_done: chapterIdx }
+        : { chapter_undone: chapterIdx };
+      _saveProgress(update);
+    }
+
+    async function _saveProgress(update) {
+      var u = _getUser();
+      if (!u.uid || !PROGRESS_CFG.token) return;
+      var path = 'data/progress/' + u.uid + '.json';
+      var apiBase = 'https://api.github.com/repos/' + PROGRESS_CFG.owner + '/' + PROGRESS_CFG.repo + '/contents/' + path;
+      var headers = { 'Authorization': 'token ' + PROGRESS_CFG.token, 'Content-Type': 'application/json' };
+
+      var sha = null;
+      var current = { uid: u.uid, name: u.name, dept: u.dept, lectures: {} };
+      try {
+        var res = await fetch(apiBase, { headers: headers });
+        if (res.ok) {
+          var data = await res.json();
+          sha = data.sha;
+          current = JSON.parse(atob(data.content.replace(/\n/g, '')));
+        }
+      } catch(e) {}
+
+      if (!current.lectures) current.lectures = {};
+      if (!current.lectures[PROGRESS_CFG.video_id])
+        current.lectures[PROGRESS_CFG.video_id] = { chapters_done: [], quiz_scores: {}, last_access: null };
+      var lec = current.lectures[PROGRESS_CFG.video_id];
+
+      if (update.chapter_done !== undefined && lec.chapters_done.indexOf(update.chapter_done) < 0)
+        lec.chapters_done.push(update.chapter_done);
+      if (update.chapter_undone !== undefined)
+        lec.chapters_done = lec.chapters_done.filter(function(x) { return x !== update.chapter_undone; });
+      if (update.quiz_score !== undefined)
+        lec.quiz_scores[String(update.quiz_idx)] = { score: update.quiz_score, total: update.quiz_total };
+
+      lec.last_access = new Date().toISOString();
+
+      var content = btoa(unescape(encodeURIComponent(JSON.stringify(current, null, 2))));
+      var body = { message: 'progress: ' + u.uid + ' @' + PROGRESS_CFG.video_id, content: content };
+      if (sha) body.sha = sha;
+      try {
+        await fetch(apiBase, { method: 'PUT', headers: headers, body: JSON.stringify(body) });
+      } catch(e) {}
+    }
+
+    // 퀴즈 완료 시 점수 저장 — renderQuiz 완료 화면에서 호출
+    function _onQuizComplete(body, score, total, quizIdx) {
+      _saveProgress({ quiz_score: score, quiz_total: total, quiz_idx: quizIdx });
+    }
+
+    // 저장된 진도 불러와 UI 복원
+    async function _loadProgress() {
+      var u = _getUser();
+      if (!u.uid || !PROGRESS_CFG.token) return;
+      var path = 'data/progress/' + u.uid + '.json';
+      var apiBase = 'https://api.github.com/repos/' + PROGRESS_CFG.owner + '/' + PROGRESS_CFG.repo + '/contents/' + path;
+      var headers = { 'Authorization': 'token ' + PROGRESS_CFG.token };
+      try {
+        var res = await fetch(apiBase, { headers: headers });
+        if (!res.ok) return;
+        var data = await res.json();
+        var saved = JSON.parse(atob(data.content.replace(/\n/g, '')));
+        var lec = (saved.lectures || {})[PROGRESS_CFG.video_id];
+        if (!lec) return;
+        (lec.chapters_done || []).forEach(function(idx) {
+          var label = document.querySelector('.chapter-check[data-chapter-idx="' + idx + '"]');
+          if (label) {
+            var cb = label.querySelector('input');
+            if (cb) cb.checked = true;
+            label.classList.add('done');
+            var card = label.closest('.card');
+            if (card) card.classList.add('chapter-done');
+          }
+        });
+        _updateProgressBar();
+      } catch(e) {}
+    }
+    _loadProgress();
   </script>
 </body>
 </html>
