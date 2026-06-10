@@ -59,8 +59,9 @@
   .progress-label { font-size: 12px; color: var(--gray-500); margin-top: 6px; font-weight: 500; }
 
   /* ── 영상 플레이어 ── */
-  .video-container { margin-bottom: 28px; background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; }
-  .video-toggle { display: flex; align-items: center; justify-content: space-between; cursor: pointer; padding: 14px 20px; font-size: 14px; font-weight: 600; color: var(--gray-700); user-select: none; border-bottom: 1px solid var(--gray-100); }
+  /* ── 영상 플레이어 (sticky 상단 고정) ── */
+  .video-container { position: sticky; top: 0; z-index: 100; margin-bottom: 12px; background: var(--white); border-radius: 0 0 var(--radius) var(--radius); box-shadow: var(--shadow-md); overflow: hidden; }
+  .video-toggle { display: flex; align-items: center; justify-content: space-between; cursor: pointer; padding: 9px 20px; font-size: 13px; font-weight: 600; color: var(--gray-700); user-select: none; border-bottom: 1px solid var(--gray-100); }
   .video-toggle:hover { background: var(--gray-50); }
   .video-toggle .arrow { font-size: 12px; color: var(--gray-300); transition: transform 0.2s; }
   .video-toggle .arrow.collapsed { transform: rotate(-90deg); }
@@ -132,6 +133,19 @@
   .chapter-check input { width: 16px; height: 16px; accent-color: var(--green); cursor: pointer; }
   .chapter-check.done { border-color: var(--green); color: var(--green); background: var(--green-bg); font-weight: 700; }
 
+  /* ── 사용자 등록 모달 ── */
+  .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 9999; display: flex; align-items: center; justify-content: center; }
+  .modal-box { background: var(--white); border-radius: var(--radius); padding: 32px; width: 340px; max-width: 90vw; box-shadow: var(--shadow-md); }
+  .modal-box h3 { font-size: 18px; font-weight: 800; color: var(--gray-900); margin-bottom: 8px; }
+  .modal-box p { font-size: 13px; color: var(--gray-500); margin-bottom: 20px; line-height: 1.6; }
+  .modal-input { width: 100%; padding: 10px 14px; border: 1.5px solid var(--gray-300); border-radius: var(--radius-sm); font-size: 14px; color: var(--gray-900); margin-bottom: 10px; outline: none; transition: border-color 0.15s; box-sizing: border-box; }
+  .modal-input:focus { border-color: var(--blue); }
+  .modal-actions { display: flex; gap: 8px; margin-top: 4px; }
+  .modal-btn { flex: 1; padding: 10px; border: none; border-radius: var(--radius-sm); font-size: 14px; font-weight: 700; cursor: pointer; transition: background 0.15s; }
+  .modal-btn.primary { background: var(--blue); color: #fff; }
+  .modal-btn.primary:hover { background: var(--blue-dark); }
+  .modal-btn.secondary { background: var(--gray-100); color: var(--gray-500); }
+  .modal-btn.secondary:hover { background: var(--gray-300); color: var(--gray-700); }
   /* ── 반응형 ── */
   @media (max-width: 768px) {
     .sidebar { display: none; }
@@ -142,6 +156,19 @@
 </style>
 </head>
 <body>
+  <!-- 학습자 등록 모달 -->
+  <div class="modal-overlay" id="user-modal" style="display:none">
+    <div class="modal-box">
+      <h3>👋 학습자 등록</h3>
+      <p>이름을 등록하면 챕터별 진도가 저장됩니다.<br>언제든지 이어서 학습할 수 있어요.</p>
+      <input class="modal-input" id="modal-name" placeholder="이름 (필수)" maxlength="30" />
+      <input class="modal-input" id="modal-dept" placeholder="부서 / 팀 (선택)" maxlength="40" />
+      <div class="modal-actions">
+        <button class="modal-btn primary" onclick="registerUser()">시작하기</button>
+        <button class="modal-btn secondary" onclick="skipUser()">건너뛰기</button>
+      </div>
+    </div>
+  </div>
   <nav class="sidebar">
     <div class="sidebar-logo">
       <div class="sidebar-logo-badge">LUPA EDU</div>
@@ -2344,6 +2371,8 @@
     var PROGRESS_CFG = {"owner": "sophiahjlee", "repo": "sophiahjlee.github.io", "token": "", "video_id": "R0QxxJUgpD4"};
     var TOTAL_CHAPTERS = 13;
     var area = document.getElementById('video-area');
+    var ytPlayer = null;
+    var ytPlayerReady = false;
 
     if (isLocal) {
       area.innerHTML = '<div style="position:relative;">' +
@@ -2351,43 +2380,63 @@
         '<img src="https://img.youtube.com/vi/' + VIDEO_ID + '/hqdefault.jpg" alt="YouTube" style="width:100%;border-radius:10px;display:block;">' +
         '<div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:64px;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,0.6);">▶</div></a></div>';
     } else {
-      area.innerHTML = '<iframe id="yt-player" src="https://www.youtube-nocookie.com/embed/' + VIDEO_ID + '?rel=0&modestbranding=1" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;"></iframe>' +
-        '<a href="https://youtu.be/' + VIDEO_ID + '" target="_blank" id="yt-fallback" style="position:absolute;bottom:10px;right:10px;background:rgba(0,0,0,0.7);color:#fff;padding:6px 12px;border-radius:4px;font-size:12px;text-decoration:none;z-index:5;">▶ YouTube에서 보기</a>';
+      // enablejsapi=1: YT IFrame API 제어 활성화 (CC 등 플레이어 상태 유지)
+      // cc_load_policy=1: 자막 기본 활성화
+      area.innerHTML = '<iframe id="yt-player" src="https://www.youtube-nocookie.com/embed/' + VIDEO_ID + '?rel=0&modestbranding=1&enablejsapi=1&cc_load_policy=1&hl=ko" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;"></iframe>';
+      var ytScript = document.createElement('script');
+      ytScript.src = 'https://www.youtube.com/iframe_api';
+      document.head.appendChild(ytScript);
+    }
+
+    // YT IFrame API 준비 완료 콜백 (전역 함수여야 함)
+    window.onYouTubeIframeAPIReady = function() {
+      var iframe = document.getElementById('yt-player');
+      if (!iframe) return;
+      ytPlayer = new YT.Player('yt-player', {
+        events: {
+          'onReady': function() { ytPlayerReady = true; }
+        }
+      });
+    };
+
+    // src 재로드 없이 seek → CC/자막 상태 유지
+    function _ytSeek(seconds) {
+      if (!isLocal) {
+        if (ytPlayerReady && ytPlayer && ytPlayer.seekTo) {
+          ytPlayer.seekTo(seconds, true);
+          ytPlayer.playVideo();
+        } else {
+          // YT API 미준비 시 fallback (CC 초기화 가능성 있음)
+          var iframe = document.getElementById('yt-player');
+          if (iframe) iframe.src = 'https://www.youtube-nocookie.com/embed/' + VIDEO_ID + '?start=' + seconds + '&autoplay=1&rel=0&modestbranding=1&enablejsapi=1&cc_load_policy=1&hl=ko';
+        }
+      } else {
+        window.open('https://youtu.be/' + VIDEO_ID + '?t=' + seconds, '_blank');
+      }
     }
 
     function seekTo(seconds, cardId) {
-      if (cardId) {
-        // 사이드바 클릭: 영상 상태 유지, 현재 sticky 높이 기준으로 카드 이동
-        var videoContainer = document.querySelector('.video-container');
-        var stickyHeight = videoContainer ? videoContainer.offsetHeight : 0;
-        if (!isLocal) {
-          var iframe = document.getElementById('yt-player');
-          if (iframe) iframe.src = 'https://www.youtube-nocookie.com/embed/' + VIDEO_ID + '?start=' + seconds + '&autoplay=1&rel=0&modestbranding=1';
-        } else {
-          window.open('https://youtu.be/' + VIDEO_ID + '?t=' + seconds, '_blank');
-        }
-        var cardEl = document.getElementById(cardId);
-        if (cardEl) {
-          var cardTop = cardEl.getBoundingClientRect().top + window.pageYOffset;
-          window.scrollTo({ top: cardTop - stickyHeight - 12, behavior: 'smooth' });
-        }
-        return;
-      }
-      // 카드 내 재생 버튼: 영상 펼치고 상단으로
+      // 영상이 접혀있으면 먼저 펼치기
       var wrapper = document.getElementById('video-area');
       var arrow = document.getElementById('video-arrow');
       if (wrapper && wrapper.classList.contains('hidden')) {
         wrapper.classList.remove('hidden');
         if (arrow) arrow.classList.remove('collapsed');
       }
-      if (!isLocal) {
-        var iframe = document.getElementById('yt-player');
-        if (iframe) iframe.src = 'https://www.youtube-nocookie.com/embed/' + VIDEO_ID + '?start=' + seconds + '&autoplay=1&rel=0&modestbranding=1';
+      _ytSeek(seconds);
+      if (cardId) {
+        // 사이드바 클릭: sticky 영상 높이 고려해 카드로 스크롤
+        var videoContainer = document.querySelector('.video-container');
+        var stickyHeight = videoContainer ? videoContainer.offsetHeight : 0;
+        var cardEl = document.getElementById(cardId);
+        if (cardEl) {
+          var cardTop = cardEl.getBoundingClientRect().top + window.pageYOffset;
+          window.scrollTo({ top: cardTop - stickyHeight - 12, behavior: 'smooth' });
+        }
       } else {
-        window.open('https://youtu.be/' + VIDEO_ID + '?t=' + seconds, '_blank');
+        // 카드 내 재생 버튼: 최상단으로 스크롤해 영상 노출
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       }
-      var el = document.querySelector('.video-container');
-      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
     function toggleVideo() {
       var wrapper = document.getElementById('video-area');
@@ -2474,7 +2523,42 @@
       };
     }
 
-    // URL 파라미터 → localStorage 저장 + 배너/진도바 표시
+    // ── 사용자 등록 모달 ──────────────────────────────────────
+    function _showUserBanner(user, dept) {
+      var existing = document.querySelector('.user-banner');
+      if (existing) existing.remove();
+      var sub = document.querySelector('.header-sub');
+      if (sub && user) {
+        var banner = document.createElement('div');
+        banner.className = 'user-banner';
+        banner.innerHTML = '?? ' + user + (dept ? ' (' + dept + ')' : '') +
+          ' <span onclick="changeUser()" style="cursor:pointer;font-size:11px;color:var(--gray-300);margin-left:8px;font-weight:400;">[변경]</span>';
+        sub.parentNode.insertBefore(banner, sub.nextSibling);
+      }
+    }
+    function registerUser() {
+      var name = document.getElementById('modal-name').value.trim();
+      if (!name) { document.getElementById('modal-name').focus(); return; }
+      var dept = document.getElementById('modal-dept').value.trim();
+      localStorage.setItem('lupa_user', name);
+      localStorage.setItem('lupa_uid',  name);
+      localStorage.setItem('lupa_dept', dept);
+      localStorage.setItem('lupa_modal_seen', '1');
+      document.getElementById('user-modal').style.display = 'none';
+      _showUserBanner(name, dept);
+      _loadProgress();
+    }
+    function skipUser() {
+      localStorage.setItem('lupa_modal_seen', '1');
+      document.getElementById('user-modal').style.display = 'none';
+    }
+    function changeUser() {
+      document.getElementById('modal-name').value = localStorage.getItem('lupa_user') || '';
+      document.getElementById('modal-dept').value = localStorage.getItem('lupa_dept') || '';
+      document.getElementById('user-modal').style.display = 'flex';
+    }
+
+    // URL 파라미터 → localStorage 저장 + 배너/진도바 표시 + 모달
     (function() {
       var params = new URLSearchParams(location.search);
       var user = params.get('user') || localStorage.getItem('lupa_user');
@@ -2484,13 +2568,15 @@
         localStorage.setItem('lupa_user', user);
         localStorage.setItem('lupa_uid',  uid || user);
         localStorage.setItem('lupa_dept', dept);
+        localStorage.setItem('lupa_modal_seen', '1');
       }
-      var headerP = document.querySelector('.header p');
-      if (headerP && user) {
-        var banner = document.createElement('div');
-        banner.className = 'user-banner';
-        banner.innerHTML = '?? ' + user + (dept ? ' (' + dept + ')' : '');
-        headerP.parentNode.insertBefore(banner, headerP.nextSibling);
+      if (user) {
+        _showUserBanner(user, dept);
+      } else if (!localStorage.getItem('lupa_modal_seen')) {
+        // 미등록 + 첫 방문 → 모달 표시
+        setTimeout(function() {
+          document.getElementById('user-modal').style.display = 'flex';
+        }, 600);
       }
       // 진도바 삽입
       var progressWrap = document.createElement('div');
