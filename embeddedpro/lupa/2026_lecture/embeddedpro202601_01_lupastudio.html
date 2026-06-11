@@ -1,0 +1,1438 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Embedded Professional_LUPA 2026 1차 [1] LUPA Studio 및 환경이해</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --blue: #3182F6;
+    --blue-light: #EBF3FE;
+    --blue-dark: #1B64DA;
+    --green: #0ECF8A;
+    --green-bg: #E8FBF4;
+    --red: #F04452;
+    --red-bg: #FEF0F1;
+    --gray-900: #191F28;
+    --gray-700: #333D4B;
+    --gray-500: #6B7684;
+    --gray-300: #B0B8C1;
+    --gray-100: #F2F4F6;
+    --gray-50: #F9FAFB;
+    --white: #FFFFFF;
+    --radius: 16px;
+    --radius-sm: 10px;
+    --shadow: 0 2px 12px rgba(0,0,0,0.06);
+    --shadow-md: 0 4px 24px rgba(0,0,0,0.10);
+  }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Pretendard", "Segoe UI", sans-serif; background: var(--gray-50); color: var(--gray-900); display: flex; min-height: 100vh; line-height: 1.6; }
+
+  /* ── 사이드바 ── */
+  .sidebar { width: 260px; background: var(--white); border-right: 1px solid var(--gray-100); padding: 32px 0; position: fixed; top: 0; left: 0; height: 100vh; overflow-y: auto; flex-shrink: 0; }
+  .sidebar-logo { padding: 0 24px 24px; border-bottom: 1px solid var(--gray-100); margin-bottom: 8px; }
+  .sidebar-logo-badge { display: inline-block; background: var(--blue); color: #fff; font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 6px; letter-spacing: 0.5px; margin-bottom: 8px; }
+  .sidebar-logo h2 { font-size: 14px; font-weight: 700; color: var(--gray-900); line-height: 1.4; }
+  .sidebar-section { padding: 8px 0; }
+  .sidebar-item { display: flex; align-items: center; gap: 10px; padding: 9px 24px; color: var(--gray-500); text-decoration: none; font-size: 13px; font-weight: 500; border-left: 2px solid transparent; transition: all 0.15s; }
+  .sidebar-item:hover { color: var(--blue); background: var(--blue-light); border-left-color: var(--blue); }
+  .sidebar-item.active { color: var(--blue); background: var(--blue-light); border-left-color: var(--blue); }
+  .sidebar-item b { min-width: 22px; height: 22px; display: inline-flex; align-items: center; justify-content: center; background: var(--gray-100); color: var(--gray-500); border-radius: 6px; font-size: 11px; font-weight: 700; flex-shrink: 0; }
+  .sidebar-item.active b { background: var(--blue); color: #fff; }
+  .sidebar-item .sidebar-title { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .sidebar-dur { font-size: 11px; color: var(--gray-300); font-weight: 400; flex-shrink: 0; }
+
+  /* ── 메인 ── */
+  .main { margin-left: 260px; padding: 40px 40px 80px; flex: 1; max-width: 840px; }
+
+  /* ── 헤더 ── */
+  .header { margin-bottom: 32px; }
+  .header-badge { display: inline-flex; align-items: center; gap: 6px; background: var(--blue-light); color: var(--blue); font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 20px; margin-bottom: 12px; }
+  .header h1 { font-size: 26px; font-weight: 800; color: var(--gray-900); margin-bottom: 6px; letter-spacing: -0.5px; }
+  .header-sub { font-size: 14px; color: var(--gray-500); margin-bottom: 16px; }
+  .user-banner { display: inline-flex; align-items: center; gap: 6px; background: var(--gray-100); color: var(--gray-700); border-radius: 20px; padding: 4px 12px; font-size: 13px; font-weight: 600; margin-bottom: 12px; }
+
+  /* ── 진도바 ── */
+  .progress-bar-wrap { margin-top: 16px; }
+  .progress-bar { height: 6px; background: var(--gray-100); border-radius: 3px; overflow: hidden; }
+  .progress-bar-fill { height: 100%; background: linear-gradient(90deg, var(--blue), #7FB3FA); transition: width 0.4s ease; border-radius: 3px; }
+  .progress-label { font-size: 12px; color: var(--gray-500); margin-top: 6px; font-weight: 500; }
+
+  /* ── 영상 플레이어 ── */
+  /* ── 영상 플레이어 (sticky 상단 고정) ── */
+  .video-container { position: sticky; top: 0; z-index: 100; margin-bottom: 12px; background: var(--white); border-radius: 0 0 var(--radius) var(--radius); box-shadow: var(--shadow-md); overflow: hidden; }
+  .video-toggle { display: flex; align-items: center; justify-content: space-between; cursor: pointer; padding: 9px 20px; font-size: 13px; font-weight: 600; color: var(--gray-700); user-select: none; border-bottom: 1px solid var(--gray-100); }
+  .video-toggle:hover { background: var(--gray-50); }
+  .video-toggle .arrow { font-size: 12px; color: var(--gray-300); transition: transform 0.2s; }
+  .video-toggle .arrow.collapsed { transform: rotate(-90deg); }
+  .video-wrapper { position: relative; padding-bottom: 56.25%; transition: max-height 0.3s, padding-bottom 0.3s, opacity 0.3s; }
+  .video-wrapper.hidden { max-height: 0; padding-bottom: 0; opacity: 0; overflow: hidden; }
+  .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+
+  /* ── 챕터 카드 ── */
+  .card { background: var(--white); border-radius: var(--radius); padding: 28px; margin-bottom: 16px; box-shadow: var(--shadow); border: 1.5px solid transparent; transition: border-color 0.2s, box-shadow 0.2s; }
+  .card:hover { box-shadow: var(--shadow-md); }
+  .card.chapter-done { border-color: var(--green); }
+  .card-header { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 18px; }
+  .card-num { min-width: 32px; height: 32px; background: var(--blue-light); color: var(--blue); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 800; flex-shrink: 0; margin-top: 2px; }
+  .card-done .card-num { background: var(--green-bg); color: var(--green); }
+  .card-title { font-size: 17px; font-weight: 700; color: var(--gray-900); flex: 1; letter-spacing: -0.3px; }
+  .card-meta { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; padding-bottom: 18px; border-bottom: 1px solid var(--gray-100); }
+  .time-badge { display: inline-flex; align-items: center; gap: 4px; background: var(--gray-100); color: var(--gray-500); font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 20px; }
+  .yt-link { display: inline-flex; align-items: center; gap: 4px; color: var(--blue); font-size: 12px; font-weight: 600; text-decoration: none; padding: 4px 10px; border-radius: 20px; background: var(--blue-light); transition: background 0.15s; }
+  .yt-link:hover { background: #D2E8FD; }
+
+  /* ── 섹션 (학습목표 / 주요내용) ── */
+  .section { margin-bottom: 18px; }
+  .section-label { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 700; color: var(--gray-500); text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 10px; }
+  .section ul { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+  .section li { display: flex; align-items: flex-start; gap: 8px; font-size: 14px; color: var(--gray-700); line-height: 1.6; }
+  .section li::before { content: ''; display: block; width: 6px; height: 6px; border-radius: 50%; background: var(--blue); flex-shrink: 0; margin-top: 8px; }
+  .section.objectives li::before { background: var(--blue); }
+  .section.keypoints li::before { background: var(--green); }
+
+  /* ── Transcript ── */
+  .transcript-toggle { margin-top: 18px; }
+  .transcript-toggle summary { cursor: pointer; font-size: 13px; font-weight: 600; color: var(--gray-500); padding: 8px 0; list-style: none; display: flex; align-items: center; gap: 6px; }
+  .transcript-toggle summary::before { content: '▶'; font-size: 10px; transition: transform 0.2s; }
+  .transcript-toggle[open] summary::before { transform: rotate(90deg); }
+  .transcript-toggle summary:hover { color: var(--blue); }
+  .transcript-content { margin-top: 10px; max-height: 360px; overflow-y: auto; padding: 14px 16px; background: var(--gray-50); border-radius: var(--radius-sm); font-size: 13px; line-height: 1.9; color: var(--gray-700); border: 1px solid var(--gray-100); }
+  .transcript-content p { margin-bottom: 2px; }
+  .ts-link { color: var(--blue); text-decoration: none; font-family: "SF Mono", "Fira Code", monospace; font-size: 11px; font-weight: 600; opacity: 0.8; }
+  .ts-link:hover { opacity: 1; text-decoration: underline; }
+
+  /* ── 퀴즈 ── */
+  .quiz-block { margin-top: 18px; border-radius: var(--radius-sm); overflow: hidden; border: 1.5px solid var(--blue-light); }
+  .quiz-header { background: var(--blue-light); padding: 12px 16px; cursor: pointer; font-size: 14px; font-weight: 700; color: var(--blue-dark); display: flex; align-items: center; gap: 8px; user-select: none; }
+  .quiz-header:hover { background: #D2E8FD; }
+  .quiz-arrow { margin-left: auto; font-size: 11px; transition: transform 0.2s; color: var(--blue); }
+  .quiz-arrow.open { transform: rotate(90deg); }
+  .quiz-count { font-weight: 500; font-size: 13px; color: var(--blue); }
+  .quiz-body { padding: 20px; background: var(--white); }
+  .quiz-question { font-size: 15px; font-weight: 700; color: var(--gray-900); margin-bottom: 14px; line-height: 1.5; }
+  .quiz-question .q-num { color: var(--blue); margin-right: 6px; font-size: 13px; background: var(--blue-light); padding: 2px 7px; border-radius: 5px; }
+  .quiz-options { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px; }
+  .quiz-options li { padding: 11px 16px; border: 1.5px solid var(--gray-100); border-radius: var(--radius-sm); cursor: pointer; font-size: 14px; font-weight: 500; color: var(--gray-700); transition: all 0.15s; background: var(--gray-50); }
+  .quiz-options li:hover { border-color: var(--blue); background: var(--blue-light); color: var(--blue-dark); }
+  .quiz-options li.correct { background: var(--green-bg); border-color: var(--green); color: #0A7A52; font-weight: 700; }
+  .quiz-options li.wrong { background: var(--red-bg); border-color: var(--red); color: #A61325; }
+  .quiz-hint { font-size: 13px; color: var(--gray-500); background: var(--gray-50); border-left: 3px solid var(--blue); padding: 10px 14px; border-radius: 0 var(--radius-sm) var(--radius-sm) 0; margin-bottom: 14px; display: none; line-height: 1.6; }
+  .quiz-nav { display: flex; gap: 8px; }
+  .quiz-btn { padding: 8px 18px; border: none; border-radius: var(--radius-sm); font-size: 13px; cursor: pointer; font-weight: 700; transition: background 0.15s; }
+  .quiz-btn-next { background: var(--blue); color: #fff; }
+  .quiz-btn-next:hover { background: var(--blue-dark); }
+  .quiz-btn-retry { background: var(--gray-100); color: var(--gray-700); }
+  .quiz-btn-retry:hover { background: var(--gray-100); filter: brightness(0.95); }
+  .quiz-result { text-align: center; padding: 16px; font-size: 16px; font-weight: 800; color: var(--gray-900); }
+  .quiz-result .score-badge { display: inline-block; background: var(--green-bg); color: #0A7A52; border-radius: 12px; padding: 6px 18px; font-size: 22px; margin-bottom: 12px; }
+
+  /* ── 챕터 완료 ── */
+  .chapter-check { display: inline-flex; align-items: center; gap: 8px; margin-top: 18px; font-size: 13px; color: var(--gray-500); cursor: pointer; user-select: none; font-weight: 500; padding: 8px 14px; border-radius: 20px; border: 1.5px solid var(--gray-100); transition: all 0.15s; }
+  .chapter-check:hover { border-color: var(--green); color: var(--green); background: var(--green-bg); }
+  .chapter-check input { width: 16px; height: 16px; accent-color: var(--green); cursor: pointer; }
+  .chapter-check.done { border-color: var(--green); color: var(--green); background: var(--green-bg); font-weight: 700; }
+
+  /* ── 사용자 등록 모달 ── */
+  .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 9999; display: flex; align-items: center; justify-content: center; }
+  .modal-box { background: var(--white); border-radius: var(--radius); padding: 32px; width: 340px; max-width: 90vw; box-shadow: var(--shadow-md); }
+  .modal-box h3 { font-size: 18px; font-weight: 800; color: var(--gray-900); margin-bottom: 8px; }
+  .modal-box p { font-size: 13px; color: var(--gray-500); margin-bottom: 20px; line-height: 1.6; }
+  .modal-input { width: 100%; padding: 10px 14px; border: 1.5px solid var(--gray-300); border-radius: var(--radius-sm); font-size: 14px; color: var(--gray-900); margin-bottom: 10px; outline: none; transition: border-color 0.15s; box-sizing: border-box; }
+  .modal-input:focus { border-color: var(--blue); }
+  .modal-actions { display: flex; gap: 8px; margin-top: 4px; }
+  .modal-btn { flex: 1; padding: 10px; border: none; border-radius: var(--radius-sm); font-size: 14px; font-weight: 700; cursor: pointer; transition: background 0.15s; }
+  .modal-btn.primary { background: var(--blue); color: #fff; }
+  .modal-btn.primary:hover { background: var(--blue-dark); }
+  .modal-btn.secondary { background: var(--gray-100); color: var(--gray-500); }
+  .modal-btn.secondary:hover { background: var(--gray-300); color: var(--gray-700); }
+  /* ── 반응형 ── */
+  @media (max-width: 768px) {
+    .sidebar { display: none; }
+    .main { margin-left: 0; padding: 20px 16px 60px; }
+    .header h1 { font-size: 20px; }
+    .card { padding: 20px; }
+  }
+</style>
+</head>
+<body>
+  <!-- 학습자 등록 모달 -->
+  <div class="modal-overlay" id="user-modal" style="display:none">
+    <div class="modal-box">
+      <h3>👋 학습자 등록</h3>
+      <p>이름을 등록하면 챕터별 진도가 저장됩니다.<br>언제든지 이어서 학습할 수 있어요.</p>
+      <input class="modal-input" id="modal-name" placeholder="이름 (필수)" maxlength="30" />
+      <input class="modal-input" id="modal-dept" placeholder="부서 / 팀 (선택)" maxlength="40" />
+      <div class="modal-actions">
+        <button class="modal-btn primary" onclick="registerUser()">시작하기</button>
+        <button class="modal-btn secondary" onclick="skipUser()">건너뛰기</button>
+      </div>
+    </div>
+  </div>
+  <nav class="sidebar">
+    <div class="sidebar-logo">
+      <div class="sidebar-logo-badge">LUPA EDU</div>
+      <h2>Embedded Professional_LUPA 2026 1차 [1] LUPA Studio 및 환경이해</h2>
+    </div>
+    <div class="sidebar-section">
+      <a href="#chapter-0" class="sidebar-item" onclick="seekTo(0,'chapter-0');return false;" data-seconds="0" data-chapter-idx="0"><b>01</b> 강사 소개 및 교육 개요<span class="sidebar-dur">1분</span></a>
+<a href="#chapter-1" class="sidebar-item" onclick="seekTo(117,'chapter-1');return false;" data-seconds="117" data-chapter-idx="1"><b>02</b> LUPA Studio 및 개발 환경, 주요 메뉴와 기능 설명<span class="sidebar-dur">4분</span></a>
+<a href="#chapter-2" class="sidebar-item" onclick="seekTo(360,'chapter-2');return false;" data-seconds="360" data-chapter-idx="2"><b>03</b> SDK Manager, Emulator, Device Manager 및 시리얼 포트 관리<span class="sidebar-dur">13분</span></a>
+<a href="#chapter-3" class="sidebar-item" onclick="seekTo(1168,'chapter-3');return false;" data-seconds="1168" data-chapter-idx="3"><b>04</b> 퀵 런처와 Status Bar 구성 및 정보 표시<span class="sidebar-dur">9분</span></a>
+<a href="#chapter-4" class="sidebar-item" onclick="seekTo(1740,'chapter-4');return false;" data-seconds="1740" data-chapter-idx="4"><b>05</b> LUPA 어플리케이션 프로젝트 구조 및 configuration 소개<span class="sidebar-dur">7분</span></a>
+<a href="#chapter-5" class="sidebar-item" onclick="seekTo(2160,'chapter-5');return false;" data-seconds="2160" data-chapter-idx="5"><b>06</b> LUPA 어플리케이션 개발 절차와 시스템 앱, 패키지 네임 규칙<span class="sidebar-dur">11분</span></a>
+<a href="#chapter-6" class="sidebar-item" onclick="seekTo(2848,'chapter-6');return false;" data-seconds="2848" data-chapter-idx="6"><b>07</b> LUPA 개발 환경에서 디바이스 연결 및 디버깅 방식<span class="sidebar-dur">6분</span></a>
+<a href="#chapter-7" class="sidebar-item" onclick="seekTo(3212,'chapter-7');return false;" data-seconds="3212" data-chapter-idx="7"><b>08</b> Non-GUI 서비스 템플릿 및 프로젝트 위자드<span class="sidebar-dur">7분</span></a>
+<a href="#chapter-8" class="sidebar-item" onclick="seekTo(3673,'chapter-8');return false;" data-seconds="3673" data-chapter-idx="8"><b>09</b> Application 디버깅 방법 및 launch.json 설정<span class="sidebar-dur">8분</span></a>
+
+    </div>
+  </nav>
+  <main class="main">
+    <div class="header">
+      <div class="header-badge">📚 강의 요약</div>
+      <h1>Embedded Professional_LUPA 2026 1차 [1] LUPA Studio 및 환경이해</h1>
+      <div class="header-sub">LG LUPA 임베디드 플랫폼 교육 · 강사: 김윤관 책임</div>
+    </div>
+    <div class="video-container">
+      <div class="video-toggle" onclick="toggleVideo()">
+        <span>🎬 강의 영상 보기</span>
+        <span class="arrow" id="video-arrow">▼</span>
+      </div>
+      <div class="video-wrapper" id="video-area"></div>
+    </div>
+    
+<div class="card" id="chapter-0">
+  <div class="card-header">
+    <div class="card-num">1</div>
+    <div class="card-title">강사 소개 및 교육 개요</div>
+  </div>
+  <div class="card-meta">
+    <span class="time-badge">⏱ 00:00:00 ~ 00:01:57</span>
+    <a href="#" onclick="seekTo(0);return false;" class="yt-link">▶ 재생</a>
+  </div>
+  <div class="section objectives"><div class="section-label">🎯 학습목표</div><ul><li>LUPA Studio의 역할과 기능을 설명할 수 있다.</li><li>LUPA Studio를 활용한 LUPA Application 개발 절차를 이해하고 설명할 수 있다.</li><li>LUPA 개발자 사이트와 LUPA AI 챗봇 서비스를 활용하여 개발 관련 정보를 탐색할 수 있다.</li></ul></div>
+  <div class="section keypoints"><div class="section-label">📋 주요내용</div><ul><li>LUPA Studio는 LUPA Application 및 플랫폼 개발을 위한 통합 개발 환경(IDE)으로, Visual Studio Code 기반의 Extension 형태로 제공된다.</li><li>LUPA Studio는 SDK Manager, Device Manager, Repository, Quick Launcher 등 다양한 기능을 통해 개발, 빌드, 디버깅, 앱 설치 및 실행을 지원한다.</li><li>LUPA 개발자 사이트(lupa.lge.com, lupa.developer.lge.com)에서 개발 가이드와 AI 챗봇 서비스를 제공하며, LUPA Studio 내에서도 챗봇 기능을 활용할 수 있다.</li><li>LUPA Studio를 통해 개발 사이클 및 Application 개발 절차를 효율적으로 관리할 수 있다.</li><li>Device Manager를 통해 에뮬레이터 및 실제 디바이스를 관리하고, 앱 설치 및 실행, 디버깅, 로그 확인 등의 작업을 수행할 수 있다.</li></ul></div>
+  <div class="quiz-block" data-quiz-idx="0"><div class="quiz-header" onclick="toggleQuiz(this)">🧪 퀴즈 풀기 <span class="quiz-count">(5문제)</span><span class="quiz-arrow">▶</span></div><div class="quiz-body" style="display:none"></div></div>
+  <label class="chapter-check" data-chapter-idx="0"><input type="checkbox" onchange="onChapterCheck(this,0)"> <span>학습 완료</span></label>
+  <details class="transcript-toggle">
+    <summary>원문 보기</summary>
+    <div class="transcript-content">
+      <p><a href="#" onclick="seekTo(0);return false;" class="ts-link">[00:00:00]</a> 안녕하세요. 저는 이번에 LUPA Studio 부분을 설명드릴 김윤관이라고 합니다.</p>
+<p><a href="#" onclick="seekTo(8);return false;" class="ts-link">[00:00:08]</a> CTO 부분 소프트웨어 센터의 플랫폼 연구소에서</p>
+<p><a href="#" onclick="seekTo(11);return false;" class="ts-link">[00:00:11]</a> 그리고 LUPA 개발 환경 태스크에서 LUPA Studio를 개발하고 있고요.</p>
+<p><a href="#" onclick="seekTo(16);return false;" class="ts-link">[00:00:16]</a> 이 LUPA Studio는 LUPA Application 또는 플랫폼을 개발하기 위한</p>
+<p><a href="#" onclick="seekTo(22);return false;" class="ts-link">[00:00:22]</a> 개발 환경으로써 사용되는 개발 도구입니다.</p>
+<p><a href="#" onclick="seekTo(28);return false;" class="ts-link">[00:00:28]</a> 오늘 소개해 드릴 내용은 아마 사전 연습을 통해서 한번씩 살펴 보셨겠지만</p>
+<p><a href="#" onclick="seekTo(35);return false;" class="ts-link">[00:00:35]</a> 다시 한번 레퍼런스 한다는 의미로 LUPA Studio를 간단히 소개를 드리고</p>
+<p><a href="#" onclick="seekTo(40);return false;" class="ts-link">[00:00:40]</a> 어떤 식으로 LUPA 개발에 활용하는지 그리고 LUPA 개발 사이클이 어떻게 되는지</p>
+<p><a href="#" onclick="seekTo(45);return false;" class="ts-link">[00:00:45]</a> LUPA 개발에 LUPA Application 개발의 어떤 절차를 설명드리고</p>
+<p><a href="#" onclick="seekTo(49);return false;" class="ts-link">[00:00:49]</a> 거기에 어떤 식으로 활용할 수 있는지를 중점적으로 설명을 드리겠습니다.</p>
+<p><a href="#" onclick="seekTo(54);return false;" class="ts-link">[00:00:54]</a> 두 시간 동안 잘 부탁드립니다.</p>
+<p><a href="#" onclick="seekTo(57);return false;" class="ts-link">[00:00:57]</a> 먼저 LUPA Studio를 들어가기 전에</p>
+<p><a href="#" onclick="seekTo(61);return false;" class="ts-link">[00:01:01]</a> LUPA 개발 환경에 대한 어떤 설명이라든가 가이드 이런 것들을 제공하는 개발자 사이트가 있습니다.</p>
+<p><a href="#" onclick="seekTo(69);return false;" class="ts-link">[00:01:09]</a> 그 도메인은 lupa.lge.com 또는 lupa.developer.lge.com으로 들어가실 수가 있고요.</p>
+<p><a href="#" onclick="seekTo(79);return false;" class="ts-link">[00:01:19]</a> 여기에서 LUPA 플랫폼 개발에 대한 전반적인 사항을 확인하실 수 있습니다.</p>
+<p><a href="#" onclick="seekTo(87);return false;" class="ts-link">[00:01:27]</a> 그리고 최근에 업데이트를 통해서 LUPA AI 챗봇 서비스를 제공하고 있습니다.</p>
+<p><a href="#" onclick="seekTo(94);return false;" class="ts-link">[00:01:34]</a> 오른쪽 아래 보시면 동그란 아이콘이 있는데 이걸 선택하셔서</p>
+<p><a href="#" onclick="seekTo(101);return false;" class="ts-link">[00:01:41]</a> AI agent로 LUPA 개발에 대한 전반적인 사항을 질의를 통해서 정보를 얻으실 수가 있습니다.</p>
+<p><a href="#" onclick="seekTo(110);return false;" class="ts-link">[00:01:50]</a> 마찬가지로 저 아이콘은 LUPA Studio에 있는 VS Code의 챗 기능을 통해서도 활용할 수가 있는데요.</p>
+
+    </div>
+  </details>
+</div>
+
+<div class="card" id="chapter-1">
+  <div class="card-header">
+    <div class="card-num">2</div>
+    <div class="card-title">LUPA Studio 및 개발 환경, 주요 메뉴와 기능 설명</div>
+  </div>
+  <div class="card-meta">
+    <span class="time-badge">⏱ 00:01:57 ~ 00:06:00</span>
+    <a href="#" onclick="seekTo(117);return false;" class="yt-link">▶ 재생</a>
+  </div>
+  <div class="section objectives"><div class="section-label">🎯 학습목표</div><ul><li>LUPA Studio의 주요 메뉴와 기능을 이해하고 설명할 수 있다.</li><li>LUPA Studio를 활용하여 LUPA Application 개발 환경을 설정할 수 있다.</li><li>SDK Manager, Device Manager, Repository, Quick Launcher 등 각 메뉴의 역할과 사용법을 익힐 수 있다.</li><li>LUPA Studio Status Bar를 통해 프로젝트 및 빌드 정보를 확인할 수 있다.</li></ul></div>
+  <div class="section keypoints"><div class="section-label">📋 주요내용</div><ul><li>LUPA Studio는 Visual Studio Code 기반의 Extension 형태로 제공되며, LUPA Application 개발을 위한 통합 개발 환경(IDE)이다.</li><li>SDK Manager는 개발에 필요한 SDK 및 에뮬레이터를 관리하고, 활성화 및 설치/삭제 기능을 제공한다.</li><li>Device Manager는 실제 디바이스 또는 에뮬레이터를 관리하며, 앱 설치, 실행, 버전 확인 등 다양한 기능을 지원한다.</li><li>LUPA Repository는 플랫폼 소스와 빌드 이미지를 관리하며, Custom SDK 등록 및 빌드 결과를 표시한다.</li><li>Quick Launcher는 빌드, 설치, 실행, 메모리/레지스터 덤프 등 자주 사용하는 명령을 빠르게 실행할 수 있도록 한다.</li><li>GUI Library Manager는 LUPA Application UI 저작도구에서 사용하는 GUI 라이브러리를 관리한다.</li><li>Status Bar에서는 프로젝트명, 활성 SDK, 타겟 디바이스, 타겟 플랫폼, 빌드 모드 등 개발 관련 주요 정보를 확인할 수 있다.</li></ul></div>
+  <div class="quiz-block" data-quiz-idx="1"><div class="quiz-header" onclick="toggleQuiz(this)">🧪 퀴즈 풀기 <span class="quiz-count">(5문제)</span><span class="quiz-arrow">▶</span></div><div class="quiz-body" style="display:none"></div></div>
+  <label class="chapter-check" data-chapter-idx="1"><input type="checkbox" onchange="onChapterCheck(this,1)"> <span>학습 완료</span></label>
+  <details class="transcript-toggle">
+    <summary>원문 보기</summary>
+    <div class="transcript-content">
+      <p><a href="#" onclick="seekTo(120);return false;" class="ts-link">[00:02:00]</a> 나중에 이 뒤쪽에서 다시 한번 설명드리겠습니다.</p>
+<p><a href="#" onclick="seekTo(123);return false;" class="ts-link">[00:02:03]</a> LUPA Studio는 VS Code, Visual Studio Code 기반의 개발 환경으로서</p>
+<p><a href="#" onclick="seekTo(134);return false;" class="ts-link">[00:02:14]</a> LUPA Application 개발 프로세스를 지원하기 위한 전반적인 개발 환경들 또는 개발 도구들을 가지고 있고요.</p>
+<p><a href="#" onclick="seekTo(141);return false;" class="ts-link">[00:02:21]</a> Extension 형태로 지원되기 때문에</p>
+<p><a href="#" onclick="seekTo(145);return false;" class="ts-link">[00:02:25]</a> 좌측에 있는 이 VS Code를 실행했을 때</p>
+<p><a href="#" onclick="seekTo(149);return false;" class="ts-link">[00:02:29]</a> 좌측에 있는 Activity Bar에서 LUPA Studio icon을 선택해서 기능들을 활용할 수가 있습니다.</p>
+<p><a href="#" onclick="seekTo(157);return false;" class="ts-link">[00:02:37]</a> 지금 여기에 나와 있는 화면은 Visual Studio Code를 가장 먼저 실행했을 때 볼 수 있는 대표적인 화면이고요.</p>
+<p><a href="#" onclick="seekTo(168);return false;" class="ts-link">[00:02:48]</a> 아마도 여기 계신 분들 사전을 통해서 많이 접해보셨거나</p>
+<p><a href="#" onclick="seekTo(174);return false;" class="ts-link">[00:02:54]</a> 최근에 개발 업무에서 사용을 하시면서 많이 접해보셨을 거라 생각합니다.</p>
+<p><a href="#" onclick="seekTo(181);return false;" class="ts-link">[00:03:01]</a> 중점적으로 저희가 다루는 부분은 좌측에 있는 Activity Bar와 Side Bar에 있는 LUPA Studio의 메뉴들이 있을 거고요.</p>
+<p><a href="#" onclick="seekTo(188);return false;" class="ts-link">[00:03:08]</a> 아래쪽에 있는 Output Panel에 있는 콘솔이라든가 Output Channel을 통해서 출력을 확인할 수가 있습니다.</p>
+<p><a href="#" onclick="seekTo(197);return false;" class="ts-link">[00:03:17]</a> 그 LUPA Studio를 가장 먼저 실행해서 Activity Bar를 선택해서 화면을 보시면</p>
+<p><a href="#" onclick="seekTo(207);return false;" class="ts-link">[00:03:27]</a> 좌측에 LUPA Studio에 있는 기본적인 항목들이 나옵니다.</p>
+<p><a href="#" onclick="seekTo(213);return false;" class="ts-link">[00:03:33]</a> 가장 위쪽에는 SDK Manager가 있고요.</p>
+<p><a href="#" onclick="seekTo(216);return false;" class="ts-link">[00:03:36]</a> SDK Manager는 LUPA 플랫폼에서 개발을 할 때</p>
+<p><a href="#" onclick="seekTo(220);return false;" class="ts-link">[00:03:40]</a> 어떤 타겟의 개발 라이브러리를 같이 앱으로 빌드할 거냐 이런 부분들을 선택하는 부분이고요.</p>
+<p><a href="#" onclick="seekTo(227);return false;" class="ts-link">[00:03:47]</a> 그리고 두 번째 탭은 Device Manager가 있습니다.</p>
+<p><a href="#" onclick="seekTo(230);return false;" class="ts-link">[00:03:50]</a> Device Manager는 실제 디바이스라든가 또는 Emulator를 사용할 때</p>
+<p><a href="#" onclick="seekTo(234);return false;" class="ts-link">[00:03:54]</a> Application을 설치하거나 실행할 때 어떤 포트나 어떤 디바이스를 활용할지</p>
+<p><a href="#" onclick="seekTo(240);return false;" class="ts-link">[00:04:00]</a> LUPA Repository는 실제 Application 개발 하다 보면 플랫폼 코드를 참조하거나 사용할 때가 있는데 그럴 때 사용하기 위한 항목입니다.</p>
+<p><a href="#" onclick="seekTo(253);return false;" class="ts-link">[00:04:13]</a> 이 부분은 최근에 업데이트가 되긴 했는데 아직 새로운 버전이 업데이트가 되지 않아서 아직 자료는 업데이트하지 않았습니다.</p>
+<p><a href="#" onclick="seekTo(264);return false;" class="ts-link">[00:04:24]</a> 그리고 Quick Launcher 부분은 LUPA 개발을 하면서 빌드라든가 설치 또는 Application 실행에 관련된 자주 사용하는 명령들을 한번에 접근하기 쉽도록 만들어 놓은 메뉴이고요.</p>
+<p><a href="#" onclick="seekTo(278);return false;" class="ts-link">[00:04:38]</a> 가장 아래쪽에는 GUI 라이브러리 매니저라고 하는 항목이 있습니다.</p>
+<p><a href="#" onclick="seekTo(283);return false;" class="ts-link">[00:04:43]</a> 이 부분은 이번 인증 교육 때는 다루지 않겠지만 GUI Creator라고 하는 LUPA Application UI 저작도구가 있는데 거기에서 사용하는 GUI에 대한 라이브러리들을 모아놓은 항목입니다.</p>
+<p><a href="#" onclick="seekTo(302);return false;" class="ts-link">[00:05:02]</a> 가장 아래쪽에는 LUPA Studio Status Bar 부분이 있는데 여기에는 현재 내가 작업 중인 프로젝트라든가 선택된 SDK 또는 타겟 디바이스 그리고 선택하고 있는 타겟 플랫폼 빌드 이름들을 표시를 하고 있습니다.</p>
+<p><a href="#" onclick="seekTo(324);return false;" class="ts-link">[00:05:24]</a> 용어가 생소하실 수 있는데 타겟 플랫폼은 내가 개발하고자 하는 제품 또는 빌드하고자 하는 제품이 어떤 카테고리 어떤 냉장고냐 세탁기냐 그런 프로덕트들과 칩셋으로 이루어진 타겟 플랫폼을 선택하는 메뉴입니다.</p>
+<p><a href="#" onclick="seekTo(342);return false;" class="ts-link">[00:05:42]</a> 그리고 가장 뒤쪽에는 Debug와 Release 모드를 선택하는 빌드 모드도 선택할 수 있습니다.</p>
+<p><a href="#" onclick="seekTo(351);return false;" class="ts-link">[00:05:51]</a> SDK Manager는 아까 설명드렸던 것과 같이 사용자 개발을 하고 있습니다.</p>
+
+    </div>
+  </details>
+</div>
+
+<div class="card" id="chapter-2">
+  <div class="card-header">
+    <div class="card-num">3</div>
+    <div class="card-title">SDK Manager, Emulator, Device Manager 및 시리얼 포트 관리</div>
+  </div>
+  <div class="card-meta">
+    <span class="time-badge">⏱ 00:06:00 ~ 00:19:28</span>
+    <a href="#" onclick="seekTo(360);return false;" class="yt-link">▶ 재생</a>
+  </div>
+  <div class="section objectives"><div class="section-label">🎯 학습목표</div><ul><li>LUPA Studio에서 SDK Manager를 사용하여 SDK를 설치, 활성화 및 관리할 수 있다.</li><li>Emulator를 실행하고, 다양한 SDK 및 타겟 이미지에 맞게 설정할 수 있다.</li><li>Device Manager를 통해 시리얼 포트 및 디바이스를 추가, 관리하고 앱을 설치할 수 있다.</li><li>LUPA Studio에서 Custom SDK 및 User Emulator 기능을 활용하여 로컬 빌드 이미지를 사용할 수 있다.</li></ul></div>
+  <div class="section keypoints"><div class="section-label">📋 주요내용</div><ul><li>SDK Manager에서는 LUPA 플랫폼의 다양한 버전별 SDK를 설치하고, 활성화(Activated) 및 설치 상태(Installed)를 확인할 수 있다.</li><li>Custom SDK는 LUPA Repository에서 빌드한 SDK를 LUPA Studio에 추가하여 사용할 수 있으며, 사용자 디렉터리 하위 .lupastudio 폴더에 저장된다.</li><li>Emulator는 SDK와 연동되어 앱 테스트 환경을 제공하며, 각 타겟 칩셋(DQ-C, ITE 등)에 따라 자동으로 이미지가 변경되고, User Emulator 기능으로 로컬 빌드 이미지를 사용할 수 있다.</li><li>Emulator 실행 시 Renode 콘솔, UART0 터미널(시스템 로그 및 콘솔 입력), GDC 윈도우(UI 표시) 등 3개의 창이 제공된다.</li><li>Device Manager에서는 시리얼 포트(COM 포트) 기반의 실제 디바이스와 Emulator를 관리하며, 디바이스 추가, 포트 이름 지정, 앱 설치 및 버전 확인 등의 기능을 제공한다.</li><li>Status Bar와 Quick Select 화면을 통해 활성화된 SDK, 타겟 이름, debug available 여부 등 빌드 및 디버깅 정보를 확인할 수 있다.</li></ul></div>
+  <div class="quiz-block" data-quiz-idx="2"><div class="quiz-header" onclick="toggleQuiz(this)">🧪 퀴즈 풀기 <span class="quiz-count">(5문제)</span><span class="quiz-arrow">▶</span></div><div class="quiz-body" style="display:none"></div></div>
+  <label class="chapter-check" data-chapter-idx="2"><input type="checkbox" onchange="onChapterCheck(this,2)"> <span>학습 완료</span></label>
+  <details class="transcript-toggle">
+    <summary>원문 보기</summary>
+    <div class="transcript-content">
+      <p><a href="#" onclick="seekTo(360);return false;" class="ts-link">[00:06:00]</a> LUPA를 위해서 어떤 SDK를 선택할 거냐, 라고 하는 부분인데요.</p>
+<p><a href="#" onclick="seekTo(364);return false;" class="ts-link">[00:06:04]</a> 이 SDK 항목에는 플랫폼 빌드에 따라서 Application 라이브러리가 다르게 나올 수가 있는데,</p>
+<p><a href="#" onclick="seekTo(374);return false;" class="ts-link">[00:06:14]</a> 지금 현재 LUPA 플랫폼은 각 여러 버전이 있습니다.</p>
+<p><a href="#" onclick="seekTo(378);return false;" class="ts-link">[00:06:18]</a> 1.1 LTS 버전이 있고요.</p>
+<p><a href="#" onclick="seekTo(380);return false;" class="ts-link">[00:06:20]</a> 그리고 1.2 버전이 있고, 그리고 2.6 버전이 크게 있는데,</p>
+<p><a href="#" onclick="seekTo(385);return false;" class="ts-link">[00:06:25]</a> 오늘 실습에서는 교육에서는 1.2 버전만을 사용할 예정입니다.</p>
+<p><a href="#" onclick="seekTo(393);return false;" class="ts-link">[00:06:33]</a> 버전마다 SDK의 내용과 빌드하는 버전들이 다르기 때문에,</p>
+<p><a href="#" onclick="seekTo(398);return false;" class="ts-link">[00:06:38]</a> 매번 Application을 개발하실 때마다 이 부분을 신경 써서 선택을 해줘야 합니다.</p>
+<p><a href="#" onclick="seekTo(406);return false;" class="ts-link">[00:06:46]</a> 각 항목에서 마우스 오른쪽 클릭하시면,</p>
+<p><a href="#" onclick="seekTo(412);return false;" class="ts-link">[00:06:52]</a> 여기에서 다운로드 또는 설치와 활성화를 시켜서 실제 빌드에 사용하는지 여부를 결정할 수가 있습니다.</p>
+<p><a href="#" onclick="seekTo(423);return false;" class="ts-link">[00:07:03]</a> 설치한 SDK는 installed라고 하는 레이블이 붙어서 표시가 되고요.</p>
+<p><a href="#" onclick="seekTo(428);return false;" class="ts-link">[00:07:08]</a> 만약 설치된 SDK를 활성화해서 사용하실 때는 Activated라고 하는 레이블로 변경이 됩니다.</p>
+<p><a href="#" onclick="seekTo(439);return false;" class="ts-link">[00:07:19]</a> 교육 과정에서는 다루지 않지만,</p>
+<p><a href="#" onclick="seekTo(442);return false;" class="ts-link">[00:07:22]</a> LUPA Repository를 통해서 실제 LUPA 플랫폼 코드를 LUPA Studio 안에서 빌드를 하거나 사용하실 때는</p>
+<p><a href="#" onclick="seekTo(450);return false;" class="ts-link">[00:07:30]</a> 플랫폼 코드를 빌드하고 SDK를 생성했을 때,</p>
+<p><a href="#" onclick="seekTo(453);return false;" class="ts-link">[00:07:33]</a> 그 SDK를 LUPA Studio 안에 복사를 해놓고, 백업을 해놓고 직접 사용할 수가 있습니다.</p>
+<p><a href="#" onclick="seekTo(460);return false;" class="ts-link">[00:07:40]</a> 그런 경우에는 Custom SDK라고 하는 아래쪽 항목에 추가돼서 그런 것들을 사용할 수가 있습니다.</p>
+<p><a href="#" onclick="seekTo(469);return false;" class="ts-link">[00:07:49]</a> LUPA Studio에 사용하는 파일들은 대체로 사용자 디렉터리 밑에 .lupastudio라고 하면</p>
+<p><a href="#" onclick="seekTo(480);return false;" class="ts-link">[00:08:00]</a> lupa-sdk가 폴더 밑에 들어가 있습니다.</p>
+<p><a href="#" onclick="seekTo(483);return false;" class="ts-link">[00:08:03]</a> 만약에 사계 디바이스에 관련된 파일이라든가</p>
+<p><a href="#" onclick="seekTo(487);return false;" class="ts-link">[00:08:07]</a> 그런 것들을 수정해야 할 일이 있을 때는</p>
+<p><a href="#" onclick="seekTo(490);return false;" class="ts-link">[00:08:10]</a> 저 위치를 찾아서 확인을 하실 수가 있습니다.</p>
+<p><a href="#" onclick="seekTo(498);return false;" class="ts-link">[00:08:18]</a> 그리고 LUPA Studio는</p>
+<p><a href="#" onclick="seekTo(500);return false;" class="ts-link">[00:08:20]</a> 마찬가지로 Emulator 기능을 제공합니다.</p>
+<p><a href="#" onclick="seekTo(503);return false;" class="ts-link">[00:08:23]</a> LUPA의 개발 초창기 때는</p>
+<p><a href="#" onclick="seekTo(507);return false;" class="ts-link">[00:08:27]</a> 각 SDK나 플랫폼 버전에 따라서</p>
+<p><a href="#" onclick="seekTo(510);return false;" class="ts-link">[00:08:30]</a> 동작하는 Emulator 버전들이 달랐기 때문에</p>
+<p><a href="#" onclick="seekTo(514);return false;" class="ts-link">[00:08:34]</a> UI가 일반적이지 않고</p>
+<p><a href="#" onclick="seekTo(518);return false;" class="ts-link">[00:08:38]</a> 각 SDK와 Emulator가 페어로 동작하는 식으로</p>
+<p><a href="#" onclick="seekTo(522);return false;" class="ts-link">[00:08:42]</a> 동작을 했었는데</p>
+<p><a href="#" onclick="seekTo(523);return false;" class="ts-link">[00:08:43]</a> 지금은 플랫폼이 많이 안정화돼서</p>
+<p><a href="#" onclick="seekTo(527);return false;" class="ts-link">[00:08:47]</a> 하나의 Emulator 버전으로 사용할 수가 있습니다.</p>
+<p><a href="#" onclick="seekTo(530);return false;" class="ts-link">[00:08:50]</a> 지금 UI에 나오는 SDK와 Emulator가</p>
+<p><a href="#" onclick="seekTo(533);return false;" class="ts-link">[00:08:53]</a> 페어로 붙어 있는 UI는</p>
+<p><a href="#" onclick="seekTo(536);return false;" class="ts-link">[00:08:56]</a> 오래된 개발의 과정이라고 생각해 주시면 될 것 같고요.</p>
+<p><a href="#" onclick="seekTo(543);return false;" class="ts-link">[00:09:03]</a> Emulator 항목에서 마우스 우측 클릭이라든가</p>
+<p><a href="#" onclick="seekTo(546);return false;" class="ts-link">[00:09:06]</a> 마우스를 올려보면</p>
+<p><a href="#" onclick="seekTo(548);return false;" class="ts-link">[00:09:08]</a> run 버튼이나 stop 버튼들이 표시가 됩니다.</p>
+<p><a href="#" onclick="seekTo(553);return false;" class="ts-link">[00:09:13]</a> 거기에서 SDK를 선택하고</p>
+<p><a href="#" onclick="seekTo(556);return false;" class="ts-link">[00:09:16]</a> Emulator를 선택한 다음에</p>
+<p><a href="#" onclick="seekTo(558);return false;" class="ts-link">[00:09:18]</a> run 버튼을 누르시면</p>
+<p><a href="#" onclick="seekTo(559);return false;" class="ts-link">[00:09:19]</a> 오른쪽에 보시는 것처럼</p>
+<p><a href="#" onclick="seekTo(561);return false;" class="ts-link">[00:09:21]</a> 3개의 창이 뜨는 Emulator가 시행됩니다.</p>
+<p><a href="#" onclick="seekTo(565);return false;" class="ts-link">[00:09:25]</a> Emulator는 타겟 디바이스가 없거나</p>
+<p><a href="#" onclick="seekTo(569);return false;" class="ts-link">[00:09:29]</a> 쓸 수 없는 환경에서</p>
+<p><a href="#" onclick="seekTo(570);return false;" class="ts-link">[00:09:30]</a> 간단하게 앱을 설치해서 테스트를 해볼 수 있는</p>
+<p><a href="#" onclick="seekTo(574);return false;" class="ts-link">[00:09:34]</a> 그런 환경을 제공합니다.</p>
+<p><a href="#" onclick="seekTo(577);return false;" class="ts-link">[00:09:37]</a> 실제 창이 3개가 뜨는데</p>
+<p><a href="#" onclick="seekTo(579);return false;" class="ts-link">[00:09:39]</a> 가장 아래쪽에 UI가 표시되는</p>
+<p><a href="#" onclick="seekTo(582);return false;" class="ts-link">[00:09:42]</a> GDC 윈도우라는 것이 있고요.</p>
+<p><a href="#" onclick="seekTo(584);return false;" class="ts-link">[00:09:44]</a> 가장 위쪽에 있는</p>
+<p><a href="#" onclick="seekTo(586);return false;" class="ts-link">[00:09:46]</a> Renode라고 하는 터미널은</p>
+<p><a href="#" onclick="seekTo(589);return false;" class="ts-link">[00:09:49]</a> Emulator를 실행하기 위한</p>
+<p><a href="#" onclick="seekTo(590);return false;" class="ts-link">[00:09:50]</a> 엔진이 돌아가는 콘솔입니다.</p>
+<p><a href="#" onclick="seekTo(593);return false;" class="ts-link">[00:09:53]</a> 이 부분은 거의 사용을 안 하니까</p>
+<p><a href="#" onclick="seekTo(594);return false;" class="ts-link">[00:09:54]</a> 신경 안 쓰시면 될 것 같고요.</p>
+<p><a href="#" onclick="seekTo(597);return false;" class="ts-link">[00:09:57]</a> 가운데 있는 UART0라고 하는 터미널이</p>
+<p><a href="#" onclick="seekTo(600);return false;" class="ts-link">[00:10:00]</a> target Emulator 동작하면서 출력하는 시스템 로그들을 출력하거나 또는 직접 콘솔에 접속해</p>
+<p><a href="#" onclick="seekTo(610);return false;" class="ts-link">[00:10:10]</a> 화면을 입력할 수 있는 화면을 제공하고 있습니다</p>
+<p><a href="#" onclick="seekTo(613);return false;" class="ts-link">[00:10:13]</a> LUPA Emulator는 선택하고 있는 target 칩셋이 DQ-C냐 ITE냐 type 이라는 종류에 따라서</p>
+<p><a href="#" onclick="seekTo(623);return false;" class="ts-link">[00:10:23]</a> 이를 시스템 specific metadata Emulator의 이미지가 자동으로 변경을 합니다</p>
+<p><a href="#" onclick="seekTo(628);return false;" class="ts-link">[00:10:28]</a> 이 부분을 활성화하기 위해서는 그 사용자 설정 부분에</p>
+<p><a href="#" onclick="seekTo(639);return false;" class="ts-link">[00:10:39]</a> LUPA Studio의 Enable User Emulator라고 하는 항목이 있습니다.</p>
+<p><a href="#" onclick="seekTo(644);return false;" class="ts-link">[00:10:44]</a> 이건 디폴트로 체크가 되어 있는데</p>
+<p><a href="#" onclick="seekTo(646);return false;" class="ts-link">[00:10:46]</a> 만약에 SDK를 변경을 하거나</p>
+<p><a href="#" onclick="seekTo(649);return false;" class="ts-link">[00:10:49]</a> 또는 만약에 여러분들이 커스텀 SDK를 선택해서 쓰거나</p>
+<p><a href="#" onclick="seekTo(653);return false;" class="ts-link">[00:10:53]</a> 또는 LUPA 플랫폼 빌드를 직접 빌드한 다음에</p>
+<p><a href="#" onclick="seekTo(656);return false;" class="ts-link">[00:10:56]</a> 연결해서 사용할 때는 여러분들이 직접 빌드한</p>
+<p><a href="#" onclick="seekTo(660);return false;" class="ts-link">[00:11:00]</a> LUPA 플랫폼 이미지로 Emulator를 구동을 시킬 수가 있습니다.</p>
+<p><a href="#" onclick="seekTo(664);return false;" class="ts-link">[00:11:04]</a> 이거는 그럴 때 사용하는 항목이고요.</p>
+<p><a href="#" onclick="seekTo(667);return false;" class="ts-link">[00:11:07]</a> 실제 이미지를 선택하는 방법은</p>
+<p><a href="#" onclick="seekTo(671);return false;" class="ts-link">[00:11:11]</a> 사용하기 원하는 SDK를 Activate를 하고</p>
+<p><a href="#" onclick="seekTo(677);return false;" class="ts-link">[00:11:17]</a> 그다음에 Emulator를 실행하면 되는데</p>
+<p><a href="#" onclick="seekTo(679);return false;" class="ts-link">[00:11:19]</a> 실제 내가 선택한 타겟 빌드가 제대로 선택되어 있는지를 확인하시려면</p>
+<p><a href="#" onclick="seekTo(684);return false;" class="ts-link">[00:11:24]</a> 아래쪽에 이 Status Bar에서 타겟 이름을 선택했을 때</p>
+<p><a href="#" onclick="seekTo(689);return false;" class="ts-link">[00:11:29]</a> 윗쪽에 Quick Select 화면이 나오는데</p>
+<p><a href="#" onclick="seekTo(693);return false;" class="ts-link">[00:11:33]</a> 각 타겟 이름의 오른쪽에 debug available라고 하는</p>
+<p><a href="#" onclick="seekTo(698);return false;" class="ts-link">[00:11:38]</a> 이 Label이 표시가 됩니다.</p>
+<p><a href="#" onclick="seekTo(701);return false;" class="ts-link">[00:11:41]</a> 그 경우에는 사용자 Emulator를</p>
+<p><a href="#" onclick="seekTo(703);return false;" class="ts-link">[00:11:43]</a> 구동할 수 있다라고 표시가 되는 겁니다.</p>
+<p><a href="#" onclick="seekTo(710);return false;" class="ts-link">[00:11:50]</a> 그 이외에 다른 이미지들을 선택했을 때는</p>
+<p><a href="#" onclick="seekTo(714);return false;" class="ts-link">[00:11:54]</a> Emulator를 구동할 수 있는 이미지가 없기 때문에</p>
+<p><a href="#" onclick="seekTo(720);return false;" class="ts-link">[00:12:00]</a> df.build.sk</p>
+<p><a href="#" onclick="seekTo(723);return false;" class="ts-link">[00:12:03]</a> Device Manager</p>
+<p><a href="#" onclick="seekTo(731);return false;" class="ts-link">[00:12:11]</a> LUPA 개발 환경은 시리얼 포트를 사용하기 때문에</p>
+<p><a href="#" onclick="seekTo(736);return false;" class="ts-link">[00:12:16]</a> 컴포트를 보통 사용합니다.</p>
+<p><a href="#" onclick="seekTo(740);return false;" class="ts-link">[00:12:20]</a> 컴포트 위에도 Emulator가 디바이스가 될 수도 있고요.</p>
+<p><a href="#" onclick="seekTo(745);return false;" class="ts-link">[00:12:25]</a> 간혹 가다가 디바이스가 하나가 아닌 두 개를 연결해서 사용하는 경우도 있을 수 있는데</p>
+<p><a href="#" onclick="seekTo(752);return false;" class="ts-link">[00:12:32]</a> 그 경우에는 포트를 구분하기 위해서 이름을 지어놓고 Device Manager에서 관리를 할 수가 있습니다.</p>
+<p><a href="#" onclick="seekTo(760);return false;" class="ts-link">[00:12:40]</a> 그리고 실제 시리얼 포트로 사용하다 보면 어느 시리얼 포트에</p>
+<p><a href="#" onclick="seekTo(767);return false;" class="ts-link">[00:12:47]</a> LUPA 디바이스가 연결되어 있는지 확인하기 쉽지 않는데요.</p>
+<p><a href="#" onclick="seekTo(773);return false;" class="ts-link">[00:12:53]</a> 이때는 디바이스 목록에서 Add Device 버튼을 누르면 디바이스 이름을 입력하고 포트를 선택하게 됩니다.</p>
+<p><a href="#" onclick="seekTo(781);return false;" class="ts-link">[00:13:01]</a> 포트는 현재 시리얼 포트에 연결되어 있는 타겟 디바이스들을 리스트를 보여주는데</p>
+<p><a href="#" onclick="seekTo(788);return false;" class="ts-link">[00:13:08]</a> 거기에 LUPA에 연결되어 있는 LDB를 쓸 수 있는 디바이스가 있는 경우에는</p>
+<p><a href="#" onclick="seekTo(794);return false;" class="ts-link">[00:13:14]</a> 디바이스 이름 앞에 LDB라고 하는 레이블이 추가됩니다.</p>
+<p><a href="#" onclick="seekTo(799);return false;" class="ts-link">[00:13:19]</a> 그래서 쉽게 LUPA 디바이스가 어디에 연결되어 있는지 찾을 수가 있고요.</p>
+<p><a href="#" onclick="seekTo(804);return false;" class="ts-link">[00:13:24]</a> 마찬가지로 연결된 디바이스에서 LUPA 커맨드를 사용할 수 있는 포트가 이미 등록되어 있는 경우에는</p>
+<p><a href="#" onclick="seekTo(812);return false;" class="ts-link">[00:13:32]</a> 전원을 켰을 때 화면에 나오시는 것 같이 온라인이라고 하는 표시가 표시됩니다.</p>
+<p><a href="#" onclick="seekTo(820);return false;" class="ts-link">[00:13:40]</a> 간혹 가다가 디바이스 드라이버 문제로 포트가 변경되는 경우가 있는데</p>
+<p><a href="#" onclick="seekTo(827);return false;" class="ts-link">[00:13:47]</a> 디바이스를 연결했는데 기존에 쓰던 포트에 온라인 표시가 안 나온다.</p>
+<p><a href="#" onclick="seekTo(832);return false;" class="ts-link">[00:13:52]</a> 그럴 때는 Device Manager에서 리프레시를 해주시거나 또는 포트가 변경될 가능성이 있으니까</p>
+<p><a href="#" onclick="seekTo(838);return false;" class="ts-link">[00:13:58]</a> 다시 Add Device로 디바이스를 추가합니다.</p>
+<p><a href="#" onclick="seekTo(840);return false;" class="ts-link">[00:14:00]</a> 를 추가해서 선택하실 수가 있습니다.</p>
+<p><a href="#" onclick="seekTo(843);return false;" class="ts-link">[00:14:03]</a> 디바이스가 연결된 상태에서는 몇 가지 추가적인 동작을 수행할 수가 있는데요.</p>
+<p><a href="#" onclick="seekTo(850);return false;" class="ts-link">[00:14:10]</a> 어플리케이션을 설치를 하거나 또는 이제 앱을 실행을 하거나 또는 이제</p>
+<p><a href="#" onclick="seekTo(856);return false;" class="ts-link">[00:14:16]</a> Execute meminfo라고 해서 실제 타겟 디바이스의 메모리 상황을 볼 수 있는 명령을</p>
+<p><a href="#" onclick="seekTo(863);return false;" class="ts-link">[00:14:23]</a> 실행할 수가 있습니다. 그 아래쪽에 있는 dump register나 메모리는</p>
+<p><a href="#" onclick="seekTo(870);return false;" class="ts-link">[00:14:30]</a> 보통 일반적인 상황이 아니라 디버그 모드로 들어가서 gdb가 연결되었을 때만</p>
+<p><a href="#" onclick="seekTo(875);return false;" class="ts-link">[00:14:35]</a> 실행 가능한 메뉴입니다. meminfo 같은 경우는 이제 실행하게 되면 타겟 디바이스의</p>
+<p><a href="#" onclick="seekTo(884);return false;" class="ts-link">[00:14:44]</a> 앱이 어디 메모리 주소에 맵핑이 되어 있는지 그런 그 메모리 상황을</p>
+<p><a href="#" onclick="seekTo(890);return false;" class="ts-link">[00:14:50]</a> 표시해 주고요. 나중에 어플리케이션 디버깅이라든가 설치 여부를 확인할 때</p>
+<p><a href="#" onclick="seekTo(897);return false;" class="ts-link">[00:14:57]</a> 활용하실 수가 있습니다. 그리고 이 LUPA 타겟 디바이스에서는 이제 LDB 커맨드를 사용할 수가 있는데요.</p>
+<p><a href="#" onclick="seekTo(907);return false;" class="ts-link">[00:15:07]</a> 이제 context 메뉴 지금 여기 그림에는 안 나와 있지만 그림 업데이트가 좀 안 돼 있네요.</p>
+<p><a href="#" onclick="seekTo(913);return false;" class="ts-link">[00:15:13]</a> 이제 show LDB log 터미널 이라고 하는 명령을 실행하실 수가 있습니다.</p>
+<p><a href="#" onclick="seekTo(918);return false;" class="ts-link">[00:15:18]</a> 이것은 이제 실제 LDB 명령을 실행하고 그 결과를 화면에 출력하기 위한</p>
+<p><a href="#" onclick="seekTo(926);return false;" class="ts-link">[00:15:26]</a> 터미널이구요. 실제 LDB log 터미널을 실행할 때는 그 원래 이 LDB 커맨드가</p>
+<p><a href="#" onclick="seekTo(932);return false;" class="ts-link">[00:15:32]</a> 파이썬 커맨드로 실행, 파이썬 프로그램으로 실행이 되기 때문에 이제 파이썬, LDB 위치</p>
+<p><a href="#" onclick="seekTo(938);return false;" class="ts-link">[00:15:38]</a> 그리고 컴포트 그리고 파라메터 이런 것들 쭉 입력을 해야 하는데 여기에서는 이제</p>
+<p><a href="#" onclick="seekTo(943);return false;" class="ts-link">[00:15:43]</a> 알리아스를 통해서 그냥 단순하게 LDB 그리고 컴포트 그리고 내가 원하는 커맨드 이런 것들</p>
+<p><a href="#" onclick="seekTo(951);return false;" class="ts-link">[00:15:51]</a> 입력해서 좀 더 손쉽게 LDB 명령을 호스트에서 실행할 수 있도록 제공을 하고 있습니다.</p>
+<p><a href="#" onclick="seekTo(961);return false;" class="ts-link">[00:16:01]</a> 지금 여기에서는 실제 디바이스를 추가할 때 그 시리얼 포트가 어떤 식으로 표시되는지를 간단히 보여주고 있습니다.</p>
+<p><a href="#" onclick="seekTo(970);return false;" class="ts-link">[00:16:10]</a> 온라인 상태의 LDB 디바이스를 추가할 때는 Add Device 버튼을 누르고 디바이스 이름을 입력한 다음에는 현재 호스트에 연결된 포트 리스트가 나오는데</p>
+<p><a href="#" onclick="seekTo(981);return false;" class="ts-link">[00:16:21]</a> 그 중에서 LDB가 쓸 수 있는 디바이스가 연결되어 있다면 가장 앞에 바로 LDB라고 해서 표시가 됩니다.</p>
+<p><a href="#" onclick="seekTo(994);return false;" class="ts-link">[00:16:34]</a> 이 Repository View 같은 경우에는 플랫폼 소스를 활용할 때 사용하는 메뉴구요.</p>
+<p><a href="#" onclick="seekTo(999);return false;" class="ts-link">[00:16:39]</a> 아마 이번 인증 교육 때는 이 메뉴를 사용을 안 하고 단순히 샘플 소스만 나중에 디버깅 하실 때 참조하는 정도로만 사용하실 것 같습니다.</p>
+<p><a href="#" onclick="seekTo(1016);return false;" class="ts-link">[00:16:56]</a> 이 메뉴는 플랫폼 빌드를 하거나 또는 플랫폼 코드를 다운로드 받거나 그럴 때 사용하는 항목입니다.</p>
+<p><a href="#" onclick="seekTo(1027);return false;" class="ts-link">[00:17:07]</a> LUPA Repository View에서 Add Repository라고 하는 우측에 십자 표시 버튼이 있습니다.</p>
+<p><a href="#" onclick="seekTo(1032);return false;" class="ts-link">[00:17:12]</a> 거기에서 실제 LUPA 플랫폼 코드를 LUPA Studio 안에서 등록을 해서 사용할 수가 있구요.</p>
+<p><a href="#" onclick="seekTo(1042);return false;" class="ts-link">[00:17:22]</a> 버전이라든가 그런 것들을 구분하기 위해서 Git Head를 통해서 네이밍을 진행합니다.</p>
+<p><a href="#" onclick="seekTo(1051);return false;" class="ts-link">[00:17:31]</a> 이렇게 해서 Register SDK를 통해서 등록을 할 수가 있구요.</p>
+<p><a href="#" onclick="seekTo(1057);return false;" class="ts-link">[00:17:37]</a> Register SDK는 등록된 플랫폼 코드에서 SDK를 빌드했을 때 그것을 LUPA Studio 안으로 가져와서 사용하는 기능입니다.</p>
+<p><a href="#" onclick="seekTo(1070);return false;" class="ts-link">[00:17:50]</a> 마찬가지로 이 LUPA 플랫폼 코드도 SDK를 빌드하고 타겟 이미지를 다 가지고 있기 때문에 어플리케이션 개발 빌드에 사용할 수가 있습니다.</p>
+<p><a href="#" onclick="seekTo(1080);return false;" class="ts-link">[00:18:00]</a> 이때는 SDK와 동일하게 Set Activate라고 하는 명령을 통해서 그 빌드한 SDK를 그대로 앱 개발에 사용하실 수가 있습니다.</p>
+<p><a href="#" onclick="seekTo(1090);return false;" class="ts-link">[00:18:10]</a> 만약에 디버그를 수행하실 때, 그 빌드한 환경하고 내가 개발하고 있는 호스트 환경이 다른 경우에는</p>
+<p><a href="#" onclick="seekTo(1103);return false;" class="ts-link">[00:18:23]</a> 디버깅을 할 때 내가 원하는 그 소스를 찾지 못해서 화면이 빈 화면으로만 나오는 그런 경우가 생깁니다.</p>
+<p><a href="#" onclick="seekTo(1112);return false;" class="ts-link">[00:18:32]</a> 그럴 때 소스를 호스트로 복사해 와서 바뀐 경로를 조정해 줄 때 Set Debug Source Root라고 하는 명령을 사용합니다.</p>
+<p><a href="#" onclick="seekTo(1123);return false;" class="ts-link">[00:18:43]</a> 이 부분은 지금 올라가 있는 소스가 약간 달라서 지금 당장 사용할 수는 없는데</p>
+<p><a href="#" onclick="seekTo(1133);return false;" class="ts-link">[00:18:53]</a> 이 부분은 교육기간 동안에 조정을 해서 여러분들이 직접 디버깅을 하실 때 사용할 수 있도록 조정을 하겠습니다.</p>
+<p><a href="#" onclick="seekTo(1141);return false;" class="ts-link">[00:19:01]</a> 마찬가지로 Active as a LUPA Project 같은 경우는 플랫폼 자체를 하나의 프로젝트로 간주해서 빌드라든가 디버깅을 수행하는 명령인데요.</p>
+<p><a href="#" onclick="seekTo(1161);return false;" class="ts-link">[00:19:21]</a> 이 부분은 실제 앱 개발이 아니라 플랫폼 개발에 사용하는 메뉴이기 때문에 넘어가도록 하겠습니다.</p>
+
+    </div>
+  </details>
+</div>
+
+<div class="card" id="chapter-3">
+  <div class="card-header">
+    <div class="card-num">4</div>
+    <div class="card-title">퀵 런처와 Status Bar 구성 및 정보 표시</div>
+  </div>
+  <div class="card-meta">
+    <span class="time-badge">⏱ 00:19:28 ~ 00:29:00</span>
+    <a href="#" onclick="seekTo(1168);return false;" class="yt-link">▶ 재생</a>
+  </div>
+  <div class="section objectives"><div class="section-label">🎯 학습목표</div><ul><li>LUPA Studio의 퀵 런처를 활용하여 자주 사용하는 명령을 실행할 수 있다.</li><li>Status Bar를 통해 프로젝트, 디바이스, SDK, 타겟, 빌드 정보 등 개발 환경 정보를 확인할 수 있다.</li><li>퀵 런처 명령별 실행 조건(디버깅 상태, 타겟 지정 등)을 이해하고 적절히 사용할 수 있다.</li><li>API 가이드 뷰어와 LDB 터미널 등 LUPA Studio의 부가 기능을 활용할 수 있다.</li></ul></div>
+  <div class="section keypoints"><div class="section-label">📋 주요내용</div><ul><li>퀵 런처는 빌드, 컴플레이션, 인스톨, Start Application, Uninstall 등 자주 사용하는 명령을 단축 아이콘으로 제공하며, 명령별로 실행 조건(타겟 지정, 앱 존재, 디버깅 상태 등)이 다르다.</li><li>Dump memory와 dump register 기능은 디버그 모드에서 사용하며, 타겟 디바이스의 메모리와 레지스터 값을 파일로 저장할 수 있다.</li><li>Status Bar는 LUPA 프로젝트 이름, 디바이스 이름, 활성화된 SDK, 타겟 이름, 빌드 컨피그레이션 등 개발 환경의 주요 정보를 한눈에 표시한다.</li><li>타겟 이름은 플랫폼, 칩셋, 제품 향 등으로 구성되며, 디버깅 심볼이 포함된 경우 &#x27;debug available&#x27;이 표시된다.</li><li>Status Bar의 항목은 마우스 오버 시 전체 이름(fullname)을 확인할 수 있고, 빌드 아이콘 등 단축 명령도 포함된다.</li><li>API 가이드 뷰어는 커맨드 팔레트에서 실행하여 SDK 버전에 맞는 API 문서를 확인할 수 있으며, 개발자 사이트와 채트에서도 API 정보를 찾을 수 있다.</li><li>LDB 터미널은 LUPA Studio에서 로그 확인 및 명령 실행에 사용되며, Output 패널의 터미널에서 선택 가능하다.</li></ul></div>
+  <div class="quiz-block" data-quiz-idx="3"><div class="quiz-header" onclick="toggleQuiz(this)">🧪 퀴즈 풀기 <span class="quiz-count">(5문제)</span><span class="quiz-arrow">▶</span></div><div class="quiz-body" style="display:none"></div></div>
+  <label class="chapter-check" data-chapter-idx="3"><input type="checkbox" onchange="onChapterCheck(this,3)"> <span>학습 완료</span></label>
+  <details class="transcript-toggle">
+    <summary>원문 보기</summary>
+    <div class="transcript-content">
+      <p><a href="#" onclick="seekTo(1168);return false;" class="ts-link">[00:19:28]</a> 다음에는 퀵 런처 부분인데요. 퀵 런처는 자주 사용하는 명령들을 한 번에 모아놓은 단축 아이콘 형식입니다.</p>
+<p><a href="#" onclick="seekTo(1182);return false;" class="ts-link">[00:19:42]</a> 명령에 따라서 어떤 특정한 조건, 또 시행하는 조건들이 필요한 부분들이 있고요.</p>
+<p><a href="#" onclick="seekTo(1189);return false;" class="ts-link">[00:19:49]</a> 예를 들어서 빌드나 컴플레이션 같은 경우는 별다른 조건 없이 프로젝트가 선택되어 있고,</p>
+<p><a href="#" onclick="seekTo(1198);return false;" class="ts-link">[00:19:58]</a> SDK가 선택되어 있고,</p>
+<p><a href="#" onclick="seekTo(1200);return false;" class="ts-link">[00:20:00]</a> 등의 경우에는 즉시 사용할 수가 있습니다.</p>
+<p><a href="#" onclick="seekTo(1203);return false;" class="ts-link">[00:20:03]</a> 하지만 이제 인스톨이나 Start Application 같은 경우는</p>
+<p><a href="#" onclick="seekTo(1207);return false;" class="ts-link">[00:20:07]</a> 타겟이 지정이 되고 실행 가능한 앱이 있어야지만</p>
+<p><a href="#" onclick="seekTo(1211);return false;" class="ts-link">[00:20:11]</a> 실행이 되는 항목들이고요.</p>
+<p><a href="#" onclick="seekTo(1215);return false;" class="ts-link">[00:20:15]</a> 마찬가지로 Uninstall도 동일합니다.</p>
+<p><a href="#" onclick="seekTo(1217);return false;" class="ts-link">[00:20:17]</a> Start Application 같은 경우는</p>
+<p><a href="#" onclick="seekTo(1220);return false;" class="ts-link">[00:20:20]</a> 선택된 타겟에서 User App을 선택해서 실행을 하는데요,</p>
+<p><a href="#" onclick="seekTo(1225);return false;" class="ts-link">[00:20:25]</a> 만약에 User App이 여러 개가 있다고 한다면</p>
+<p><a href="#" onclick="seekTo(1227);return false;" class="ts-link">[00:20:27]</a> Quick Pick 화면에서 실행할 앱을 선택을 해야 하는 경우가 있습니다.</p>
+<p><a href="#" onclick="seekTo(1235);return false;" class="ts-link">[00:20:35]</a> 보통은 프로젝트가 선택되어 있을 때 해당 프로젝트에서 빌드한 앱을 우선적으로 실행을 하게 되어있습니다.</p>
+<p><a href="#" onclick="seekTo(1243);return false;" class="ts-link">[00:20:43]</a> 이 dump memory와 dump register 같은 경우는 debug 할 때 사용하시는데요.</p>
+<p><a href="#" onclick="seekTo(1251);return false;" class="ts-link">[00:20:51]</a> 현재 debug 모드로 연결되어 있는 debug 상태일 때</p>
+<p><a href="#" onclick="seekTo(1255);return false;" class="ts-link">[00:20:55]</a> target device에 memory를 dump해서 다운로드 하는 기능입니다.</p>
+<p><a href="#" onclick="seekTo(1262);return false;" class="ts-link">[00:21:02]</a> dump 기능이기 때문에 시작 주소와 끝 주소가 그 파라메터로 필요하고요.</p>
+<p><a href="#" onclick="seekTo(1268);return false;" class="ts-link">[00:21:08]</a> 실제 저장되는 위치는 현재 선택되어 있는 프로젝트 폴더에 저장이 됩니다.</p>
+<p><a href="#" onclick="seekTo(1274);return false;" class="ts-link">[00:21:14]</a> 마찬가지로 register는 target device에 register 값들이 어떤 것들이 들어가 있는지 다운로드 하는 기능이고요.</p>
+<p><a href="#" onclick="seekTo(1283);return false;" class="ts-link">[00:21:23]</a> 보통 gdb를 써서 프로그램이 halt 상태일 때 각 register를 기록으로 남겨놓고 싶을 때 사용하는 기능입니다.</p>
+<p><a href="#" onclick="seekTo(1293);return false;" class="ts-link">[00:21:33]</a> 마찬가지로 text file 형식으로 지정이 되고요. 그 내부는 json 형식입니다.</p>
+<p><a href="#" onclick="seekTo(1298);return false;" class="ts-link">[00:21:38]</a> 필요하실 때 사용하실 수 있습니다.</p>
+<p><a href="#" onclick="seekTo(1301);return false;" class="ts-link">[00:21:41]</a> 자주 사용하는 전역 변수라든가 모니터링 하고 싶은 값이 있을 때는</p>
+<p><a href="#" onclick="seekTo(1308);return false;" class="ts-link">[00:21:48]</a> 이걸 세팅해서 지정을 해놓을 수가 있는데요.</p>
+<p><a href="#" onclick="seekTo(1314);return false;" class="ts-link">[00:21:54]</a> 이 때는 세팅에 지정된 어떤 변수들이 있을 때 dump register를 시행할 때</p>
+<p><a href="#" onclick="seekTo(1320);return false;" class="ts-link">[00:22:00]</a> 그 변수들의 값들을 함께 다운로드해서 저장을 합니다.</p>
+<p><a href="#" onclick="seekTo(1324);return false;" class="ts-link">[00:22:04]</a> 그리고 이제 status bar는 LUPA 개발 환경에 관련된 정보들을 한 번에 표시하는 기능입니다.</p>
+<p><a href="#" onclick="seekTo(1337);return false;" class="ts-link">[00:22:17]</a> 아래쪽에 선택되어 있는 여러 가지 설정들을 보여주고 있고요.</p>
+<p><a href="#" onclick="seekTo(1341);return false;" class="ts-link">[00:22:21]</a> 가장 앞에 LUPA 프로젝트의 이름이 있고요.</p>
+<p><a href="#" onclick="seekTo(1344);return false;" class="ts-link">[00:22:24]</a> 그다음에는 조그만 모니터 화면, 모니터 아이콘이 표시되는데 그 뒤에 디바이스의 이름이 선택됩니다.</p>
+<p><a href="#" onclick="seekTo(1352);return false;" class="ts-link">[00:22:32]</a> 디바이스 이름 뒤에 괄호가 있고 그 안에는 현재 활성화되어 있는 SDK의 이름이 표시가 되고요.</p>
+<p><a href="#" onclick="seekTo(1360);return false;" class="ts-link">[00:22:40]</a> 그 오른쪽에 괄호가 끝난 오른쪽에는 타겟 네임이 표시가 됩니다.</p>
+<p><a href="#" onclick="seekTo(1366);return false;" class="ts-link">[00:22:46]</a> 타겟 네임은 보통 이제 LUPA 플랫폼의 형식에 따라 가는데요.</p>
+<p><a href="#" onclick="seekTo(1370);return false;" class="ts-link">[00:22:50]</a> 타겟 프로젝트의 이름이 가장 앞에 있고요.</p>
+<p><a href="#" onclick="seekTo(1373);return false;" class="ts-link">[00:22:53]</a> 그 다음에는 칩셋 이름이 있고 그 칩셋 뒤에는 제품의 어떤 향이냐 하는 타겟이 있습니다.</p>
+<p><a href="#" onclick="seekTo(1383);return false;" class="ts-link">[00:23:03]</a> 그래서 각 항목들은 점으로 구분되서 예를 들어서 대표적으로 레퍼런스 플랫폼 같은 경우는</p>
+<p><a href="#" onclick="seekTo(1389);return false;" class="ts-link">[00:23:09]</a> reference.dqc.nextosp 이런 식으로 타겟 이름이 구분이 됩니다.</p>
+<p><a href="#" onclick="seekTo(1396);return false;" class="ts-link">[00:23:16]</a> 지금 여기에서는 화면은 보통 프로덕트가 와셔라든가 여러 가지 종류가 있을 수가 있는데요.</p>
+<p><a href="#" onclick="seekTo(1405);return false;" class="ts-link">[00:23:25]</a> 여기에서는 딱히 해보시면서 이거는 확실하게 하실 수 있을 것 같습니다.</p>
+<p><a href="#" onclick="seekTo(1417);return false;" class="ts-link">[00:23:37]</a> 보통 디버깅 심벌을 포함하는 경우에는 타겟 이름을 선택할 때 뒤쪽에</p>
+<p><a href="#" onclick="seekTo(1422);return false;" class="ts-link">[00:23:42]</a> debug available 이라고 하는 항목이 표시가 됩니다.</p>
+<p><a href="#" onclick="seekTo(1426);return false;" class="ts-link">[00:23:46]</a> 이거는 디버거 심벌 ELF 파일이라든가 그런 것들이 포함되어 있을 때 표시가 되는 거고요.</p>
+<p><a href="#" onclick="seekTo(1433);return false;" class="ts-link">[00:23:53]</a> 그 이외에 다른 것들은 디버깅 할 때 심벌들이 표시가 안 돼서</p>
+<p><a href="#" onclick="seekTo(1440);return false;" class="ts-link">[00:24:00]</a> 디버깅을 하실 때는 항상 타겟 선택이 제대로 되어 있는지 확인을 하시면 됩니다.</p>
+<p><a href="#" onclick="seekTo(1450);return false;" class="ts-link">[00:24:10]</a> 제품의 이름이 길기 때문에 status bar는 단축에서 표시를 하고 있습니다.</p>
+<p><a href="#" onclick="seekTo(1458);return false;" class="ts-link">[00:24:18]</a> 실제 값을 확인할 때는 마우스를 올려서 잠깐 기다리시면 거기에 대한 fullname이 표시가 됩니다.</p>
+<p><a href="#" onclick="seekTo(1466);return false;" class="ts-link">[00:24:26]</a> 추가된 것들로 빌드 아이콘들이 표시가 되는데요.</p>
+<p><a href="#" onclick="seekTo(1475);return false;" class="ts-link">[00:24:35]</a> 빌드 컨피그레이션 뒤쪽에 스페너모양으로 LUPA 어플리케이션을 빌드하는 명령이 단축 아이콘으로 들어가 있고요.</p>
+<p><a href="#" onclick="seekTo(1486);return false;" class="ts-link">[00:24:46]</a> 오른쪽에는 마찬가지로 LUPA 어플리케이션이라는 단축 아이콘이 추가되어 있습니다.</p>
+<p><a href="#" onclick="seekTo(1493);return false;" class="ts-link">[00:24:53]</a> 빌드 컨피그레이션은 주로 릴리즈 모드만 사용합니다.</p>
+<p><a href="#" onclick="seekTo(1500);return false;" class="ts-link">[00:25:00]</a> 플랫폼 자체가 워낙 제품군이 많고 그러다 보니까 디버그나 릴리즈 모드를 구분해서 개발을 진행하지 않고 보통은 릴리즈 모드로만 개발을 진행하는데</p>
+<p><a href="#" onclick="seekTo(1513);return false;" class="ts-link">[00:25:13]</a> 저는 딱히 말씀드리기 별로 없네요.</p>
+<p><a href="#" onclick="seekTo(1527);return false;" class="ts-link">[00:25:27]</a> 그리고 LUPA Studio에서 열 수 있는 뷰 중에는 API 가이드 뷰어가 있습니다.</p>
+<p><a href="#" onclick="seekTo(1542);return false;" class="ts-link">[00:25:42]</a> 실제 LUPA 어플리케이션을 개발하시다 보면 API를 찾아보거나 참조하는 일이 많이 생길 수가 있는데요.</p>
+<p><a href="#" onclick="seekTo(1550);return false;" class="ts-link">[00:25:50]</a> 이때는 커맨드 팔레트에서 Ctrl-Shift-P를 눌러서 커맨드 팔레트에서 실행한 다음에</p>
+<p><a href="#" onclick="seekTo(1558);return false;" class="ts-link">[00:25:58]</a> LUPA API를 실행하시고요.</p>
+<p><a href="#" onclick="seekTo(1560);return false;" class="ts-link">[00:26:00]</a> API 가이드 뷰어를 실행하시면 선택되어 있는 SDK 버전에 맞는 API 가이드를 에디터에서 직접 확인하실 수가 있습니다.</p>
+<p><a href="#" onclick="seekTo(1569);return false;" class="ts-link">[00:26:09]</a> 여기에는 전체 API 가이드가 쭉 나오고요.</p>
+<p><a href="#" onclick="seekTo(1573);return false;" class="ts-link">[00:26:13]</a> 실제 여기에서 내가 원하는 API를 찾기가 쉽지 않기 때문에 다른 방법들을 여러 가지 사용할 수가 있습니다.</p>
+<p><a href="#" onclick="seekTo(1580);return false;" class="ts-link">[00:26:20]</a> 예를 들어서 채트에서 API 가이드를 찾거나 또는 처음에 보여드렸던 개발자 사이트에서 채트로도 확인하실 수가 있고요.</p>
+<p><a href="#" onclick="seekTo(1591);return false;" class="ts-link">[00:26:31]</a> 마찬가지로 이 API 가이드는 개발자 사이트에서 똑같이 배포가 되어 있습니다.</p>
+<p><a href="#" onclick="seekTo(1597);return false;" class="ts-link">[00:26:37]</a> 지금 Output 패널에 보시면 LDB 터미널이라는 기능이 있습니다.</p>
+<p><a href="#" onclick="seekTo(1609);return false;" class="ts-link">[00:26:49]</a> 아까 설명드렸던 LUPA 디바이스에서 사용했었던 LDB 터미널하고 비슷한 기능이고요.</p>
+<p><a href="#" onclick="seekTo(1618);return false;" class="ts-link">[00:26:58]</a> 디바이스 매니저에서 열었던 LDB 터미널은 LUPA Studio에서 실행하는 LDB 로그들을 쭉 보여준다면</p>
+<p><a href="#" onclick="seekTo(1629);return false;" class="ts-link">[00:27:09]</a> 이 Output 패널에 있는 터미널에서는 출력은 보여주지 않고 내가 직접 LDB 명령만 실행할 때 사용합니다.</p>
+<p><a href="#" onclick="seekTo(1642);return false;" class="ts-link">[00:27:22]</a> 아래쪽에 있는 뷰에서 터미널을 선택하시고 그 터미널 아래 팬에 드롭다운 버튼을 누르면</p>
+<p><a href="#" onclick="seekTo(1648);return false;" class="ts-link">[00:27:28]</a> 그 안에 호스트에서 사용 가능한 터미널들이 종류가 여러 가지가 나오는데요.</p>
+<p><a href="#" onclick="seekTo(1653);return false;" class="ts-link">[00:27:33]</a> 그중에 LDB를 선택하시면 마찬가지로 LDB에 대한 알리아스를 통해서 LDB 명령을 쉽게 실행하실 수가 있습니다.</p>
+<p><a href="#" onclick="seekTo(1661);return false;" class="ts-link">[00:27:41]</a> 그리고 LUPA Studio는 마찬가지로 원격 환경을 VS Code에서 지원하는 원격 개발 환경을 지원하는데요.</p>
+<p><a href="#" onclick="seekTo(1672);return false;" class="ts-link">[00:27:52]</a> LUPA 플랫폼이 주로 리눅스에서 개발을 진행하다 보니까 보통 원격 시스템에...</p>
+<p><a href="#" onclick="seekTo(1680);return false;" class="ts-link">[00:28:00]</a> 계속해서 개발하는 경우가 많습니다. 다만 원격시스템에서 개발할 때는 호스트에 있는 몇 가지 기능을 사용할 수가 없는데요.</p>
+<p><a href="#" onclick="seekTo(1689);return false;" class="ts-link">[00:28:09]</a> 보통 프로젝트를 열거나 빌드 같은 경우는 호스트에서 실행이 가능한데 실제 타겟 디바이스가 연결되어 있을 때는</p>
+<p><a href="#" onclick="seekTo(1699);return false;" class="ts-link">[00:28:19]</a> 시리얼 포트는 호스트에만 연결되기 때문에 리모트에서 사용할 수가 없습니다.</p>
+<p><a href="#" onclick="seekTo(1705);return false;" class="ts-link">[00:28:25]</a> 간호 사업부에서 어떤 분들은 리모트로 연결되는 리모트 시스템에다가</p>
+<p><a href="#" onclick="seekTo(1710);return false;" class="ts-link">[00:28:30]</a> 직접 LUPA 디바이스를 연결해 놓고 거기에서 직접 install라든가</p>
+<p><a href="#" onclick="seekTo(1718);return false;" class="ts-link">[00:28:38]</a> 타겟 디바이스 설치, 실행 이런 것들을 하시는 분들이 가끔 계십니다.</p>
+<p><a href="#" onclick="seekTo(1723);return false;" class="ts-link">[00:28:43]</a> 그런 식으로 환경은 여러분들이 수성을 해서 사용하실 수가 있는데</p>
+<p><a href="#" onclick="seekTo(1731);return false;" class="ts-link">[00:28:51]</a> 기본적으로는 빌드만 가능하다. 이것만 기억하시면 될 것 같습니다.</p>
+
+    </div>
+  </details>
+</div>
+
+<div class="card" id="chapter-4">
+  <div class="card-header">
+    <div class="card-num">5</div>
+    <div class="card-title">LUPA 어플리케이션 프로젝트 구조 및 configuration 소개</div>
+  </div>
+  <div class="card-meta">
+    <span class="time-badge">⏱ 00:29:00 ~ 00:36:00</span>
+    <a href="#" onclick="seekTo(1740);return false;" class="yt-link">▶ 재생</a>
+  </div>
+  <div class="section objectives"><div class="section-label">🎯 학습목표</div><ul><li>LUPA 어플리케이션 프로젝트의 기본 구조와 주요 폴더 및 파일의 역할을 설명할 수 있다.</li><li>manifest, spec.ini 등 주요 configuration 파일의 목적과 사용법을 이해하고 설명할 수 있다.</li><li>LUPA 어플리케이션의 앱 타입(APP_TYPE_PERSISTENT, APP_TYPE_BACKGROUND, APP_TYPE_IMMORTAL 등)에 따른 라이프 사이클 차이를 구분할 수 있다.</li><li>설치/제거 시 실행되는 명령어를 spec.ini 파일에 추가하는 방법과 주의사항을 설명할 수 있다.</li></ul></div>
+  <div class="section keypoints"><div class="section-label">📋 주요내용</div><ul><li>LUPA 어플리케이션 프로젝트는 src, res, ui 등 소스 및 리소스 폴더와 CMake, manifest, spec.ini 등 다양한 configuration 파일로 구성된다.</li><li>manifest 파일은 앱의 카테고리, 앱 타입 등 속성을 지정하며, 앱의 실행 방식과 라이프 사이클에 영향을 준다.</li><li>spec.ini 파일은 설치/제거 전후에 실행할 명령을 shell command 형식으로 지정하며, 용량 제한으로 간단한 명령만 추가해야 한다.</li><li>앱 타입(APP_TYPE_PERSISTENT, APP_TYPE_BACKGROUND, APP_TYPE_IMMORTAL 등)에 따라 앱의 실행 및 종료 방식, 라이프 사이클이 다르며, 타입이 없는 경우 개발자가 직접 제어해야 한다.</li><li>APP_TYPE_PERSISTENT는 항상 실행 상태를 유지하고 시스템이 직접 라이프 사이클을 관리하며, APP_TYPE_BACKGROUND는 백그라운드에서 계속 실행되고, APP_TYPE_IMMORTAL은 작업 완료 시 종료된다.</li></ul></div>
+  <div class="quiz-block" data-quiz-idx="4"><div class="quiz-header" onclick="toggleQuiz(this)">🧪 퀴즈 풀기 <span class="quiz-count">(5문제)</span><span class="quiz-arrow">▶</span></div><div class="quiz-body" style="display:none"></div></div>
+  <label class="chapter-check" data-chapter-idx="4"><input type="checkbox" onchange="onChapterCheck(this,4)"> <span>학습 완료</span></label>
+  <details class="transcript-toggle">
+    <summary>원문 보기</summary>
+    <div class="transcript-content">
+      <p><a href="#" onclick="seekTo(1740);return false;" class="ts-link">[00:29:00]</a> LUPA 어플리케이션 프로젝트를 간단히 살펴보려고 하는데요.</p>
+<p><a href="#" onclick="seekTo(1751);return false;" class="ts-link">[00:29:11]</a> 지금 여기 설명드리는 것은 LUPA GUI 어플리케이션이라고 명시는 되어 있지만</p>
+<p><a href="#" onclick="seekTo(1755);return false;" class="ts-link">[00:29:15]</a> LUPA 어플리케이션의 구조가 동일하다고 생각하시면 될 것 같습니다.</p>
+<p><a href="#" onclick="seekTo(1766);return false;" class="ts-link">[00:29:26]</a> LUPA 플랫폼이 LPK라고 하는 확장자를 가진 패키지를 어플리케이션으로 사용하고 있고요.</p>
+<p><a href="#" onclick="seekTo(1773);return false;" class="ts-link">[00:29:33]</a> 이 패키지 파일에는 빌드한 바이너리와 리소스 파일들을 같이 가지고 있습니다.</p>
+<p><a href="#" onclick="seekTo(1780);return false;" class="ts-link">[00:29:40]</a> 실제 소스는 아래쪽에 src라든가 res 리소스를 담고 있는 리소스 파일이고요.</p>
+<p><a href="#" onclick="seekTo(1787);return false;" class="ts-link">[00:29:47]</a> 가장 중요한 CMake 파일이나 manifest 파일, spec과 같은</p>
+<p><a href="#" onclick="seekTo(1794);return false;" class="ts-link">[00:29:54]</a> 여러 가지 configuration 파일들을 가지고 있습니다.</p>
+<p><a href="#" onclick="seekTo(1798);return false;" class="ts-link">[00:29:58]</a> 저 ui라고 하는 폴더는</p>
+<p><a href="#" onclick="seekTo(1800);return false;" class="ts-link">[00:30:00]</a> GUI Creator로 작성한 UI에 관련된 파일들이 들어가는 폴더입니다.</p>
+<p><a href="#" onclick="seekTo(1807);return false;" class="ts-link">[00:30:07]</a> 이 LUPA 어플리케이션에서 사용하는</p>
+<p><a href="#" onclick="seekTo(1811);return false;" class="ts-link">[00:30:11]</a> manifest 파일은 설치하는 어플리케이션에</p>
+<p><a href="#" onclick="seekTo(1815);return false;" class="ts-link">[00:30:15]</a> 개발하고 있는 어플리케이션에</p>
+<p><a href="#" onclick="seekTo(1817);return false;" class="ts-link">[00:30:17]</a> 여러 가지 속성들을 가지고 있습니다.</p>
+<p><a href="#" onclick="seekTo(1824);return false;" class="ts-link">[00:30:24]</a> 이 속성에는 카테고리라든가 앱 타입을</p>
+<p><a href="#" onclick="seekTo(1827);return false;" class="ts-link">[00:30:27]</a> 지정할 수가 있는데요.</p>
+<p><a href="#" onclick="seekTo(1829);return false;" class="ts-link">[00:30:29]</a> 보통 카테고리 같은 경우는 앱의 유형을 지정하고</p>
+<p><a href="#" onclick="seekTo(1833);return false;" class="ts-link">[00:30:33]</a> 이 앱이 어느 카테고리에서 실행이 될 건지</p>
+<p><a href="#" onclick="seekTo(1836);return false;" class="ts-link">[00:30:36]</a> 그것들을 결정하는 역할을 합니다.</p>
+<p><a href="#" onclick="seekTo(1839);return false;" class="ts-link">[00:30:39]</a> 앱 타입 같은 경우는 앱의 유형을</p>
+<p><a href="#" onclick="seekTo(1842);return false;" class="ts-link">[00:30:42]</a> 키워드로 On/Off하는 형식으로</p>
+<p><a href="#" onclick="seekTo(1844);return false;" class="ts-link">[00:30:44]</a> 사용할 수가 있는데요.</p>
+<p><a href="#" onclick="seekTo(1846);return false;" class="ts-link">[00:30:46]</a> 타입의 이름에 따라서 앱에 실행하는 방식이라든가</p>
+<p><a href="#" onclick="seekTo(1850);return false;" class="ts-link">[00:30:50]</a> 동작하는 라이프 사이클이 바뀌게 됩니다.</p>
+<p><a href="#" onclick="seekTo(1855);return false;" class="ts-link">[00:30:55]</a> 그리고 이제 spec.ini라고 하는 파일이 있는데요.</p>
+<p><a href="#" onclick="seekTo(1859);return false;" class="ts-link">[00:30:59]</a> 이것은 어플리케이션이 설치되거나 제거될 때</p>
+<p><a href="#" onclick="seekTo(1864);return false;" class="ts-link">[00:31:04]</a> 어떤 명령들을 추가할 수 있는</p>
+<p><a href="#" onclick="seekTo(1866);return false;" class="ts-link">[00:31:06]</a> 그런 기능들을 가진 파일입니다.</p>
+<p><a href="#" onclick="seekTo(1868);return false;" class="ts-link">[00:31:08]</a> 오른쪽에 보시면 pre_install, post_install</p>
+<p><a href="#" onclick="seekTo(1872);return false;" class="ts-link">[00:31:12]</a> pre_uninstall, post_uninstall이라고 하는</p>
+<p><a href="#" onclick="seekTo(1875);return false;" class="ts-link">[00:31:15]</a> 4가지 항목이 있는데요.</p>
+<p><a href="#" onclick="seekTo(1877);return false;" class="ts-link">[00:31:17]</a> 말 그대로 인스톨을 하기 전에</p>
+<p><a href="#" onclick="seekTo(1879);return false;" class="ts-link">[00:31:19]</a> 타겟에서 어떤 명령을 실행할 건지</p>
+<p><a href="#" onclick="seekTo(1881);return false;" class="ts-link">[00:31:21]</a> 또는 설치한 다음에</p>
+<p><a href="#" onclick="seekTo(1883);return false;" class="ts-link">[00:31:23]</a> 타겟에서 어떤 명령을 실행할 건지</p>
+<p><a href="#" onclick="seekTo(1885);return false;" class="ts-link">[00:31:25]</a> 이런 것들을 shell command 항목으로</p>
+<p><a href="#" onclick="seekTo(1889);return false;" class="ts-link">[00:31:29]</a> 형식으로 해서 지정을 합니다.</p>
+<p><a href="#" onclick="seekTo(1892);return false;" class="ts-link">[00:31:32]</a> 보통 설치 전후에 뭔가 설정을 변경해야 하거나</p>
+<p><a href="#" onclick="seekTo(1896);return false;" class="ts-link">[00:31:36]</a> 그런 명령들이 설정을 변경해야 할 때</p>
+<p><a href="#" onclick="seekTo(1900);return false;" class="ts-link">[00:31:40]</a> 주로 사용을 합니다.</p>
+<p><a href="#" onclick="seekTo(1902);return false;" class="ts-link">[00:31:42]</a> 지금 여기에 예시로 설치한 다음에</p>
+<p><a href="#" onclick="seekTo(1906);return false;" class="ts-link">[00:31:46]</a> settings의 어떤 항목을</p>
+<p><a href="#" onclick="seekTo(1909);return false;" class="ts-link">[00:31:49]</a> 합스로 바꿔 변경을 해라</p>
+<p><a href="#" onclick="seekTo(1911);return false;" class="ts-link">[00:31:51]</a> 라는 명령을 추가한 예시입니다.</p>
+<p><a href="#" onclick="seekTo(1914);return false;" class="ts-link">[00:31:54]</a> 단지 spec.ini 파일은</p>
+<p><a href="#" onclick="seekTo(1916);return false;" class="ts-link">[00:31:56]</a> 패키지 파일 안에 같이 포함이 되기 때문에</p>
+<p><a href="#" onclick="seekTo(1920);return false;" class="ts-link">[00:32:00]</a> 너무 많은 명령이 들어가게 되면, 빌드할 때 오류가 발생할 수 있습니다.</p>
+<p><a href="#" onclick="seekTo(1926);return false;" class="ts-link">[00:32:06]</a> 용량이 커져서.</p>
+<p><a href="#" onclick="seekTo(1928);return false;" class="ts-link">[00:32:08]</a> 주로 한두 줄 정도의 명령들만 추가할 수가 있습니다.</p>
+<p><a href="#" onclick="seekTo(1933);return false;" class="ts-link">[00:32:13]</a> 이 어플리케이션들은 타입에 따라서 라이프 사이클이 달라진다고 간단히 말씀을 드렸는데요.</p>
+<p><a href="#" onclick="seekTo(1943);return false;" class="ts-link">[00:32:23]</a> 보통 대표적으로 세 개 타입이 있습니다.</p>
+<p><a href="#" onclick="seekTo(1946);return false;" class="ts-link">[00:32:26]</a> 앱 타입이 APP_TYPE_PERSISTENT 타입이냐, APP_TYPE_BACKGROUND 타입이냐, APP_TYPE_IMMORTAL 타입이냐, 라는 항목이고요.</p>
+<p><a href="#" onclick="seekTo(1954);return false;" class="ts-link">[00:32:34]</a> 이 세 가지 타입을 지정하지 않은 타입이 없는 경우도 있습니다.</p>
+<p><a href="#" onclick="seekTo(1959);return false;" class="ts-link">[00:32:39]</a> 타입이 지정되지 않은 경우에는 별도의 라이프 사이클을 타지 않고</p>
+<p><a href="#" onclick="seekTo(1964);return false;" class="ts-link">[00:32:44]</a> 직접 개발자들이 입력하는 Start 앱이나 Stop 앱</p>
+<p><a href="#" onclick="seekTo(1969);return false;" class="ts-link">[00:32:49]</a> 이걸 통해서 앱의 라이프 사이클을 지정할 수가 있습니다.</p>
+<p><a href="#" onclick="seekTo(1974);return false;" class="ts-link">[00:32:54]</a> APP_TYPE_PERSISTENT 앱 같은 경우는 항상 실행 상태를 유지하는데</p>
+<p><a href="#" onclick="seekTo(1979);return false;" class="ts-link">[00:32:59]</a> 외부에서 직접 종료하거나 실행하는 명령이 불가능하고</p>
+<p><a href="#" onclick="seekTo(1983);return false;" class="ts-link">[00:33:03]</a> 플랫폼이 직접적으로 라이프 사이클을 관리하는 어플리케이션입니다.</p>
+<p><a href="#" onclick="seekTo(1990);return false;" class="ts-link">[00:33:10]</a> 하나의 카테고리에서 항상 실행 중인 앱을 APP_TYPE_PERSISTENT라고 하고요.</p>
+<p><a href="#" onclick="seekTo(1996);return false;" class="ts-link">[00:33:16]</a> 보통 제품이 전원이 온 상태가 되었을 때만 실행을 하고</p>
+<p><a href="#" onclick="seekTo(2001);return false;" class="ts-link">[00:33:21]</a> 오프 상태가 되었을 때는 종료되는 그런 타입의 앱입니다.</p>
+<p><a href="#" onclick="seekTo(2006);return false;" class="ts-link">[00:33:26]</a> 그리고 APP_TYPE_BACKGROUND 같은 경우는</p>
+<p><a href="#" onclick="seekTo(2010);return false;" class="ts-link">[00:33:30]</a> background에서 계속 실행되는 어플리케이션을 말하고요.</p>
+<p><a href="#" onclick="seekTo(2014);return false;" class="ts-link">[00:33:34]</a> 특별한 종료 조건 없이, 재시작에 대한 명시가 없이</p>
+<p><a href="#" onclick="seekTo(2017);return false;" class="ts-link">[00:33:37]</a> 전원이 켜져 있는 상태에서는 항상 실행되는 background 서비스라고 생각하시면 됩니다.</p>
+<p><a href="#" onclick="seekTo(2023);return false;" class="ts-link">[00:33:43]</a> APP_TYPE_IMMORTAL 같은 경우도 background가 비슷한데</p>
+<p><a href="#" onclick="seekTo(2028);return false;" class="ts-link">[00:33:48]</a> 작업이 완료되었을 때 자기가 종료되는 앱입니다.</p>
+<p><a href="#" onclick="seekTo(2033);return false;" class="ts-link">[00:33:53]</a> 그렇게 생각하시면 됩니다.</p>
+<p><a href="#" onclick="seekTo(2038);return false;" class="ts-link">[00:33:58]</a> 마찬가지로 background에서 항상 실행 중인 앱입니다.</p>
+<p><a href="#" onclick="seekTo(2042);return false;" class="ts-link">[00:34:02]</a> 그리고 배경이 전원을 정리하고 있습니다.</p>
+<p><a href="#" onclick="seekTo(2046);return false;" class="ts-link">[00:34:06]</a> 배경이 전원을 정리하고 있습니다.</p>
+<p><a href="#" onclick="seekTo(2050);return false;" class="ts-link">[00:34:10]</a> 배경이 전원을 정리하고 있습니다.</p>
+<p><a href="#" onclick="seekTo(2054);return false;" class="ts-link">[00:34:14]</a> 배경이 전원을 정리하고 있습니다.</p>
+<p><a href="#" onclick="seekTo(2040);return false;" class="ts-link">[00:34:00]</a> 항상 동작하는 상태인 앱이고요.</p>
+<p><a href="#" onclick="seekTo(2045);return false;" class="ts-link">[00:34:05]</a> 임의로 종료나 재시작을 할 수가 없기 때문에</p>
+<p><a href="#" onclick="seekTo(2049);return false;" class="ts-link">[00:34:09]</a> 이걸 위한 동작들을 지정해야 합니다.</p>
+<p><a href="#" onclick="seekTo(2053);return false;" class="ts-link">[00:34:13]</a> 대표적인 어플리케이션 타입은 이렇게 있고요.</p>
+<p><a href="#" onclick="seekTo(2057);return false;" class="ts-link">[00:34:17]</a> 주로 아마 개발 중인 상황에서는</p>
+<p><a href="#" onclick="seekTo(2060);return false;" class="ts-link">[00:34:20]</a> 타입을 지정하지 않고 사용하거나</p>
+<p><a href="#" onclick="seekTo(2064);return false;" class="ts-link">[00:34:24]</a> 또는 APP_TYPE_BACKGROUND를 통해서</p>
+<p><a href="#" onclick="seekTo(2066);return false;" class="ts-link">[00:34:26]</a> APP_TYPE_BACKGROUND 서비스로만 동작시키는 방식으로</p>
+<p><a href="#" onclick="seekTo(2069);return false;" class="ts-link">[00:34:29]</a> 주로 사용하실 것 같습니다.</p>
+<p><a href="#" onclick="seekTo(2075);return false;" class="ts-link">[00:34:35]</a> 지금 이 표는 각 타입에 따라서</p>
+<p><a href="#" onclick="seekTo(2078);return false;" class="ts-link">[00:34:38]</a> 시작이나 종료하는 명령들이</p>
+<p><a href="#" onclick="seekTo(2080);return false;" class="ts-link">[00:34:40]</a> 어떤 식으로 동작을 하는지</p>
+<p><a href="#" onclick="seekTo(2082);return false;" class="ts-link">[00:34:42]</a> 하나의 표로 표시를 해봤고요.</p>
+<p><a href="#" onclick="seekTo(2085);return false;" class="ts-link">[00:34:45]</a> 앱 타입이 없을 때는 시작하는 타이밍이 없기 때문에</p>
+<p><a href="#" onclick="seekTo(2088);return false;" class="ts-link">[00:34:48]</a> 항상 사용자가 직접 실행을 해줘야 합니다.</p>
+<p><a href="#" onclick="seekTo(2091);return false;" class="ts-link">[00:34:51]</a> 마찬가지로 종료 조건도 없기 때문에</p>
+<p><a href="#" onclick="seekTo(2095);return false;" class="ts-link">[00:34:55]</a> 직접 종료를 해줘야 하고요.</p>
+<p><a href="#" onclick="seekTo(2097);return false;" class="ts-link">[00:34:57]</a> 그 이외에 APP_TYPE_PERSISTENT나 APP_TYPE_BACKGROUND나</p>
+<p><a href="#" onclick="seekTo(2099);return false;" class="ts-link">[00:34:59]</a> APP_TYPE_IMMORTAL 같은 경우는</p>
+<p><a href="#" onclick="seekTo(2101);return false;" class="ts-link">[00:35:01]</a> 시스템이 지정한 종료 조건을 가지고 있습니다.</p>
+<p><a href="#" onclick="seekTo(2111);return false;" class="ts-link">[00:35:11]</a> 이 LUPA configuration 같은 경우는</p>
+<p><a href="#" onclick="seekTo(2117);return false;" class="ts-link">[00:35:17]</a> 직접 파일에서 수정을 해도 되지만</p>
+<p><a href="#" onclick="seekTo(2121);return false;" class="ts-link">[00:35:21]</a> 프로젝트 configuration이라고 하는 뷰를 통해서도</p>
+<p><a href="#" onclick="seekTo(2125);return false;" class="ts-link">[00:35:25]</a> 수정을 할 수가 있습니다.</p>
+<p><a href="#" onclick="seekTo(2127);return false;" class="ts-link">[00:35:27]</a> Command Palette에서</p>
+<p><a href="#" onclick="seekTo(2129);return false;" class="ts-link">[00:35:29]</a> LUPA 프로젝트 configuration이라고 검색을 하시면</p>
+<p><a href="#" onclick="seekTo(2135);return false;" class="ts-link">[00:35:35]</a> 선택되어 있는 프로젝트의</p>
+<p><a href="#" onclick="seekTo(2136);return false;" class="ts-link">[00:35:36]</a> configuration을 수정하는 에디터가 나옵니다.</p>
+<p><a href="#" onclick="seekTo(2140);return false;" class="ts-link">[00:35:40]</a> 에디터의 오른쪽에는</p>
+<p><a href="#" onclick="seekTo(2141);return false;" class="ts-link">[00:35:41]</a> description에서 각 항목에 대한 설명이 표시가 되는데요.</p>
+<p><a href="#" onclick="seekTo(2146);return false;" class="ts-link">[00:35:46]</a> 방금 말씀드렸던 어플리케이션의 타입들이라든가</p>
+<p><a href="#" onclick="seekTo(2152);return false;" class="ts-link">[00:35:52]</a> 버전이라든가 그런 manifest.json에 대한 정보들을</p>
+<p><a href="#" onclick="seekTo(2156);return false;" class="ts-link">[00:35:56]</a> 추가로 표시를 하고 있습니다.</p>
+<p><a href="#" onclick="seekTo(2157);return false;" class="ts-link">[00:35:57]</a> 필요한 경우에는 도움말처럼 사용할 수 있습니다.</p>
+
+    </div>
+  </details>
+</div>
+
+<div class="card" id="chapter-5">
+  <div class="card-header">
+    <div class="card-num">6</div>
+    <div class="card-title">LUPA 어플리케이션 개발 절차와 시스템 앱, 패키지 네임 규칙</div>
+  </div>
+  <div class="card-meta">
+    <span class="time-badge">⏱ 00:36:00 ~ 00:47:28</span>
+    <a href="#" onclick="seekTo(2160);return false;" class="yt-link">▶ 재생</a>
+  </div>
+  <div class="section objectives"><div class="section-label">🎯 학습목표</div><ul><li>LUPA 어플리케이션 개발 절차를 이해하고 실제 프로젝트를 생성할 수 있다.</li><li>LUPA 시스템 앱과 사용자 앱의 패키지 네임 규칙을 구분하여 적용할 수 있다.</li><li>LUPA Studio를 활용하여 프로젝트 생성, 빌드, 실행 및 디버깅 과정을 수행할 수 있다.</li><li>SDK 버전 및 타겟 칩셋 호환성을 고려하여 LUPA 앱을 빌드하고 실행할 수 있다.</li></ul></div>
+  <div class="section keypoints"><div class="section-label">📋 주요내용</div><ul><li>LUPA 어플리케이션 개발 절차는 프로젝트 생성, UI 작업(필요시), 서비스 코드 작성, 빌드, 실행, 디버깅의 반복으로 이루어진다.</li><li>패키지 네임 규칙은 &#x27;lupa.[app종류].[앱이름]&#x27; 형식이며, 시스템 앱은 &#x27;sys&#x27;, 사용자 앱은 &#x27;usr&#x27; 키워드를 사용한다.</li><li>LUPA Studio는 Visual Studio Code 기반의 Extension으로, Project Wizard를 통해 프로젝트를 생성하고, Quick Launcher 및 launch.json을 활용해 빌드, 실행, 디버깅이 가능하다.</li><li>앱 빌드 및 실행 시 프로젝트 선택, SDK 버전, 설치 위치 등 필수 정보를 확인해야 하며, SDK와 타겟 칩셋의 버전 호환성을 반드시 고려해야 한다.</li><li>시스템 앱은 플랫폼에 기본 포함되어 필수 기능을 담당하며, meminfo 명령을 통해 설치 및 실행 중인 앱 정보를 확인할 수 있다.</li></ul></div>
+  <div class="quiz-block" data-quiz-idx="5"><div class="quiz-header" onclick="toggleQuiz(this)">🧪 퀴즈 풀기 <span class="quiz-count">(5문제)</span><span class="quiz-arrow">▶</span></div><div class="quiz-body" style="display:none"></div></div>
+  <label class="chapter-check" data-chapter-idx="5"><input type="checkbox" onchange="onChapterCheck(this,5)"> <span>학습 완료</span></label>
+  <details class="transcript-toggle">
+    <summary>원문 보기</summary>
+    <div class="transcript-content">
+      <p><a href="#" onclick="seekTo(2160);return false;" class="ts-link">[00:36:00]</a> 실제 이런 어플리케이션을 개발하는 절차는 이와 같습니다.</p>
+<p><a href="#" onclick="seekTo(2170);return false;" class="ts-link">[00:36:10]</a> 지금 붉은색으로 표시된 부분은 Non-GUI 어플리케이션에서는 불필요한 과정이고요.</p>
+<p><a href="#" onclick="seekTo(2176);return false;" class="ts-link">[00:36:16]</a> 실제 LUPA 프로젝트를 생성하고 UI가 있는 경우에는 UI 작업을 하고</p>
+<p><a href="#" onclick="seekTo(2181);return false;" class="ts-link">[00:36:21]</a> 그 다음에는 UI를 제외한 나머지 서비스 부분에 해당하는 코드를 작성하고</p>
+<p><a href="#" onclick="seekTo(2188);return false;" class="ts-link">[00:36:28]</a> 앱 빌드한 다음에 실행하고 문제가 있을 때 디버깅을 하고 이런 과정을 반복하는 과정으로 개발합니다.</p>
+<p><a href="#" onclick="seekTo(2196);return false;" class="ts-link">[00:36:36]</a> 실제 앱을 빌드하고 실행할 때는 LPK 파일이나 또는 패키지 이름을 사용합니다.</p>
+<p><a href="#" onclick="seekTo(2206);return false;" class="ts-link">[00:36:46]</a> 지금 여기에는 표시를 따로 안 해놨는데, 뒤에 있나?</p>
+<p><a href="#" onclick="seekTo(2210);return false;" class="ts-link">[00:36:50]</a> 패키지 이름은 명시적으로 지정된 형식이 있습니다.</p>
+<p><a href="#" onclick="seekTo(2215);return false;" class="ts-link">[00:36:55]</a> 가장 앞에 lupa, dot, 그 다음에 어플리케이션 종류, user 앱이냐, system 앱이냐 또는 플랫폼 서비스냐</p>
+<p><a href="#" onclick="seekTo(2225);return false;" class="ts-link">[00:37:05]</a> 이걸 지정하는 키워드가 세 글자로 들어가고요.</p>
+<p><a href="#" onclick="seekTo(2228);return false;" class="ts-link">[00:37:08]</a> 그 뒤쪽에는 어플리케이션 이름 또는 서비스의 이름들이 명시가 됩니다.</p>
+<p><a href="#" onclick="seekTo(2233);return false;" class="ts-link">[00:37:13]</a> 이러한 형식으로 그 패키지 이름 또는 어플리케이션 이름이 명명되는 규칙이 있습니다.</p>
+<p><a href="#" onclick="seekTo(2242);return false;" class="ts-link">[00:37:22]</a> 보통 LUPA 프로젝트를 처음 생성할 때는 LUPA Studio에서는 Project Wizard를 제공합니다.</p>
+<p><a href="#" onclick="seekTo(2249);return false;" class="ts-link">[00:37:29]</a> Project Wizard는 이 뒤쪽에 다시 한번 설명 드릴 테니까 일단 넘어가고요.</p>
+<p><a href="#" onclick="seekTo(2255);return false;" class="ts-link">[00:37:35]</a> 그리고 GUI 디자인 할 때는 GUI Creator를 실행해서 하실 수가 있는데</p>
+<p><a href="#" onclick="seekTo(2261);return false;" class="ts-link">[00:37:41]</a> 이 뒤쪽에 자료에는 들어가 있지만 아마 실제 이 교육에서는 사용을 안 할 거라서</p>
+<p><a href="#" onclick="seekTo(2268);return false;" class="ts-link">[00:37:48]</a> 참고용으로 이런 게 있었다고 생각만 해주시면 될 것 같습니다.</p>
+<p><a href="#" onclick="seekTo(2280);return false;" class="ts-link">[00:38:00]</a> 아, 여기 써놨구나.</p>
+<p><a href="#" onclick="seekTo(2282);return false;" class="ts-link">[00:38:02]</a> 그 LUPA 플랫폼에는 이제 디폴트로 들어가 있는 시스템 앱들이 몇 개가 있는데요.</p>
+<p><a href="#" onclick="seekTo(2288);return false;" class="ts-link">[00:38:08]</a> 시스템 앱에서 이제 제품에서 필수적인 기능을 수행한 앱들을 이 시스템 앱 또는 플랫폼 앱이라고 합니다.</p>
+<p><a href="#" onclick="seekTo(2295);return false;" class="ts-link">[00:38:15]</a> 여기 나와 있는 LUPA 패키지 네임은 방금 말씀드렸듯이 lupa.sys.projectapplication 이름 이 형식으로 들어가고요.</p>
+<p><a href="#" onclick="seekTo(2305);return false;" class="ts-link">[00:38:25]</a> 시스템 앱 같은 경우는 sys라고 들어가고 사용자의 경우는 usr이라고 하는 키워드로 들어갑니다.</p>
+<p><a href="#" onclick="seekTo(2312);return false;" class="ts-link">[00:38:32]</a> 각 역할에 따라서 다른 카테고리와 상태를 가지고 있는데,</p>
+<p><a href="#" onclick="seekTo(2318);return false;" class="ts-link">[00:38:38]</a> 이런 것들이 여러분들이 궁금하실 때는 아까 처음에 말씀드렸던 meminfo를 사용해서 현재 메모리상에서 동작하고 있는 앱이 무엇인지, 설치된 앱이 무엇인지 확인하실 수 있습니다.</p>
+<p><a href="#" onclick="seekTo(2330);return false;" class="ts-link">[00:38:50]</a> 보통 플랫폼 유닛에 포함되어 있는 빌트 앱들이 시스템 앱들이 들어가고요.</p>
+<p><a href="#" onclick="seekTo(2337);return false;" class="ts-link">[00:38:57]</a> 이거는 플랫폼 코드에 보시면 제품 명세 부분에 어떤 앱들이 포함되는지 각 제품마다 구성을 다르게 가져갈 수가 있습니다.</p>
+<p><a href="#" onclick="seekTo(2355);return false;" class="ts-link">[00:39:15]</a> 이 뒤에는 이제 실제 LUPA Studio를 설치하는 부분을 가이드를 하고 있는데요.</p>
+<p><a href="#" onclick="seekTo(2361);return false;" class="ts-link">[00:39:21]</a> 일단 그 LUPA Studio는 Visual Studio Code 기반이라서 항상 Visual Studio Code가 먼저 설치가 되어 있어야 합니다.</p>
+<p><a href="#" onclick="seekTo(2367);return false;" class="ts-link">[00:39:27]</a> 최근에는 Visual Studio Code가 AI 기능들이 굉장히 많이 업데이트가 되면서 업데이트 주기가 굉장히 짧아졌어요.</p>
+<p><a href="#" onclick="seekTo(2378);return false;" class="ts-link">[00:39:38]</a> 원래 1년 전만 하더라도 한 분기마다 한 번 또는 6개월마다 한 번 업데이트 된 버전이 요즘에 심하면은 일주일에 하나씩 버전이 업데이트 돼서 배포가 되는 경우가 있습니다.</p>
+<p><a href="#" onclick="seekTo(2391);return false;" class="ts-link">[00:39:51]</a> 아무래도 AI를 사람들이 많이 사용하다 보니까 AI 에이전트를 많이 사용하다 보니까</p>
+<p><a href="#" onclick="seekTo(2400);return false;" class="ts-link">[00:40:00]</a> 가급적이면 최신 버전을 유지하는 것이 최신 기능이라든가 그런 것들을 빨리 빨리 적용하는 방법이 될 수가 있을 것 같습니다.</p>
+<p><a href="#" onclick="seekTo(2408);return false;" class="ts-link">[00:40:08]</a> LUPA Studio는 Visual Studio Code의 Extension Package를 통해서 설치를 하실 수가 있고요.</p>
+<p><a href="#" onclick="seekTo(2419);return false;" class="ts-link">[00:40:19]</a> 개발자 메일링 그룹을 통해서 버전이 업데이트 될 때마다 알림메일을 보내게 됩니다.</p>
+<p><a href="#" onclick="seekTo(2426);return false;" class="ts-link">[00:40:26]</a> 버전 업데이트가 현재 9버전이 업데이트가 되어 있는데 조만간에 업데이트가 일어날 예정입니다.</p>
+<p><a href="#" onclick="seekTo(2439);return false;" class="ts-link">[00:40:39]</a> LUPA Studio는 자동 업데이트 기능을 지원해서 한번 설치해놓으면 버전이 업데이트가 됐을 때 알림으로 업데이트 여부를 물어보는 메시지 박스를 보여줍니다.</p>
+<p><a href="#" onclick="seekTo(2454);return false;" class="ts-link">[00:40:54]</a> 만약 업데이트를 원하신다면 업데이트를 직접 진행하시면 되고 굳이 업데이트가 필요가 없다고 했을 때는 유지하실 수가 있습니다.</p>
+<p><a href="#" onclick="seekTo(2470);return false;" class="ts-link">[00:41:10]</a> LUPA Studio도 이후에 AI 기능을 LUPA Studio에서 활용할 예정이기 때문에 이것도 마찬가지로 최신 버전을 유지해주시면 많은 도움이 되리라 믿습니다.</p>
+<p><a href="#" onclick="seekTo(2482);return false;" class="ts-link">[00:41:22]</a> 보통 아까 말씀드렸던 LUPA 앱 개발 사이클을 보시면 프로젝트를 생성하는 부분이 있는데,</p>
+<p><a href="#" onclick="seekTo(2493);return false;" class="ts-link">[00:41:33]</a> 프로젝트를 새로 생성할 때는 LUPA Project Wizard를 사용하는 권고를 하고 있습니다.</p>
+<p><a href="#" onclick="seekTo(2500);return false;" class="ts-link">[00:41:40]</a> Command Palette를 통해서 LUPA Project Wizard를 실행할 수가 있고요.</p>
+<p><a href="#" onclick="seekTo(2505);return false;" class="ts-link">[00:41:45]</a> 프로젝트의 위치와 템플릿을 선택한 다음에 LUPA 앱에 대한 정보를 입력해서 생성을 할 수가 있습니다.</p>
+<p><a href="#" onclick="seekTo(2512);return false;" class="ts-link">[00:41:52]</a> 지금 여기에는 안 나와 있는데 이 부분은 좀 넘어가도록 하겠습니다.</p>
+<p><a href="#" onclick="seekTo(2520);return false;" class="ts-link">[00:42:00]</a> GUI 어플리케이션을 작성하는 부분이기 때문에 잠깐 넘어가고요. 잠시만 구성을 좀 업데이트를 하겠습니다.</p>
+<p><a href="#" onclick="seekTo(2538);return false;" class="ts-link">[00:42:18]</a> 이 부분은 GUI 관련된 내용이라서 넘어가고, 이 LUPA 어플리케이션 빌드하고 실행하는 부분만 간단하게 설명을 드리겠습니다.</p>
+<p><a href="#" onclick="seekTo(2558);return false;" class="ts-link">[00:42:38]</a> 빌드할 때 가장 필수적으로 필요한 정보는 현재 프로젝트가 선택되어 있는지 여부와 그리고 SDK 버전을 무엇을 사용하는지 그리고 생성한 빌드한 LPK 파일을 어디에다가 설치하고 실행할지.</p>
+<p><a href="#" onclick="seekTo(2574);return false;" class="ts-link">[00:42:54]</a> 이 세 가지 정보가 필수적으로 필요합니다. 만약 나는 설치 안하고 빌드만 하겠다고 했을 때 프로젝트와 SDK 두 가지만 선택을 해야 합니다.</p>
+<p><a href="#" onclick="seekTo(2585);return false;" class="ts-link">[00:43:05]</a> 작성한 앱이 타겟으로 올바로 실행되려면, lupa-chooser에서 SDK를 선택할 때 타겟 칩셋의 이름과 프로덕트 이런 것에 대한 호환성을 신경 써야 합니다.</p>
+<p><a href="#" onclick="seekTo(2602);return false;" class="ts-link">[00:43:22]</a> 실제 2.0 SDK로 빌드한 어플리케이션이 1.1에서는 동작을 하지 않고요. 이런 식으로 버전에 대한 호환성을 신경을 써서 작업을 하시면 됩니다.</p>
+<p><a href="#" onclick="seekTo(2618);return false;" class="ts-link">[00:43:38]</a> 이 LUPA 어플리케이션을 빌드하고 실행하는 것은 One-step으로 해서 한번에 실행할 수가 있고요. Run Without Debugging이라고 하는 Launch Configuration을 통해서 직접 실행할 수가 있습니다.</p>
+<p><a href="#" onclick="seekTo(2631);return false;" class="ts-link">[00:43:51]</a> 보통 Visual Studio Code에서 실행에 관련된, 디버깅에 관련된 스크립트들은</p>
+<p><a href="#" onclick="seekTo(2640);return false;" class="ts-link">[00:44:00]</a> launch.json이라고 하는 configuration 파일에 지정이 되게 되어 있는데요.</p>
+<p><a href="#" onclick="seekTo(2645);return false;" class="ts-link">[00:44:05]</a> 거기에서 LUPA에 관련된 launch configuration을 추가를 하면</p>
+<p><a href="#" onclick="seekTo(2650);return false;" class="ts-link">[00:44:10]</a> 이와 같은 LUPA의 Build 또는 실행 또는 디버깅에 관련된 작업들을 수행할 수가 있습니다.</p>
+<p><a href="#" onclick="seekTo(2660);return false;" class="ts-link">[00:44:20]</a> 매뉴얼 빌드 하실 때는 LUPA Studio에서 Quick Launcher에서 Clean이나 Configure, Build 이런 것들을 순서대로 실행함으로써 동일한 작업을 하실 수가 있습니다.</p>
+<p><a href="#" onclick="seekTo(2675);return false;" class="ts-link">[00:44:35]</a> 이 launch configuration 부분은 Visual Studio Code에서 실행 그리고 왼쪽에서 Run and Debug라고 하는 패널을 선택해서 확인하실 수가 있고요.</p>
+<p><a href="#" onclick="seekTo(2687);return false;" class="ts-link">[00:44:47]</a> 가장 위쪽에 Run &amp; Debug 항목 메뉴에서 가장 위에 드롭다운 박스에서 내가 어떤 launch configuration을 선택해서 실행할지를 결정할 수가 있습니다.</p>
+<p><a href="#" onclick="seekTo(2699);return false;" class="ts-link">[00:44:59]</a> LUPA Studio에서 제공하는 기본적인 configuration은 세 가지가 있고요.</p>
+<p><a href="#" onclick="seekTo(2704);return false;" class="ts-link">[00:45:04]</a> 첫 번째는 LUPA, Launch LUPA 앱이라고 하는 간단한 configuration이고요.</p>
+<p><a href="#" onclick="seekTo(2712);return false;" class="ts-link">[00:45:12]</a> 이것은 타겟하고 액션에 따라서 디버그를 실행하느냐 또는 앱 설치를 실행하느냐 이것을 선택하는 configuration입니다.</p>
+<p><a href="#" onclick="seekTo(2723);return false;" class="ts-link">[00:45:23]</a> 가능한 타겟은 실제 디바이스거나 또는 Emulator에서도 동일하게 동작을 하고요.</p>
+<p><a href="#" onclick="seekTo(2729);return false;" class="ts-link">[00:45:29]</a> F5를 눌렀을 때는 단축어로 디버그를 시작하고,</p>
+<p><a href="#" onclick="seekTo(2733);return false;" class="ts-link">[00:45:33]</a> Ctrl을 누른 상태에서 F4를 눌렀을 때는 설치 명령이기 때문에 빌드를 먼저 실행한 다음에 선택된 타겟에 설치까지 한번에 진행을 합니다.</p>
+<p><a href="#" onclick="seekTo(2748);return false;" class="ts-link">[00:45:48]</a> 실제 디버그를 진행하시려면 이 configuration을 변경을 해서 Debug LUPA, Device, 또는 Emulator 또는 경험에 따라서</p>
+<p><a href="#" onclick="seekTo(2760);return false;" class="ts-link">[00:46:00]</a> dbg-lupa, attach-lupa-device, attach-lupa-emulator</p>
+<p><a href="#" onclick="seekTo(2765);return false;" class="ts-link">[00:46:05]</a> 같은 configuration을 선택해서 개발을 진행하시면 됩니다.</p>
+<p><a href="#" onclick="seekTo(2770);return false;" class="ts-link">[00:46:10]</a> 지금 여기에서는 configuration을 추가하는 예시를 간단하게 보여드리고 있습니다.</p>
+<p><a href="#" onclick="seekTo(2781);return false;" class="ts-link">[00:46:21]</a> 보통 처음 설치하시거나 처음 하시는 분들은</p>
+<p><a href="#" onclick="seekTo(2787);return false;" class="ts-link">[00:46:27]</a> 과정이 헷갈릴 수가 있어서 넣어 오는 거고요.</p>
+<p><a href="#" onclick="seekTo(2791);return false;" class="ts-link">[00:46:31]</a> 실제 아무것도 없는 새로운 프로젝트를 생성한 다음에는</p>
+<p><a href="#" onclick="seekTo(2795);return false;" class="ts-link">[00:46:35]</a> 런치 configuration이 비어있기 때문에</p>
+<p><a href="#" onclick="seekTo(2800);return false;" class="ts-link">[00:46:40]</a> Run &amp; Debug 모드로 들어가서 launch.json 파일을 선택하셔서</p>
+<p><a href="#" onclick="seekTo(2808);return false;" class="ts-link">[00:46:48]</a> 새로 configuration을 추가하실 수가 있습니다.</p>
+<p><a href="#" onclick="seekTo(2811);return false;" class="ts-link">[00:46:51]</a> 가장 기본적인 것은 lupa-studio-app-launcher라고 하는 항목이고요.</p>
+<p><a href="#" onclick="seekTo(2816);return false;" class="ts-link">[00:46:56]</a> 그 이외에 launch.json 파일을 직접 열어서</p>
+<p><a href="#" onclick="seekTo(2822);return false;" class="ts-link">[00:47:02]</a> shift-space를 눌러 자동 완성 기능을 활성화 시키면</p>
+<p><a href="#" onclick="seekTo(2827);return false;" class="ts-link">[00:47:07]</a> 왼쪽 아래에 있는 스크린샷처럼 필터링을 통해서</p>
+<p><a href="#" onclick="seekTo(2832);return false;" class="ts-link">[00:47:12]</a> 내가 원하는 컴플리케이션을 추가하실 수가 있습니다.</p>
+<p><a href="#" onclick="seekTo(2836);return false;" class="ts-link">[00:47:16]</a> 시계 표시 때문에 잘 안 보이는데, 창고를 하시면 될 것 같습니다.</p>
+
+    </div>
+  </details>
+</div>
+
+<div class="card" id="chapter-6">
+  <div class="card-header">
+    <div class="card-num">7</div>
+    <div class="card-title">LUPA 개발 환경에서 디바이스 연결 및 디버깅 방식</div>
+  </div>
+  <div class="card-meta">
+    <span class="time-badge">⏱ 00:47:28 ~ 00:53:32</span>
+    <a href="#" onclick="seekTo(2848);return false;" class="yt-link">▶ 재생</a>
+  </div>
+  <div class="section objectives"><div class="section-label">🎯 학습목표</div><ul><li>LUPA 개발 환경에서 디바이스와 호스트 PC를 연결하여 디버깅을 수행할 수 있다.</li><li>LUPA Studio에서 target device와 emulator 환경에 맞는 디버깅 방식을 설정하고 사용할 수 있다.</li><li>LUPA Application의 appOffset을 확인하고, gdb에서 심볼 파일을 올바른 위치에 로드하여 디버깅할 수 있다.</li><li>디버그 콘솔에서 gdb 명령어를 직접 입력하여 디버깅 상태를 확인하고 문제를 해결할 수 있다.</li></ul></div>
+  <div class="section keypoints"><div class="section-label">📋 주요내용</div><ul><li>LUPA 개발 환경에서는 호스트 PC에 Visual Studio Code와 LUPA Studio를 설치하고, target device와 연결하여 디버깅을 진행한다.</li><li>디바이스 디버깅 시 J-Link와 OpenOCD를 사용하며, gdb가 target device에 연결되어 실제 디버깅 작업을 수행한다.</li><li>Emulator 환경에서는 OpenOCD 대신 gdb 서버에 직접 포트 번호로 연결하여 디버깅을 진행한다.</li><li>LUPA Application의 appOffset을 lupa-update-target-at-offset 명령이나 meminfo 커맨드를 통해 확인하고, gdb에서 심볼 파일 로드 위치를 맞춰야 한다.</li><li>디버그 콘솔에서 info files 등 gdb 명령어를 입력하여 심볼 파일 로드 위치와 appOffset 일치 여부를 확인할 수 있다.</li><li>appOffset이 일치하지 않으면 디버깅이 제대로 동작하지 않으므로, 디버깅 문제 발생 시 appOffset과 심볼 로드 위치를 반드시 확인해야 한다.</li></ul></div>
+  <div class="quiz-block" data-quiz-idx="6"><div class="quiz-header" onclick="toggleQuiz(this)">🧪 퀴즈 풀기 <span class="quiz-count">(5문제)</span><span class="quiz-arrow">▶</span></div><div class="quiz-body" style="display:none"></div></div>
+  <label class="chapter-check" data-chapter-idx="6"><input type="checkbox" onchange="onChapterCheck(this,6)"> <span>학습 완료</span></label>
+  <details class="transcript-toggle">
+    <summary>원문 보기</summary>
+    <div class="transcript-content">
+      <p><a href="#" onclick="seekTo(2848);return false;" class="ts-link">[00:47:28]</a> 보통 그리고 LUPA 개발을 하시다 보면</p>
+<p><a href="#" onclick="seekTo(2851);return false;" class="ts-link">[00:47:31]</a> 디바이스에 대한 연결 방식이라든가 디버깅 방식을 궁금해 하시는 분들도 있으실 것 같은데</p>
+<p><a href="#" onclick="seekTo(2856);return false;" class="ts-link">[00:47:36]</a> 보통 이 LUPA 개발 환경에서 디버깅하는 환경은</p>
+<p><a href="#" onclick="seekTo(2860);return false;" class="ts-link">[00:47:40]</a> 보통 이런 식으로 연결할 수가 있습니다.</p>
+<p><a href="#" onclick="seekTo(2863);return false;" class="ts-link">[00:47:43]</a> 먼저 여러분들이 직접 사용하는 PC 환경은</p>
+<p><a href="#" onclick="seekTo(2866);return false;" class="ts-link">[00:47:46]</a> 호스트 PC라고 할 때 호스트 PC 안에 Visual Studio Code가 있고</p>
+<p><a href="#" onclick="seekTo(2870);return false;" class="ts-link">[00:47:50]</a> LUPA Studio가 설치되어 있으면 그 안에서 gdb라든가</p>
+<p><a href="#" onclick="seekTo(2875);return false;" class="ts-link">[00:47:55]</a> 그런 명령들을 수행을 하는데 이때 디버깅을 위해서는</p>
+<p><a href="#" onclick="seekTo(2880);return false;" class="ts-link">[00:48:00]</a> target device가 직접 호스트와 연결이 돼 있어야 합니다.</p>
+<p><a href="#" onclick="seekTo(2884);return false;" class="ts-link">[00:48:04]</a> 연결이 되어 있을 때는 이제</p>
+<p><a href="#" onclick="seekTo(2887);return false;" class="ts-link">[00:48:07]</a> LUPA Device 같은 경우는</p>
+<p><a href="#" onclick="seekTo(2888);return false;" class="ts-link">[00:48:08]</a> 또 이제 debugger로 J-Link를 사용하는데요.</p>
+<p><a href="#" onclick="seekTo(2891);return false;" class="ts-link">[00:48:11]</a> J-Link와 호스트 PC가 연결이 되어 있을 때</p>
+<p><a href="#" onclick="seekTo(2894);return false;" class="ts-link">[00:48:14]</a> debugging을 시작하면 target debugging에서</p>
+<p><a href="#" onclick="seekTo(2899);return false;" class="ts-link">[00:48:19]</a> OpenOCD라고 하는 debugger를</p>
+<p><a href="#" onclick="seekTo(2904);return false;" class="ts-link">[00:48:24]</a> 실행을 시켜주고</p>
+<p><a href="#" onclick="seekTo(2906);return false;" class="ts-link">[00:48:26]</a> 여기에 gdb가 연결해서</p>
+<p><a href="#" onclick="seekTo(2908);return false;" class="ts-link">[00:48:28]</a> 실제 target device를 debugging하는</p>
+<p><a href="#" onclick="seekTo(2911);return false;" class="ts-link">[00:48:31]</a> 작업을 수행할 수가 있습니다.</p>
+<p><a href="#" onclick="seekTo(2916);return false;" class="ts-link">[00:48:36]</a> 이제 Emulator라든가 또는 이제</p>
+<p><a href="#" onclick="seekTo(2919);return false;" class="ts-link">[00:48:39]</a> 직접 호스트에서 gdb를 연결한</p>
+<p><a href="#" onclick="seekTo(2921);return false;" class="ts-link">[00:48:41]</a> device가 연결되지 않은 상황에서는</p>
+<p><a href="#" onclick="seekTo(2924);return false;" class="ts-link">[00:48:44]</a> OpenOCD를 실행하는 대신에</p>
+<p><a href="#" onclick="seekTo(2926);return false;" class="ts-link">[00:48:46]</a> gdb 서버에 직접</p>
+<p><a href="#" onclick="seekTo(2928);return false;" class="ts-link">[00:48:48]</a> 포트 번호로 연결해서</p>
+<p><a href="#" onclick="seekTo(2930);return false;" class="ts-link">[00:48:50]</a> debugging을 진행하는 방식으로 사용을 합니다.</p>
+<p><a href="#" onclick="seekTo(2934);return false;" class="ts-link">[00:48:54]</a> Emulator냐, 이제 디바이스냐에 따라서</p>
+<p><a href="#" onclick="seekTo(2936);return false;" class="ts-link">[00:48:56]</a> 실행되는 창이라든가</p>
+<p><a href="#" onclick="seekTo(2939);return false;" class="ts-link">[00:48:59]</a> 또는 이제 출력되는 OUTPUT 로그가</p>
+<p><a href="#" onclick="seekTo(2940);return false;" class="ts-link">[00:49:00]</a> 다를 수가 있기 때문에</p>
+<p><a href="#" onclick="seekTo(2942);return false;" class="ts-link">[00:49:02]</a> 이 부분은 참고를 하시면 좋을 것 같습니다.</p>
+<p><a href="#" onclick="seekTo(2951);return false;" class="ts-link">[00:49:11]</a> 지금 실제 LUPA App를 debugging하는 과정을</p>
+<p><a href="#" onclick="seekTo(2956);return false;" class="ts-link">[00:49:16]</a> 간단하게 설명을 드리는데요.</p>
+<p><a href="#" onclick="seekTo(2958);return false;" class="ts-link">[00:49:18]</a> LUPA App 같은 경우는</p>
+<p><a href="#" onclick="seekTo(2961);return false;" class="ts-link">[00:49:21]</a> debugging을 할 때</p>
+<p><a href="#" onclick="seekTo(2966);return false;" class="ts-link">[00:49:26]</a> 플랫폼 코드가 target device에</p>
+<p><a href="#" onclick="seekTo(2969);return false;" class="ts-link">[00:49:29]</a> 기본적으로 들어가 있고요.</p>
+<p><a href="#" onclick="seekTo(2970);return false;" class="ts-link">[00:49:30]</a> 이 application은 추가로 이후에</p>
+<p><a href="#" onclick="seekTo(2973);return false;" class="ts-link">[00:49:33]</a> 설치하는 방식이기 때문에</p>
+<p><a href="#" onclick="seekTo(2976);return false;" class="ts-link">[00:49:36]</a> 만약에 debugging을 했을 때</p>
+<p><a href="#" onclick="seekTo(2979);return false;" class="ts-link">[00:49:39]</a> target device의 앱이 어느 위치에</p>
+<p><a href="#" onclick="seekTo(2982);return false;" class="ts-link">[00:49:42]</a> 설치가 되어 있는지 이걸 알아야 합니다.</p>
+<p><a href="#" onclick="seekTo(2985);return false;" class="ts-link">[00:49:45]</a> 이건 좀 다른 얘기이긴 한데</p>
+<p><a href="#" onclick="seekTo(2988);return false;" class="ts-link">[00:49:48]</a> 플랫폼에서 application이 설치하고</p>
+<p><a href="#" onclick="seekTo(2990);return false;" class="ts-link">[00:49:50]</a> 동작하는 방식이</p>
+<p><a href="#" onclick="seekTo(2991);return false;" class="ts-link">[00:49:51]</a> 동적 라이브러리를 로딩하는 방식이 아니라</p>
+<p><a href="#" onclick="seekTo(2996);return false;" class="ts-link">[00:49:56]</a> application에 해당하는</p>
+<p><a href="#" onclick="seekTo(2997);return false;" class="ts-link">[00:49:57]</a> 어플 자의 패키지를 특정한</p>
+<p><a href="#" onclick="seekTo(3030);return false;" class="ts-link">[00:50:30]</a> lupa-update-target-at-offset 이라고 하는 명령을 실행해서</p>
+<p><a href="#" onclick="seekTo(3035);return false;" class="ts-link">[00:50:35]</a> 실제 타겟에 설치되어 있는 앱의 appOffset,</p>
+<p><a href="#" onclick="seekTo(3037);return false;" class="ts-link">[00:50:37]</a> 실행 중인 앱의 appOffset을 읽어서</p>
+<p><a href="#" onclick="seekTo(3041);return false;" class="ts-link">[00:50:41]</a> 심벌을 로딩하는 위치를 변경을 해줘야 합니다.</p>
+<p><a href="#" onclick="seekTo(3044);return false;" class="ts-link">[00:50:44]</a> 이렇게 해서 이제 offset이 변경이 되면</p>
+<p><a href="#" onclick="seekTo(3047);return false;" class="ts-link">[00:50:47]</a> 그 다음에 다시 디버깅을 실행할 때</p>
+<p><a href="#" onclick="seekTo(3049);return false;" class="ts-link">[00:50:49]</a> 올바른 위치로 소스와 타겟의 심벌을 매치를 해서</p>
+<p><a href="#" onclick="seekTo(3054);return false;" class="ts-link">[00:50:54]</a> 디버깅을 진행할 수가 있습니다.</p>
+<p><a href="#" onclick="seekTo(3064);return false;" class="ts-link">[00:51:04]</a> 이 뒤에는 실제 동작하는 과정을 쭉 한번 설명을 드릴 건데요.</p>
+<p><a href="#" onclick="seekTo(3069);return false;" class="ts-link">[00:51:09]</a> 한 15분 정도만 쉬었다가</p>
+<p><a href="#" onclick="seekTo(3072);return false;" class="ts-link">[00:51:12]</a> 이제 뒤쪽을 또 진행하도록 하겠습니다.</p>
+<p><a href="#" onclick="seekTo(3077);return false;" class="ts-link">[00:51:17]</a> 네, 그럼 마저 이어서 진행하도록 하겠습니다.</p>
+<p><a href="#" onclick="seekTo(3082);return false;" class="ts-link">[00:51:22]</a> 아까 제가 설명을 하나 빠뜨린 게 있었는데</p>
+<p><a href="#" onclick="seekTo(3086);return false;" class="ts-link">[00:51:26]</a> 그 LUPA Application을 디버깅 하시다 보면</p>
+<p><a href="#" onclick="seekTo(3091);return false;" class="ts-link">[00:51:31]</a> 여러분들이 직접 디버그 커맨드를</p>
+<p><a href="#" onclick="seekTo(3094);return false;" class="ts-link">[00:51:34]</a> gdb 커맨드를 입력해야 하는 경우가 있는데요.</p>
+<p><a href="#" onclick="seekTo(3097);return false;" class="ts-link">[00:51:37]</a> 디버그를 진입하시고 나면</p>
+<p><a href="#" onclick="seekTo(3099);return false;" class="ts-link">[00:51:39]</a> 이 아래쪽에 OUTPUT 패널 옆에 보시면</p>
+<p><a href="#" onclick="seekTo(3103);return false;" class="ts-link">[00:51:43]</a> 디버그 콘솔이라고 하는 항목이 있습니다.</p>
+<p><a href="#" onclick="seekTo(3107);return false;" class="ts-link">[00:51:47]</a> 디버그에 관련된 명령들이 쭉 출력이 되는데</p>
+<p><a href="#" onclick="seekTo(3110);return false;" class="ts-link">[00:51:50]</a> 여기에서 직접 여러분들이 gdb 커맨드를</p>
+<p><a href="#" onclick="seekTo(3113);return false;" class="ts-link">[00:51:53]</a> 실행을 하실 수가 있습니다.</p>
+<p><a href="#" onclick="seekTo(3117);return false;" class="ts-link">[00:51:57]</a> 아까 잠깐 마지막 부분에</p>
+<p><a href="#" onclick="seekTo(3120);return false;" class="ts-link">[00:52:00]</a> LUPA Application appOffset 부분을 설명드렸었는데요.</p>
+<p><a href="#" onclick="seekTo(3123);return false;" class="ts-link">[00:52:03]</a> 실제 앱을 개발하면서 ELF 파일이 LUPA 플랫폼에서 어느 위치에 로드가 됐는지</p>
+<p><a href="#" onclick="seekTo(3134);return false;" class="ts-link">[00:52:14]</a> 이걸 확인할 때는 타겟 디바이스에서 meminfo 같은 커맨드를 실행하거나</p>
+<p><a href="#" onclick="seekTo(3141);return false;" class="ts-link">[00:52:21]</a> 또는 LDB를 통해서 직접 여러분들이 meminfo 커맨드를 실행해서</p>
+<p><a href="#" onclick="seekTo(3146);return false;" class="ts-link">[00:52:26]</a> LUPA 플랫폼에서 앱이 어느 appOffset에서 로드가 되어 있는지 실행 중인지를 알 수 있는데요.</p>
+<p><a href="#" onclick="seekTo(3152);return false;" class="ts-link">[00:52:32]</a> 실제 gdb에서는 여기에 맞춰서 심볼 파일을 로드를 해야 합니다.</p>
+<p><a href="#" onclick="seekTo(3159);return false;" class="ts-link">[00:52:39]</a> 이 config에서 설정해서 appOffset이 제대로 들어갔는지 이걸 확인한 다음에</p>
+<p><a href="#" onclick="seekTo(3165);return false;" class="ts-link">[00:52:45]</a> 실제 gdb가 심볼을 제대로 로드했는지를 확인하시려면</p>
+<p><a href="#" onclick="seekTo(3171);return false;" class="ts-link">[00:52:51]</a> 디버그 콘솔에서 gdb 명령, info files이라고 하는 명령을 시행하시게 되면</p>
+<p><a href="#" onclick="seekTo(3180);return false;" class="ts-link">[00:53:00]</a> 오른쪽 아래에 나온 것처럼 gdb가 심볼을 어느 위치에 로드를 했는지</p>
+<p><a href="#" onclick="seekTo(3187);return false;" class="ts-link">[00:53:07]</a> 그 appOffset을 같이 보여주게 됩니다.</p>
+<p><a href="#" onclick="seekTo(3190);return false;" class="ts-link">[00:53:10]</a> 여기에 나와 있는 application의 ELF 파일과 실제 meminfo에서 나오는</p>
+<p><a href="#" onclick="seekTo(3197);return false;" class="ts-link">[00:53:17]</a> application의 appOffset이 일치해야지만 gdb가 제대로 동작하니까</p>
+<p><a href="#" onclick="seekTo(3203);return false;" class="ts-link">[00:53:23]</a> 이 부분을 뭔가 디버그가 제대로 안 된다 했을 때는 이 부분을 확인하시면 됩니다.</p>
+
+    </div>
+  </details>
+</div>
+
+<div class="card" id="chapter-7">
+  <div class="card-header">
+    <div class="card-num">8</div>
+    <div class="card-title">Non-GUI 서비스 템플릿 및 프로젝트 위자드</div>
+  </div>
+  <div class="card-meta">
+    <span class="time-badge">⏱ 00:53:32 ~ 01:01:13</span>
+    <a href="#" onclick="seekTo(3212);return false;" class="yt-link">▶ 재생</a>
+  </div>
+  <div class="section objectives"><div class="section-label">🎯 학습목표</div><ul><li>LUPA Studio에서 Non-GUI 서비스 템플릿을 활용하여 프로젝트를 생성할 수 있다.</li><li>프로젝트 위자드를 통해 프로젝트 위치, 템플릿, SDK, 타겟 등을 설정할 수 있다.</li><li>빌드, 설치, 실행 과정을 LUPA Studio의 Quick Launcher와 Device Manager를 통해 수행할 수 있다.</li><li>Non-GUI 서비스 앱의 실행 결과를 콘솔 출력과 DMESG 명령으로 확인할 수 있다.</li></ul></div>
+  <div class="section keypoints"><div class="section-label">📋 주요내용</div><ul><li>LUPA Studio는 Non-GUI 서비스(서비스 앱) 개발을 위한 다양한 템플릿(empty project, hello world, 이벤트 테스트, shell 등)을 제공한다.</li><li>프로젝트 위자드를 사용하여 프로젝트 생성 시 위치, 템플릿, 앱 타입, 앱 ID, 버전, SDK, 타겟 등을 설정할 수 있다.</li><li>SDK Manager에서 SDK를 활성화하고, Status Bar에서 빌드 타겟을 선택할 수 있다.</li><li>Quick Launcher를 통해 Clean, Configure, Build, Install Application, Start Application 등 빌드 및 실행 명령을 순차적으로 수행한다.</li><li>Device Manager에서 타겟 디바이스를 관리하고, 설치된 앱 목록을 확인 및 실행할 수 있다.</li><li>Non-GUI 서비스 앱은 타겟 디바이스에서 직접 UI가 표시되지 않으므로 콘솔 출력이나 DMESG 명령을 통해 실행 결과를 확인한다.</li><li>LDB 터미널과 Shell Command를 활용하여 타겟 디바이스의 로그 및 출력 결과를 확인할 수 있다.</li></ul></div>
+  <div class="quiz-block" data-quiz-idx="7"><div class="quiz-header" onclick="toggleQuiz(this)">🧪 퀴즈 풀기 <span class="quiz-count">(5문제)</span><span class="quiz-arrow">▶</span></div><div class="quiz-body" style="display:none"></div></div>
+  <label class="chapter-check" data-chapter-idx="7"><input type="checkbox" onchange="onChapterCheck(this,7)"> <span>학습 완료</span></label>
+  <details class="transcript-toggle">
+    <summary>원문 보기</summary>
+    <div class="transcript-content">
+      <p><a href="#" onclick="seekTo(3212);return false;" class="ts-link">[00:53:32]</a> 뒤쪽에는 GUI 어플리케이션은 이제 제외를 건너뛰고</p>
+<p><a href="#" onclick="seekTo(3218);return false;" class="ts-link">[00:53:38]</a> Non-GUI service 부분만 진행하도록 하겠습니다.</p>
+<p><a href="#" onclick="seekTo(3225);return false;" class="ts-link">[00:53:45]</a> LUPA Studio는 Non-GUI service라고 하는 템플릿을 기본 템플릿 몇 가지를 제공하고 있습니다.</p>
+<p><a href="#" onclick="seekTo(3235);return false;" class="ts-link">[00:53:55]</a> 프로젝트 위자드를 진행할 때는 커맨드 팔레트에서 프로젝트 위자드를 선택해서 실행을 합니다.</p>
+<p><a href="#" onclick="seekTo(3240);return false;" class="ts-link">[00:54:00]</a> 이 기능을 사용하시게 되면, 프로젝트 위치를 지정하고, 템플릿을 선택하게 되는데,</p>
+<p><a href="#" onclick="seekTo(3247);return false;" class="ts-link">[00:54:07]</a> 카테고리는 두 가지가 있습니다. GUI가 있는 어플리케이션과 없는 어플리케이션.</p>
+<p><a href="#" onclick="seekTo(3252);return false;" class="ts-link">[00:54:12]</a> 여기에서는 편의상 GUI가 없는 어플리케이션을 서비스라고, Non-GUI 서비스라고 지칭하고 있습니다.</p>
+<p><a href="#" onclick="seekTo(3260);return false;" class="ts-link">[00:54:20]</a> 여기에는 empty project와 hello world, 그리고 이벤트 테스트 어플리케이션이 있고,</p>
+<p><a href="#" onclick="seekTo(3266);return false;" class="ts-link">[00:54:26]</a> shell 어플리케이션이 있는데, 여기에서는 간단하게 shell로 선택했습니다.</p>
+<p><a href="#" onclick="seekTo(3272);return false;" class="ts-link">[00:54:32]</a> empty project는 말 그대로 configuration 파일과 main 파일만 있고 아무것도 없는 파일을 의미하고요.</p>
+<p><a href="#" onclick="seekTo(3280);return false;" class="ts-link">[00:54:40]</a> hello world 같은 경우는 console output에다가 메시지를 출력하는 샘플이고,</p>
+<p><a href="#" onclick="seekTo(3287);return false;" class="ts-link">[00:54:47]</a> 이벤트 같은 경우는 이벤트가 어떻게 동작하는지 간단한 이벤트 핸들러의 뼈대가 있는 템플릿입니다.</p>
+<p><a href="#" onclick="seekTo(3296);return false;" class="ts-link">[00:54:56]</a> 그 다음에는 어플리케이션 설정 부분을 진행하게 되는데,</p>
+<p><a href="#" onclick="seekTo(3299);return false;" class="ts-link">[00:54:59]</a> 프로젝트 이름을 입력하고, app type를 선택한 다음에,</p>
+<p><a href="#" onclick="seekTo(3303);return false;" class="ts-link">[00:55:03]</a> 앱 id와 버전 그리고 이 프로젝트를 생성할 때 사용하는 SDK나 타겟을 지정할 수 있습니다.</p>
+<p><a href="#" onclick="seekTo(3314);return false;" class="ts-link">[00:55:14]</a> 가장 아래쪽에는 SDK 버전이라든가 타겟 이름은 그 뒤에 프로젝트를 생성한 다음에</p>
+<p><a href="#" onclick="seekTo(3321);return false;" class="ts-link">[00:55:21]</a> 다시 지정하면 되니까 보통은 넘어가시면 될 것 같습니다.</p>
+<p><a href="#" onclick="seekTo(3326);return false;" class="ts-link">[00:55:26]</a> 그 다음에 컴피그 부분을 지정하는데, 내가 지정한 컴피그가 잘 로드가 됐는지</p>
+<p><a href="#" onclick="seekTo(3335);return false;" class="ts-link">[00:55:35]</a> 이 status 바에서 확인을 하실 수가 있습니다.</p>
+<p><a href="#" onclick="seekTo(3339);return false;" class="ts-link">[00:55:39]</a> 만약 앞에서 SDK를 지정 안 했다면, 이 단계에서 SDK Manager 항목에서</p>
+<p><a href="#" onclick="seekTo(3346);return false;" class="ts-link">[00:55:46]</a> 내가 사용할 SDK를 지정하고 Set Activate로 활성화 시킬 수가 있습니다.</p>
+<p><a href="#" onclick="seekTo(3356);return false;" class="ts-link">[00:55:56]</a> 활성화를 한 다음에, 보통 타겟 이름을 지정할 수 있습니다.</p>
+<p><a href="#" onclick="seekTo(3360);return false;" class="ts-link">[00:56:00]</a> 이름을 지정하는데요. 아마 실습기간 동안에 교육과정에서 사용하는 이미지는 하나로 지정이 되어 있습니다.</p>
+<p><a href="#" onclick="seekTo(3369);return false;" class="ts-link">[00:56:09]</a> 지금 여기에 보시면 washer.dqc.gvx, autodt, underbar, eu라고 하는 빌드 타겟이 있는데,</p>
+<p><a href="#" onclick="seekTo(3377);return false;" class="ts-link">[00:56:17]</a> status bar에서 여기 보시면 washer라고 되어 있는 부분을 선택을 하시면 빌드 타겟을 변경할 수가 있습니다.</p>
+<p><a href="#" onclick="seekTo(3387);return false;" class="ts-link">[00:56:27]</a> SDK는 마찬가지로 지정을 해서 1.2-LUPA260317로 지정하고, 빌드 타겟을 지정한 다음에 코드를 작성하시면 되는데,</p>
+<p><a href="#" onclick="seekTo(3402);return false;" class="ts-link">[00:56:42]</a> 코드를 작성하기 전에 빌드 테스트를 진행하시면 될 것 같습니다.</p>
+<p><a href="#" onclick="seekTo(3406);return false;" class="ts-link">[00:56:46]</a> 보통 빌드는 아까 말씀드렸듯이 launch configuration을 선택한 다음에 Run Without Debug라고 하는 명령을 시행하실 수도 있지만,</p>
+<p><a href="#" onclick="seekTo(3417);return false;" class="ts-link">[00:56:57]</a> 현이상 각 과정이 어떤 식으로 이루어지는지 직접 확인할 필요가 있기 때문에,</p>
+<p><a href="#" onclick="seekTo(3424);return false;" class="ts-link">[00:57:04]</a> Quick Launcher에서 매뉴얼을 순서적으로 선택하는 것으로 어플리케이션을 빌드를 하시면 됩니다.</p>
+<p><a href="#" onclick="seekTo(3431);return false;" class="ts-link">[00:57:11]</a> 가장 먼저 Clean을 하고, 그 다음 Configure, Build를 하시게 되면, 빌드까지 실행하시게 되면,</p>
+<p><a href="#" onclick="seekTo(3438);return false;" class="ts-link">[00:57:18]</a> 소스 파일을 빌드하고 LPK 파일까지 생성을 해주게 됩니다.</p>
+<p><a href="#" onclick="seekTo(3445);return false;" class="ts-link">[00:57:25]</a> 여러분들이 타겟을 연계한 이후에는, Install Application을 실행해서 LPK 파일을 타겟 디바이스에 설치를 하고,</p>
+<p><a href="#" onclick="seekTo(3454);return false;" class="ts-link">[00:57:34]</a> 그 다음은 Start Application으로 그 어플리케이션을 실행하실 수가 있습니다.</p>
+<p><a href="#" onclick="seekTo(3459);return false;" class="ts-link">[00:57:39]</a> 타겟 디바이스에서 앱이 제대로 설치되어 있는지를 확인하시려면,</p>
+<p><a href="#" onclick="seekTo(3463);return false;" class="ts-link">[00:57:43]</a> 이 Device Manager에서 타겟을 아래쪽으로 있는 꺾쇠 모양의 표시를 선택하시면,</p>
+<p><a href="#" onclick="seekTo(3473);return false;" class="ts-link">[00:57:53]</a> Install이라고 하는 항목이 나오는데, 여기에 현재 타겟에 설치되고...</p>
+<p><a href="#" onclick="seekTo(3480);return false;" class="ts-link">[00:58:00]</a> 설치된 앱들이 표시가 됩니다.</p>
+<p><a href="#" onclick="seekTo(3483);return false;" class="ts-link">[00:58:03]</a> 여기에는 샘플로 기본적으로 들어가 있는 플랫폼 앱이나 시스템 앱들이 표시가 되는데</p>
+<p><a href="#" onclick="seekTo(3490);return false;" class="ts-link">[00:58:10]</a> 보통 유저 앱 같은 경우, 여러분들 직접 작성하시는 유저 앱 같은 경우는 가장 아래쪽에 표시가 됩니다.</p>
+<p><a href="#" onclick="seekTo(3499);return false;" class="ts-link">[00:58:19]</a> 가장 아래쪽에 있는 그 유저 앱을 선택을 해서 마우스 우측 클릭을 하시면</p>
+<p><a href="#" onclick="seekTo(3506);return false;" class="ts-link">[00:58:26]</a> Start Application, Start Application이 표시가 되는데</p>
+<p><a href="#" onclick="seekTo(3510);return false;" class="ts-link">[00:58:30]</a> 거기에서 Start Application 선택하시면 마찬가지로 앱을 실행시킬 수가 있습니다.</p>
+<p><a href="#" onclick="seekTo(3516);return false;" class="ts-link">[00:58:36]</a> Non-GUI 서비스 앱 같은 경우는 실제 실행을 하더라도 타겟에서 표시가 되거나 그렇지 않기 때문에</p>
+<p><a href="#" onclick="seekTo(3524);return false;" class="ts-link">[00:58:44]</a> 콘솔 출력에서 실행 여부와 메시지 출력 여부를 확인하셔야 합니다.</p>
+<p><a href="#" onclick="seekTo(3534);return false;" class="ts-link">[00:58:54]</a> 보통 shell 같은 경우는 코드 안에서 printf로 결과를 출력하기 때문에</p>
+<p><a href="#" onclick="seekTo(3541);return false;" class="ts-link">[00:59:01]</a> 콘솔 OUTPUT으로 출력이 되는데, LUPA 플랫폼 같은 경우는 DMESG 명령을 실행을 해서</p>
+<p><a href="#" onclick="seekTo(3549);return false;" class="ts-link">[00:59:09]</a> 어플리케이션이 제대로 동작을 했는지 확인할 수가 있습니다.</p>
+<p><a href="#" onclick="seekTo(3557);return false;" class="ts-link">[00:59:17]</a> LDB 터미널을 사용하시게 되면 여기처럼 LDB COM 포트 이름을 쓰고</p>
+<p><a href="#" onclick="seekTo(3564);return false;" class="ts-link">[00:59:24]</a> 그 다음 Shell Command 명령을 실행할 때는 Shell이라고 하는 커맨드를 추가합니다.</p>
+<p><a href="#" onclick="seekTo(3570);return false;" class="ts-link">[00:59:30]</a> 그리고 DMESG를 실행하시면 실제 출력된 printf, 그러니까 타겟 디바이스에서 출력된 로그들을 LDB 터미널을 통해서 확인하실 수가 있습니다.</p>
+<p><a href="#" onclick="seekTo(3584);return false;" class="ts-link">[00:59:44]</a> 앞부분에 나와있는 settings set volatile.sh shell이라고 하는 명령을 실행하는 부분이 있는데요.</p>
+<p><a href="#" onclick="seekTo(3593);return false;" class="ts-link">[00:59:53]</a> 저 명령은 앞에서 나왔던 서비스 프로젝트에...</p>
+<p><a href="#" onclick="seekTo(3600);return false;" class="ts-link">[01:00:00]</a> 이 앱들을 실행하는, 구동시키는 명령입니다.</p>
+<p><a href="#" onclick="seekTo(3603);return false;" class="ts-link">[01:00:03]</a> 코드를 아마 보시면 아시겠지만, 저 명령, 세팅을 변경했을 때</p>
+<p><a href="#" onclick="seekTo(3608);return false;" class="ts-link">[01:00:08]</a> 이 어플리케이션이 서비스로 동작을 하면서</p>
+<p><a href="#" onclick="seekTo(3613);return false;" class="ts-link">[01:00:13]</a> 세팅값을 변경을 감지하고, 거기에 맞는 명령을,</p>
+<p><a href="#" onclick="seekTo(3617);return false;" class="ts-link">[01:00:17]</a> 아, 출력을, 콘솔로 출력을 하게 됩니다.</p>
+<p><a href="#" onclick="seekTo(3621);return false;" class="ts-link">[01:00:21]</a> 실제 저 명령을 실행하고, DMESG로 출력 결과를 확인하게 되면</p>
+<p><a href="#" onclick="seekTo(3626);return false;" class="ts-link">[01:00:26]</a> 지금 여기 아래쪽에 나온 것처럼, settings가 어떻게 변경되어 갖고</p>
+<p><a href="#" onclick="seekTo(3631);return false;" class="ts-link">[01:00:31]</a> 그 결과가 무엇이다, 라는 것을 출력을 해주게 됩니다.</p>
+<p><a href="#" onclick="seekTo(3636);return false;" class="ts-link">[01:00:36]</a> 마찬가지로 이 해당 명령은 Shell Command,</p>
+<p><a href="#" onclick="seekTo(3640);return false;" class="ts-link">[01:00:40]</a> 그 컴포트에 직접 연결해서,</p>
+<p><a href="#" onclick="seekTo(3643);return false;" class="ts-link">[01:00:43]</a> LDB 명령을, LDB 명령 없이 dmesg를 바로 실행해서</p>
+<p><a href="#" onclick="seekTo(3649);return false;" class="ts-link">[01:00:49]</a> 확인하실 수도 있는데요.</p>
+<p><a href="#" onclick="seekTo(3651);return false;" class="ts-link">[01:00:51]</a> 단지 이 경우에는, 컴포트에 직접 연결했을 때는</p>
+<p><a href="#" onclick="seekTo(3655);return false;" class="ts-link">[01:00:55]</a> LDB를 사용할 수가 없습니다.</p>
+<p><a href="#" onclick="seekTo(3657);return false;" class="ts-link">[01:00:57]</a> 또는 LDB 명령이 실행 중인 경우에도 마찬가지로 컴포트를 사용할 수가 없으니</p>
+<p><a href="#" onclick="seekTo(3664);return false;" class="ts-link">[01:01:04]</a> 이 부분을 좀 주의하셔서 작업을 하시면 될 것 같습니다.</p>
+
+    </div>
+  </details>
+</div>
+
+<div class="card" id="chapter-8">
+  <div class="card-header">
+    <div class="card-num">9</div>
+    <div class="card-title">Application 디버깅 방법 및 launch.json 설정</div>
+  </div>
+  <div class="card-meta">
+    <span class="time-badge">⏱ 01:01:13 ~ 01:09:18</span>
+    <a href="#" onclick="seekTo(3673);return false;" class="yt-link">▶ 재생</a>
+  </div>
+  <div class="section objectives"><div class="section-label">🎯 학습목표</div><ul><li>LUPA Studio에서 launch.json 파일을 생성하고 Application 디버깅 구성을 추가할 수 있다.</li><li>attach lupa-device 컴플레이션을 활용하여 타겟 디바이스에 Application을 디버깅할 수 있다.</li><li>J-Link 디바이스 드라이버 및 OpenOCD 설정을 확인하고 적용할 수 있다.</li><li>update-target-offset 및 meminfo 명령을 사용하여 올바른 심볼 로딩을 위한 offset을 설정하고 검증할 수 있다.</li></ul></div>
+  <div class="section keypoints"><div class="section-label">📋 주요내용</div><ul><li>launch.json 파일은 .vscode 폴더에 생성하며, attach lupa-device와 같은 디버깅 구성을 추가해야 한다.</li><li>워크스페이스 설정보다는 개별 프로젝트 디렉터리의 설정을 사용하는 것이 디버깅 환경 충돌을 방지한다.</li><li>J-Link 디바이스 드라이버가 올바르게 설치되어 있어야 하며, LUPA 개발 과정에서는 OpenOCD를 통해 J-Link를 사용한다.</li><li>디버깅 전 update-target-offset 명령을 실행하여 앱의 offset 정보를 저장하고, meminfo 명령으로 offset이 올바르게 반영되었는지 확인한다.</li><li>settings.json 파일에 appOffset이 저장되며, meminfo 결과와 일치해야 심볼이 정상적으로 로딩된다.</li><li>디버깅 시작 시 attach 후 Application의 breakpoint를 추가하고, 플랫폼 코드에서 Application 코드로 진입해야 한다.</li><li>Run and Debug 탭에서 attach lupa-device를 선택 후 start-debug 명령을 실행하여 디버깅을 시작한다.</li></ul></div>
+  <div class="quiz-block" data-quiz-idx="8"><div class="quiz-header" onclick="toggleQuiz(this)">🧪 퀴즈 풀기 <span class="quiz-count">(5문제)</span><span class="quiz-arrow">▶</span></div><div class="quiz-body" style="display:none"></div></div>
+  <label class="chapter-check" data-chapter-idx="8"><input type="checkbox" onchange="onChapterCheck(this,8)"> <span>학습 완료</span></label>
+  <details class="transcript-toggle">
+    <summary>원문 보기</summary>
+    <div class="transcript-content">
+      <p><a href="#" onclick="seekTo(3673);return false;" class="ts-link">[01:01:13]</a> 이 Application을 디버깅 할 때는, 아까 말씀드렸듯이</p>
+<p><a href="#" onclick="seekTo(3676);return false;" class="ts-link">[01:01:16]</a> launch.json 파일을 생성한 다음에</p>
+<p><a href="#" onclick="seekTo(3680);return false;" class="ts-link">[01:01:20]</a> 거기에 맞는 Application의 컴플레이션을 추가를 해줍니다.</p>
+<p><a href="#" onclick="seekTo(3684);return false;" class="ts-link">[01:01:24]</a> 지금 여기에서는 attach lupa-device라고 하는 컴플레이션을 추가를 해서</p>
+<p><a href="#" onclick="seekTo(3689);return false;" class="ts-link">[01:01:29]</a> 디버깅을 진행하는 것을 설명을 하고 있습니다.</p>
+<p><a href="#" onclick="seekTo(3693);return false;" class="ts-link">[01:01:33]</a> 이 launch.json 파일은 보통 프로젝트의 root,</p>
+<p><a href="#" onclick="seekTo(3697);return false;" class="ts-link">[01:01:37]</a> 폴더에 .vscode 밑에 launch.json이라고 하는 파일이 보통 생성이 됩니다.</p>
+<p><a href="#" onclick="seekTo(3704);return false;" class="ts-link">[01:01:44]</a> 이제 VS Code를 사용하시다 보면</p>
+<p><a href="#" onclick="seekTo(3707);return false;" class="ts-link">[01:01:47]</a> 이제 workspace를 따로 지정해서 하시는 경우가 있는데</p>
+<p><a href="#" onclick="seekTo(3713);return false;" class="ts-link">[01:01:53]</a> 그 경우에는 workspace의 설정과 현재 project directory의 설정</p>
+<p><a href="#" onclick="seekTo(3720);return false;" class="ts-link">[01:02:00]</a> 작업이 충돌할 수 있기 때문에</p>
+<p><a href="#" onclick="seekTo(3722);return false;" class="ts-link">[01:02:02]</a> 가급적이면 워크스페이스를 사용하지 않고</p>
+<p><a href="#" onclick="seekTo(3725);return false;" class="ts-link">[01:02:05]</a> 개별 프로젝트의 설정으로 쓰는 것을 추천을 드립니다.</p>
+<p><a href="#" onclick="seekTo(3730);return false;" class="ts-link">[01:02:10]</a> 워크스페이스 같은 경우는</p>
+<p><a href="#" onclick="seekTo(3732);return false;" class="ts-link">[01:02:12]</a> 서로 다른 여러 군데에서 작업 디렉터리가 많이 있을 때</p>
+<p><a href="#" onclick="seekTo(3736);return false;" class="ts-link">[01:02:16]</a> 그걸 모아서 쓰는 경우</p>
+<p><a href="#" onclick="seekTo(3738);return false;" class="ts-link">[01:02:18]</a> 워크스페이스 기능을 사용을 하는데</p>
+<p><a href="#" onclick="seekTo(3743);return false;" class="ts-link">[01:02:23]</a> 그렇게 하다 보면</p>
+<p><a href="#" onclick="seekTo(3744);return false;" class="ts-link">[01:02:24]</a> 컴플레이션이 꼬이는 경우가 많이 발생하더라고요.</p>
+<p><a href="#" onclick="seekTo(3747);return false;" class="ts-link">[01:02:27]</a> 그렇기 때문에 가급적이면 워크스페이스 사용은 지양하시고</p>
+<p><a href="#" onclick="seekTo(3751);return false;" class="ts-link">[01:02:31]</a> 프로젝트 디렉터리에 컴플레이션을 사용하는 것을 추천을 드립니다.</p>
+<p><a href="#" onclick="seekTo(3758);return false;" class="ts-link">[01:02:38]</a> 여기서 이 attach lupa-device 컴플레이션을</p>
+<p><a href="#" onclick="seekTo(3761);return false;" class="ts-link">[01:02:41]</a> 예와 같은 과정으로 추가를 하신 다음에</p>
+<p><a href="#" onclick="seekTo(3766);return false;" class="ts-link">[01:02:46]</a> 디버깅을 진행하실 수가 있습니다.</p>
+<p><a href="#" onclick="seekTo(3769);return false;" class="ts-link">[01:02:49]</a> 먼저 장치 관리자에서 J-Link</p>
+<p><a href="#" onclick="seekTo(3772);return false;" class="ts-link">[01:02:52]</a> 아까 말씀드렸듯이</p>
+<p><a href="#" onclick="seekTo(3773);return false;" class="ts-link">[01:02:53]</a> lupa-target-device에서 디버깅을 진행할 땐</p>
+<p><a href="#" onclick="seekTo(3776);return false;" class="ts-link">[01:02:56]</a> J-Link 디바이스를 사용하는데요.</p>
+<p><a href="#" onclick="seekTo(3778);return false;" class="ts-link">[01:02:58]</a> 이것에 대한 디바이스 드라이버가 제대로 설치가 되어 있는지</p>
+<p><a href="#" onclick="seekTo(3782);return false;" class="ts-link">[01:03:02]</a> 확인하시고요.</p>
+<p><a href="#" onclick="seekTo(3783);return false;" class="ts-link">[01:03:03]</a> 참고로 OpenOCD를 통해서</p>
+<p><a href="#" onclick="seekTo(3785);return false;" class="ts-link">[01:03:05]</a> LUPA 개발 과정에서</p>
+<p><a href="#" onclick="seekTo(3789);return false;" class="ts-link">[01:03:09]</a> J-Link를 쓸 때는 OpenOCD를 쓰기 때문에</p>
+<p><a href="#" onclick="seekTo(3792);return false;" class="ts-link">[01:03:12]</a> 디바이스 드라이버에 대한 변경이 필요합니다.</p>
+<p><a href="#" onclick="seekTo(3795);return false;" class="ts-link">[01:03:15]</a> 이 부분은 나중에 실습을 하시면서</p>
+<p><a href="#" onclick="seekTo(3799);return false;" class="ts-link">[01:03:19]</a> 참고를 하시면 될 것 같고요.</p>
+<p><a href="#" onclick="seekTo(3802);return false;" class="ts-link">[01:03:22]</a> 이 attach 같은 경우는</p>
+<p><a href="#" onclick="seekTo(3804);return false;" class="ts-link">[01:03:24]</a> 타겟 디바이스가 동작하는 그 순간</p>
+<p><a href="#" onclick="seekTo(3807);return false;" class="ts-link">[01:03:27]</a> 그 디바이스의 그 상태 그대로</p>
+<p><a href="#" onclick="seekTo(3810);return false;" class="ts-link">[01:03:30]</a> 디버그 모드로 진입을 해서</p>
+<p><a href="#" onclick="seekTo(3811);return false;" class="ts-link">[01:03:31]</a> 디버깅을 진행하기 때문에</p>
+<p><a href="#" onclick="seekTo(3813);return false;" class="ts-link">[01:03:33]</a> 앱을 먼저 실행을 해주고</p>
+<p><a href="#" onclick="seekTo(3816);return false;" class="ts-link">[01:03:36]</a> 실행 중인 상태에서 디버깅을 진행하시면 됩니다.</p>
+<p><a href="#" onclick="seekTo(3820);return false;" class="ts-link">[01:03:40]</a> 먼저 아까 말씀드렸듯이</p>
+<p><a href="#" onclick="seekTo(3823);return false;" class="ts-link">[01:03:43]</a> 심볼을 올바른 위치에 로딩하기 위해서</p>
+<p><a href="#" onclick="seekTo(3826);return false;" class="ts-link">[01:03:46]</a> update-target-offset 이라고 하는 명령을</p>
+<p><a href="#" onclick="seekTo(3829);return false;" class="ts-link">[01:03:49]</a> 한번 실행해 주시면</p>
+<p><a href="#" onclick="seekTo(3831);return false;" class="ts-link">[01:03:51]</a> 앱이 실행 중인 동안에</p>
+<p><a href="#" onclick="seekTo(3834);return false;" class="ts-link">[01:03:54]</a> 해당 offset을 컴플레이션에 저장을 해서</p>
+<p><a href="#" onclick="seekTo(3836);return false;" class="ts-link">[01:03:56]</a> 실제 디버깅 할 때 그 오프셋을 사용해서</p>
+<p><a href="#" onclick="seekTo(3838);return false;" class="ts-link">[01:03:58]</a> 심볼을 로딩할 때</p>
+<p><a href="#" onclick="seekTo(3840);return false;" class="ts-link">[01:04:00]</a> 사용을 하게 됩니다.</p>
+<p><a href="#" onclick="seekTo(3841);return false;" class="ts-link">[01:04:01]</a> 이 offset을 업데이트한 다음에</p>
+<p><a href="#" onclick="seekTo(3844);return false;" class="ts-link">[01:04:04]</a> 이것이 제대로 들어갔는지를 확인하려면</p>
+<p><a href="#" onclick="seekTo(3851);return false;" class="ts-link">[01:04:11]</a> 타겟 디바이스에서 meminfo를 실행하게 되면</p>
+<p><a href="#" onclick="seekTo(3854);return false;" class="ts-link">[01:04:14]</a> meminfo에 대한 실행 결과가</p>
+<p><a href="#" onclick="seekTo(3858);return false;" class="ts-link">[01:04:18]</a> 에디터 화면에 출력이 됩니다.</p>
+<p><a href="#" onclick="seekTo(3860);return false;" class="ts-link">[01:04:20]</a> 이 offset이 앱이 실행 중인 동안에는</p>
+<p><a href="#" onclick="seekTo(3864);return false;" class="ts-link">[01:04:24]</a> meminfo로 앱의 offset을 확인하실 수가 있는데</p>
+<p><a href="#" onclick="seekTo(3867);return false;" class="ts-link">[01:04:27]</a> 아래쪽에 오른쪽에 있는 스크린샷을 보시면</p>
+<p><a href="#" onclick="seekTo(3873);return false;" class="ts-link">[01:04:33]</a> ls-demo라고 하는 앱이 표시가 된 게 보이시는데요.</p>
+<p><a href="#" onclick="seekTo(3878);return false;" class="ts-link">[01:04:38]</a> ls는 user, lupa.user의 줄임말로</p>
+<p><a href="#" onclick="seekTo(3885);return false;" class="ts-link">[01:04:45]</a> luser, ls는 lupa.sys의 줄임말입니다.</p>
+<p><a href="#" onclick="seekTo(3890);return false;" class="ts-link">[01:04:50]</a> 이 부분을 참고로 기억해 주시면 될 것 같고요.</p>
+<p><a href="#" onclick="seekTo(3895);return false;" class="ts-link">[01:04:55]</a> 이 appOffset에 대한 설정은</p>
+<p><a href="#" onclick="seekTo(3901);return false;" class="ts-link">[01:05:01]</a> project-directory/.vscode에 밑에 있는</p>
+<p><a href="#" onclick="seekTo(3904);return false;" class="ts-link">[01:05:04]</a> settings.json이라고 하는 파일에 저장이 됩니다.</p>
+<p><a href="#" onclick="seekTo(3907);return false;" class="ts-link">[01:05:07]</a> 여기에 LUPA Studio의 appOffset이라고 하는 주소가 있는데요.</p>
+<p><a href="#" onclick="seekTo(3911);return false;" class="ts-link">[01:05:11]</a> 이 주소하고 meminfo를 실행했을 때</p>
+<p><a href="#" onclick="seekTo(3914);return false;" class="ts-link">[01:05:14]</a> Application이 로드된 offset이 동일하다면</p>
+<p><a href="#" onclick="seekTo(3918);return false;" class="ts-link">[01:05:18]</a> 디버깅을 할 때 해당 주소로</p>
+<p><a href="#" onclick="seekTo(3920);return false;" class="ts-link">[01:05:20]</a> 신보를 올바르게 로딩할 수 있다는 의미입니다.</p>
+<p><a href="#" onclick="seekTo(3924);return false;" class="ts-link">[01:05:24]</a> 이 과정이 복잡한데</p>
+<p><a href="#" onclick="seekTo(3928);return false;" class="ts-link">[01:05:28]</a> 자주 하시다 보면 익숙해지실 것 같습니다.</p>
+<p><a href="#" onclick="seekTo(3933);return false;" class="ts-link">[01:05:33]</a> 실제 디버그를 실행하는 것은</p>
+<p><a href="#" onclick="seekTo(3934);return false;" class="ts-link">[01:05:34]</a> fo, start-debug 명령을 실행해서</p>
+<p><a href="#" onclick="seekTo(3937);return false;" class="ts-link">[01:05:37]</a> 실행할 수가 있습니다.</p>
+<p><a href="#" onclick="seekTo(3939);return false;" class="ts-link">[01:05:39]</a> 물론 그 전에 Run and Debug 탭으로 들어간 다음에</p>
+<p><a href="#" onclick="seekTo(3943);return false;" class="ts-link">[01:05:43]</a> Launch Configuration을 attach lupa-device를</p>
+<p><a href="#" onclick="seekTo(3947);return false;" class="ts-link">[01:05:47]</a> 먼저 선택을 해 주셔야 하고요.</p>
+<p><a href="#" onclick="seekTo(3949);return false;" class="ts-link">[01:05:49]</a> 선택한 다음에 start-debug를 실행하시면</p>
+<p><a href="#" onclick="seekTo(3952);return false;" class="ts-link">[01:05:52]</a> 이와 같이 디버그 화면으로 진입을 하면서</p>
+<p><a href="#" onclick="seekTo(3955);return false;" class="ts-link">[01:05:55]</a> 필요한 명령들을 쭉 실행하게 됩니다.</p>
+<p><a href="#" onclick="seekTo(3960);return false;" class="ts-link">[01:06:00]</a> 보통, Attach를 하더라도, 가장 처음에 halt, 멈춘 상태로 진행을 하는데요.</p>
+<p><a href="#" onclick="seekTo(3965);return false;" class="ts-link">[01:06:05]</a> 보통, Debugging 시작할 때, 멈추는 위치는 Application 위치가 아니라,</p>
+<p><a href="#" onclick="seekTo(3970);return false;" class="ts-link">[01:06:10]</a> 플랫폼 코드의 특정 부분, 이벤트 루프 안쪽에 멈추게 됩니다.</p>
+<p><a href="#" onclick="seekTo(3977);return false;" class="ts-link">[01:06:17]</a> 보통, 이 순간에는 Application Load가 Load를 하기 전 상황이기 때문에,</p>
+<p><a href="#" onclick="seekTo(3985);return false;" class="ts-link">[01:06:25]</a> Attach를 한 이후에, Application의 breakpoint를 추가해주시고,</p>
+<p><a href="#" onclick="seekTo(3994);return false;" class="ts-link">[01:06:34]</a> 그 다음에 Continue를 누르시면, Application의 실행되는 루프로 진입할 준비가 된 상태입니다.</p>
+<p><a href="#" onclick="seekTo(4001);return false;" class="ts-link">[01:06:41]</a> 이 다음에, Application을 실제 구동시키는 화면들을 입력해주시면,</p>
+<p><a href="#" onclick="seekTo(4008);return false;" class="ts-link">[01:06:48]</a> 입력을 해주시게 되면, 해당되는 breakpoint에 멈추게 됩니다.</p>
+<p><a href="#" onclick="seekTo(4017);return false;" class="ts-link">[01:06:57]</a> 과정이 복잡해지는데,</p>
+<p><a href="#" onclick="seekTo(4019);return false;" class="ts-link">[01:06:59]</a> 실제 Application으로 직접 진입하는 게 아니라,</p>
+<p><a href="#" onclick="seekTo(4023);return false;" class="ts-link">[01:07:03]</a> Application을 진입하는 게 아니라, 플랫폼으로 한번 Debugging 들어간 다음에,</p>
+<p><a href="#" onclick="seekTo(4028);return false;" class="ts-link">[01:07:08]</a> 그 다음, Application 내부로 점프를 해서 들어가는 과정을 거쳐야 하기 때문에,</p>
+<p><a href="#" onclick="seekTo(4035);return false;" class="ts-link">[01:07:15]</a> 약간 걱정할 수가 있습니다.</p>
+<p><a href="#" onclick="seekTo(4040);return false;" class="ts-link">[01:07:20]</a> 그리고, 방금 말씀드렸듯이,</p>
+<p><a href="#" onclick="seekTo(4042);return false;" class="ts-link">[01:07:22]</a> Application도 서비스 루프를 계속해서 돌다가,</p>
+<p><a href="#" onclick="seekTo(4046);return false;" class="ts-link">[01:07:26]</a> LDB로, 아까 말씀드렸듯이 앱을 실행시키는 키워드가 있었죠.</p>
+<p><a href="#" onclick="seekTo(4056);return false;" class="ts-link">[01:07:36]</a> 여기처럼 Shell Command로,</p>
+<p><a href="#" onclick="seekTo(4059);return false;" class="ts-link">[01:07:39]</a> Setting Asset Volatile.ev.shell이라고 하는 설정을 변경했을 때,</p>
+<p><a href="#" onclick="seekTo(4067);return false;" class="ts-link">[01:07:47]</a> 아까 들어간 이 Application이 구동이 되기 때문에,</p>
+<p><a href="#" onclick="seekTo(4072);return false;" class="ts-link">[01:07:52]</a> 이걸 먼저 구동시키기 전에,</p>
+<p><a href="#" onclick="seekTo(4077);return false;" class="ts-link">[01:07:57]</a> breakpoint로 먼저 설정해놓고,</p>
+<p><a href="#" onclick="seekTo(4081);return false;" class="ts-link">[01:08:01]</a> 서비스를 구동시키면 구동하는 순간에 내가 원하는 위치로 breakpoint가 동작을 하게 됩니다.</p>
+<p><a href="#" onclick="seekTo(4092);return false;" class="ts-link">[01:08:12]</a> 과정이 복잡하긴 한데 앞으로 실습을 통해서 아마 디버깅으로 담당해주시는 강사분이 계시기 때문에</p>
+<p><a href="#" onclick="seekTo(4110);return false;" class="ts-link">[01:08:30]</a> 다시 한번 설명을 드리면서 실습을 진행할 예정입니다.</p>
+<p><a href="#" onclick="seekTo(4117);return false;" class="ts-link">[01:08:37]</a> 여기까지가 제가 준비했었던 내용이고요.</p>
+<p><a href="#" onclick="seekTo(4121);return false;" class="ts-link">[01:08:41]</a> 혹시 그 LUPA Studio를 사전학습을 통해서 한번 해보신 거죠?</p>
+<p><a href="#" onclick="seekTo(4128);return false;" class="ts-link">[01:08:48]</a> 혹시 사용하시면서 잘 궁금했던 부분이라든가 잘 안됐던 부분이 있으시면 말씀해 주시면 제가 언제든 답변을 해 드릴 수 있을 것 같습니다.</p>
+<p><a href="#" onclick="seekTo(4138);return false;" class="ts-link">[01:08:58]</a> 오늘 오후에 이삭민 책임께서 플랫폼 쪽에 수업을 진행하시면서 제가 이 뒤쪽에 상주할 계획이기 때문에</p>
+<p><a href="#" onclick="seekTo(4147);return false;" class="ts-link">[01:09:07]</a> 혹시 중간중간에 안되는게 있으면 언제든 편하게 손을 들고 물어보시면 될 것 같습니다.</p>
+<p><a href="#" onclick="seekTo(4158);return false;" class="ts-link">[01:09:18]</a> 그러면 제가 진행한 내용은 여기까지구요. 감사합니다. 수고하셨습니다.</p>
+
+    </div>
+  </details>
+</div>
+
+  </main>
+  <script>
+    var VIDEO_ID = 'yi8KhjPtEUw';
+    var isLocal = location.protocol === 'file:';
+    var QUIZ_DATA = {"0": [{"q": "LUPA Studio가 제공하는 통합 개발 환경(IDE)은 어떤 형태로 Visual Studio Code에 적용됩니까?", "options": ["Extension 형태", "플러그인 형태", "별도 실행 파일", "웹 기반 플랫폼"], "answer": 0, "hint": "LUPA Studio는 Visual Studio Code의 확장 기능으로 제공됩니다."}, {"q": "LUPA Studio에서 앱 설치 및 실행, 디버깅, 로그 확인 등을 담당하는 주요 기능은 무엇입니까?", "options": ["Device Manager", "SDK Manager", "Repository", "Quick Launcher"], "answer": 0, "hint": "디바이스 관리와 관련된 기능을 담당합니다."}, {"q": "LUPA 개발자 사이트에서 제공하는 서비스가 아닌 것은 무엇입니까?", "options": ["개발 가이드", "AI 챗봇", "앱 마켓", "LUPA Studio 내 챗봇 연동"], "answer": 2, "hint": "앱 마켓은 언급된 서비스에 포함되지 않습니다."}, {"q": "LUPA Studio에서 개발, 빌드, 디버깅, 앱 설치 및 실행을 지원하는 기능이 아닌 것은 무엇입니까?", "options": ["SDK Manager", "Device Manager", "Repository", "Task Scheduler"], "answer": 3, "hint": "Task Scheduler는 LUPA Studio의 주요 기능 목록에 포함되어 있지 않습니다."}, {"q": "LUPA Studio를 통해 효율적으로 관리할 수 있는 것은 무엇입니까?", "options": ["Application 개발 절차", "하드웨어 설계", "운영체제 설치", "네트워크 구성"], "answer": 0, "hint": "LUPA Studio는 소프트웨어 개발 사이클 관리에 중점을 둡니다."}], "1": [{"q": "LUPA Studio가 제공하는 개발 환경은 어떤 형태로 Visual Studio Code에 적용됩니까?", "options": ["Extension", "Plugin", "Standalone Application", "Web Service"], "answer": 0, "hint": "LUPA Studio는 Visual Studio Code의 확장 기능으로 제공됩니다."}, {"q": "SDK Manager에서 제공하지 않는 기능은 무엇입니까?", "options": ["SDK 활성화", "SDK 설치", "SDK 삭제", "앱 실행"], "answer": 3, "hint": "SDK Manager는 SDK와 에뮬레이터 관리에 집중합니다."}, {"q": "Device Manager에서 지원하는 기능이 아닌 것은 무엇입니까?", "options": ["앱 설치", "앱 실행", "버전 확인", "GUI 라이브러리 관리"], "answer": 3, "hint": "GUI 라이브러리 관리는 별도의 Manager에서 담당합니다."}, {"q": "Quick Launcher에서 제공하는 기능이 아닌 것은 무엇입니까?", "options": ["빌드", "메모리 덤프", "레지스터 덤프", "Custom SDK 등록"], "answer": 3, "hint": "Custom SDK 등록은 LUPA Repository에서 관리합니다."}, {"q": "Status Bar에서 확인할 수 없는 정보는 무엇입니까?", "options": ["프로젝트명", "활성 SDK", "타겟 디바이스", "GUI 라이브러리 버전"], "answer": 3, "hint": "GUI 라이브러리 버전은 Status Bar에 표시되지 않습니다."}], "2": [{"q": "LUPA Studio에서 Custom SDK를 추가할 경우, 해당 SDK 파일이 저장되는 기본 경로는 어디인가?", "options": ["사용자 디렉터리 하위 .lupastudio 폴더", "C:\\Program Files\\LUPA\\SDKs", "/opt/lupa/custom_sdk", "LUPA Repository 서버"], "answer": 0, "hint": "Custom SDK는 사용자 홈 디렉터리 내 숨김 폴더에 저장됩니다."}, {"q": "Emulator 실행 시 기본적으로 제공되는 창이 아닌 것은 무엇인가?", "options": ["Renode 콘솔", "UART0 터미널", "GDC 윈도우", "SDK Manager"], "answer": 3, "hint": "Emulator 실행 시 3개의 창이 자동으로 열리며, SDK 관리 창은 포함되지 않습니다."}, {"q": "Device Manager에서 실제 디바이스와 Emulator를 관리할 때 사용하는 포트는 무엇을 기반으로 하는가?", "options": ["시리얼 포트(COM 포트)", "이더넷 포트", "USB 포트", "블루투스 포트"], "answer": 0, "hint": "Device Manager는 UART 통신을 위한 포트를 사용합니다."}, {"q": "Emulator에서 타겟 칩셋이 변경될 때 자동으로 변경되는 것은 무엇인가?", "options": ["이미지 파일", "SDK Manager 테마", "Device Manager 레이아웃", "Status Bar 색상"], "answer": 0, "hint": "타겟 칩셋에 따라 테스트 환경이 달라집니다."}, {"q": "Status Bar와 Quick Select 화면에서 확인할 수 없는 정보는 무엇인가?", "options": ["활성화된 SDK", "타겟 이름", "debug available 여부", "Emulator 실행 로그"], "answer": 3, "hint": "Status Bar와 Quick Select는 빌드 및 디버깅 관련 정보를 제공합니다."}], "3": [{"q": "Status Bar에서 표시되는 정보가 아닌 것은 무엇입니까?", "options": ["LUPA 프로젝트 이름", "디바이스 이름", "디버깅 심볼의 크기", "빌드 컨피그레이션"], "answer": 2, "hint": "Status Bar는 개발 환경의 주요 정보를 표시하지만, 디버깅 심볼의 크기는 포함하지 않습니다."}, {"q": "퀵 런처에서 제공하는 명령이 아닌 것은 무엇입니까?", "options": ["Start Application", "Dump memory", "Uninstall", "빌드"], "answer": 1, "hint": "Dump memory는 디버그 모드에서 사용되는 기능입니다."}, {"q": "타겟 이름이 구성되는 요소가 아닌 것은 무엇입니까?", "options": ["플랫폼", "칩셋", "제품 향", "SDK 버전"], "answer": 3, "hint": "타겟 이름은 플랫폼, 칩셋, 제품 향으로 구성됩니다."}, {"q": "Dump memory와 dump register 기능에 대한 설명으로 옳은 것은 무엇입니까?", "options": ["릴리즈 모드에서만 사용 가능하다.", "타겟 디바이스의 메모리와 레지스터 값을 파일로 저장한다.", "LUPA Studio의 Status Bar에서 직접 실행된다.", "API 가이드 뷰어에서 제공된다."], "answer": 1, "hint": "이 기능들은 디버그 모드에서 사용되며, 메모리와 레지스터 값을 파일로 저장합니다."}, {"q": "Status Bar에서 항목의 전체 이름(fullname)을 확인하는 방법은 무엇입니까?", "options": ["더블 클릭", "마우스 오버", "오른쪽 클릭", "단축키 F1"], "answer": 1, "hint": "마우스를 올려놓으면 전체 이름이 표시됩니다."}], "4": [{"q": "LUPA 어플리케이션 프로젝트에서 소스 및 리소스 폴더가 아닌 것은 무엇인가?", "options": ["src", "res", "ui", "bin"], "answer": 3, "hint": "bin 폴더는 기본 프로젝트 구조에 포함되지 않습니다."}, {"q": "manifest 파일에서 지정하는 앱의 속성에 해당하지 않는 것은?", "options": ["앱 카테고리", "앱 타입", "앱 실행 방식", "설치 전후 명령어"], "answer": 3, "hint": "설치 전후 명령어는 spec.ini 파일에서 지정합니다."}, {"q": "spec.ini 파일에서 사용할 수 있는 명령어 형식은 무엇인가?", "options": ["Python 스크립트", "Shell command", "C++ 코드", "JSON 데이터"], "answer": 1, "hint": "spec.ini는 shell command만 지원합니다."}, {"q": "APP_TYPE_PERSISTENT의 특징으로 올바른 것은?", "options": ["작업 완료 시 종료된다", "항상 실행 상태를 유지한다", "백그라운드에서만 실행된다", "개발자가 직접 라이프 사이클을 제어한다"], "answer": 1, "hint": "시스템이 직접 라이프 사이클을 관리하며 항상 실행 상태를 유지합니다."}, {"q": "앱 타입이 지정되지 않은 경우 LUPA 어플리케이션의 라이프 사이클은 어떻게 관리되는가?", "options": ["시스템이 자동 관리", "앱이 자동 종료", "개발자가 직접 제어", "앱이 실행되지 않음"], "answer": 2, "hint": "타입이 없으면 개발자가 직접 라이프 사이클을 제어해야 합니다."}], "5": [{"q": "LUPA 어플리케이션의 패키지 네임 규칙에서 시스템 앱에 사용되는 키워드는 무엇인가?", "options": ["sys", "usr", "app", "core"], "answer": 0, "hint": "시스템 앱은 'sys' 키워드를 사용합니다."}, {"q": "LUPA Studio에서 프로젝트를 생성할 때 사용하는 기능은 무엇인가?", "options": ["Project Wizard", "Quick Launcher", "launch.json", "meminfo"], "answer": 0, "hint": "프로젝트 생성은 Wizard를 통해 이루어집니다."}, {"q": "LUPA 어플리케이션 개발 절차에서 UI 작업이 필요한 경우, 어느 단계에서 수행되는가?", "options": ["프로젝트 생성 후", "서비스 코드 작성 후", "빌드 후", "디버깅 후"], "answer": 0, "hint": "UI 작업은 프로젝트 생성 다음 단계입니다."}, {"q": "LUPA 어플리케이션의 패키지 네임이 'lupa.sys.meminfo'일 때, 이 앱의 종류는 무엇인가?", "options": ["시스템 앱", "사용자 앱", "테스트 앱", "서비스 앱"], "answer": 0, "hint": "'sys' 키워드는 시스템 앱을 의미합니다."}, {"q": "앱 빌드 및 실행 시 반드시 확인해야 하는 정보가 아닌 것은 무엇인가?", "options": ["프로젝트 선택", "SDK 버전", "설치 위치", "앱 아이콘 색상"], "answer": 3, "hint": "앱 아이콘 색상은 필수 정보가 아닙니다."}], "6": [{"q": "LUPA 개발 환경에서 디바이스 디버깅 시 사용되는 디버거와 관련 도구의 조합으로 올바른 것은 무엇입니까?", "options": ["J-Link와 OpenOCD, gdb", "J-Link와 gdb 서버, meminfo", "OpenOCD와 Visual Studio Code, lupa-update-target-at-offset", "gdb 서버와 J-Link, info files"], "answer": 0, "hint": "디바이스 디버깅에는 J-Link와 OpenOCD, 그리고 gdb가 사용됩니다."}, {"q": "Emulator 환경에서 디버깅을 진행할 때 OpenOCD 대신 무엇을 통해 gdb가 target device에 연결됩니까?", "options": ["gdb 서버의 포트 번호", "J-Link의 USB 연결", "meminfo 명령어", "lupa-update-target-at-offset 명령어"], "answer": 0, "hint": "Emulator 환경에서는 gdb 서버에 직접 포트 번호로 연결합니다."}, {"q": "LUPA Application의 appOffset을 확인할 수 있는 명령어로 올바른 것은 무엇입니까?", "options": ["lupa-update-target-at-offset 또는 meminfo", "info files 또는 gdb server", "OpenOCD 또는 J-Link", "Visual Studio Code 또는 LUPA Studio"], "answer": 0, "hint": "appOffset은 lupa-update-target-at-offset 명령이나 meminfo 커맨드로 확인합니다."}, {"q": "gdb에서 심볼 파일 로드 위치와 appOffset이 일치하지 않을 경우 발생할 수 있는 문제는 무엇입니까?", "options": ["디버깅이 제대로 동작하지 않음", "디바이스 연결이 끊어짐", "gdb 서버가 종료됨", "J-Link가 인식되지 않음"], "answer": 0, "hint": "appOffset과 심볼 파일 로드 위치가 다르면 디버깅이 제대로 동작하지 않습니다."}, {"q": "디버그 콘솔에서 심볼 파일 로드 위치와 appOffset의 일치 여부를 확인할 때 사용하는 gdb 명령어는 무엇입니까?", "options": ["info files", "meminfo", "lupa-update-target-at-offset", "openocd"], "answer": 0, "hint": "gdb에서 info files 명령어로 심볼 파일 로드 위치를 확인할 수 있습니다."}], "7": [{"q": "LUPA Studio의 Non-GUI 서비스 앱 개발을 위한 템플릿에 포함되지 않는 항목은 무엇입니까?", "options": ["empty project", "hello world", "이벤트 테스트", "GUI 디자인"], "answer": 3, "hint": "Non-GUI 서비스 템플릿에는 UI 관련 템플릿이 포함되지 않습니다."}, {"q": "프로젝트 위자드에서 설정할 수 없는 항목은 무엇입니까?", "options": ["앱 ID", "SDK", "빌드 타겟", "디바이스 IP"], "answer": 3, "hint": "프로젝트 위자드에서는 디바이스 IP를 직접 설정하지 않습니다."}, {"q": "SDK Manager에서 수행할 수 있는 작업은 무엇입니까?", "options": ["SDK 활성화", "앱 실행", "디바이스 연결", "앱 삭제"], "answer": 0, "hint": "SDK Manager는 SDK 관련 기능을 제공합니다."}, {"q": "Non-GUI 서비스 앱의 실행 결과를 확인하는 방법으로 올바르지 않은 것은?", "options": ["콘솔 출력 확인", "DMESG 명령 사용", "LDB 터미널 활용", "UI 화면 직접 확인"], "answer": 3, "hint": "Non-GUI 서비스 앱은 UI 화면이 표시되지 않습니다."}, {"q": "Quick Launcher에서 제공하지 않는 명령은 무엇입니까?", "options": ["Clean", "Configure", "Build", "앱 삭제"], "answer": 3, "hint": "Quick Launcher는 빌드 및 실행 관련 명령을 제공합니다."}], "8": [{"q": "launch.json 파일에서 LUPA 디바이스 디버깅을 위해 추가해야 하는 구성 이름은 무엇인가?", "options": ["attach lupa-device", "start lupa-debug", "connect lupa-board", "run lupa-app"], "answer": 0, "hint": "attach로 시작하는 구성을 추가해야 합니다."}, {"q": "LUPA 개발 과정에서 J-Link 디바이스 드라이버를 사용할 때, 디바깅을 위해 어떤 툴을 통해 J-Link를 연결해야 하는가?", "options": ["OpenOCD", "GDB", "VSCode", "DQC"], "answer": 0, "hint": "J-Link와 연결되는 오픈 소스 디버깅 툴입니다."}, {"q": "디버깅 전 앱의 offset 정보를 저장하기 위해 실행해야 하는 명령은 무엇인가?", "options": ["update-target-offset", "save-app-offset", "set-debug-offset", "refresh-symbol-offset"], "answer": 0, "hint": "update로 시작하는 명령어입니다."}, {"q": "settings.json 파일에 저장되는 appOffset 값이 어느 명령의 결과와 일치해야 심볼이 정상적으로 로딩되는가?", "options": ["meminfo", "debug-info", "offset-check", "symbol-list"], "answer": 0, "hint": "메모리 정보를 확인하는 명령입니다."}, {"q": "Run and Debug 탭에서 디버깅을 시작할 때 선택해야 하는 디바이스 구성은 무엇인가?", "options": ["attach lupa-device", "start lupa-debug", "connect lupa-board", "run lupa-app"], "answer": 0, "hint": "attach로 시작하는 디바이스 구성입니다."}]};
+    var PROGRESS_CFG = {"owner": "sophiahjlee", "repo": "sophiahjlee.github.io", "token": "", "video_id": "yi8KhjPtEUw"};
+    var TOTAL_CHAPTERS = 9;
+    var area = document.getElementById('video-area');
+    var ytPlayer = null;
+    var ytPlayerReady = false;
+
+    if (isLocal) {
+      area.innerHTML = '<div style="position:relative;">' +
+        '<a href="https://youtu.be/' + VIDEO_ID + '" target="_blank">' +
+        '<img src="https://img.youtube.com/vi/' + VIDEO_ID + '/hqdefault.jpg" alt="YouTube" style="width:100%;border-radius:10px;display:block;">' +
+        '<div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:64px;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,0.6);">▶</div></a></div>';
+    } else {
+      // enablejsapi=1: YT IFrame API 제어 활성화 (CC 등 플레이어 상태 유지)
+      // cc_load_policy=1: 자막 기본 활성화
+      area.innerHTML = '<iframe id="yt-player" src="https://www.youtube-nocookie.com/embed/' + VIDEO_ID + '?rel=0&modestbranding=1&enablejsapi=1&cc_load_policy=1&hl=ko" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;"></iframe>';
+      var ytScript = document.createElement('script');
+      ytScript.src = 'https://www.youtube.com/iframe_api';
+      document.head.appendChild(ytScript);
+    }
+
+    // YT IFrame API 준비 완료 콜백 (전역 함수여야 함)
+    window.onYouTubeIframeAPIReady = function() {
+      var iframe = document.getElementById('yt-player');
+      if (!iframe) return;
+      ytPlayer = new YT.Player('yt-player', {
+        events: {
+          'onReady': function() { ytPlayerReady = true; }
+        }
+      });
+    };
+
+    // src 재로드 없이 seek → CC/자막 상태 유지
+    function _ytSeek(seconds) {
+      if (!isLocal) {
+        if (ytPlayerReady && ytPlayer && ytPlayer.seekTo) {
+          ytPlayer.seekTo(seconds, true);
+          ytPlayer.playVideo();
+        } else {
+          // YT API 미준비 시 fallback (CC 초기화 가능성 있음)
+          var iframe = document.getElementById('yt-player');
+          if (iframe) iframe.src = 'https://www.youtube-nocookie.com/embed/' + VIDEO_ID + '?start=' + seconds + '&autoplay=1&rel=0&modestbranding=1&enablejsapi=1&cc_load_policy=1&hl=ko';
+        }
+      } else {
+        window.open('https://youtu.be/' + VIDEO_ID + '?t=' + seconds, '_blank');
+      }
+    }
+
+    function seekTo(seconds, cardId) {
+      // 영상이 접혀있으면 먼저 펼치기
+      var wrapper = document.getElementById('video-area');
+      var arrow = document.getElementById('video-arrow');
+      if (wrapper && wrapper.classList.contains('hidden')) {
+        wrapper.classList.remove('hidden');
+        if (arrow) arrow.classList.remove('collapsed');
+      }
+      _ytSeek(seconds);
+      if (cardId) {
+        // 사이드바 클릭: sticky 영상 높이 고려해 카드로 스크롤
+        var videoContainer = document.querySelector('.video-container');
+        var stickyHeight = videoContainer ? videoContainer.offsetHeight : 0;
+        var cardEl = document.getElementById(cardId);
+        if (cardEl) {
+          var cardTop = cardEl.getBoundingClientRect().top + window.pageYOffset;
+          window.scrollTo({ top: cardTop - stickyHeight - 12, behavior: 'smooth' });
+        }
+      } else {
+        // 카드 내 재생 버튼: 최상단으로 스크롤해 영상 노출
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
+    function toggleVideo() {
+      var wrapper = document.getElementById('video-area');
+      var arrow = document.getElementById('video-arrow');
+      wrapper.classList.toggle('hidden');
+      arrow.classList.toggle('collapsed');
+    }
+
+    // ── 퀴즈 로직 ──────────────────────────────────────────────
+    function toggleQuiz(header) {
+      var body = header.nextElementSibling;
+      var arrow = header.querySelector('.quiz-arrow');
+      var isOpen = body.style.display !== 'none';
+      body.style.display = isOpen ? 'none' : 'block';
+      arrow.classList.toggle('open', !isOpen);
+      if (!isOpen && body.innerHTML === '') {
+        var idx = header.parentElement.dataset.quizIdx;
+        var questions = QUIZ_DATA[idx];
+        if (questions) renderQuiz(body, questions, 0);
+      }
+    }
+    function renderQuiz(body, questions, qIdx) {
+      body.dataset.qIdx = qIdx;
+      if (qIdx >= questions.length) {
+        var score = parseInt(body.dataset.score || 0);
+        var block = body.closest('.quiz-block');
+        var quizIdx = block ? block.dataset.quizIdx : 0;
+        _onQuizComplete(body, score, questions.length, quizIdx);
+        var emoji = score === questions.length ? '🎉' : score >= questions.length/2 ? '👍' : '📚';
+        body.innerHTML = '<div class="quiz-result"><div class="score-badge">' + score + ' / ' + questions.length + '</div><br>' + emoji + ' ' + (score === questions.length ? '완벽해요!' : '수고하셨어요!') + '<br><button class="quiz-btn quiz-btn-retry" onclick="retryQuiz(this)" style="margin-top:12px;">다시 풀기</button></div>';
+        return;
+      }
+      var q = questions[qIdx];
+      var opts = q.options.map(function(o, i) {
+        return '<li onclick="checkAnswer(this,' + i + ')">' + o + '</li>';
+      }).join('');
+      body.innerHTML =
+        '<div class="quiz-question"><span class="q-num">Q' + (qIdx+1) + '.</span>' + q.q + '</div>' +
+        '<ul class="quiz-options">' + opts + '</ul>' +
+        '<div class="quiz-hint">' + (q.hint||'') + '</div>' +
+        '<div class="quiz-nav" style="display:none"><button class="quiz-btn quiz-btn-next" onclick="nextQuestion(this)">다음 문제 →</button></div>';
+    }
+    function _quizCtx(el) {
+      var body = el.closest('.quiz-body');
+      var block = body.closest('.quiz-block');
+      var questions = QUIZ_DATA[block.dataset.quizIdx];
+      var qIdx = parseInt(body.dataset.qIdx || 0);
+      return { body: body, questions: questions, qIdx: qIdx };
+    }
+    function checkAnswer(li, chosen) {
+      var ul = li.parentElement;
+      if (ul.querySelector('.correct, .wrong')) return;
+      var ctx = _quizCtx(li);
+      var q = ctx.questions[ctx.qIdx];
+      var score = parseInt(ctx.body.dataset.score || 0);
+      if (chosen === q.answer) {
+        li.classList.add('correct');
+        ctx.body.dataset.score = score + 1;
+      } else {
+        li.classList.add('wrong');
+        ul.children[q.answer].classList.add('correct');
+      }
+      var hintEl = ctx.body.querySelector('.quiz-hint');
+      if (hintEl && q.hint) hintEl.style.display = 'block';
+      var nav = ctx.body.querySelector('.quiz-nav');
+      if (nav) nav.style.display = 'flex';
+    }
+    function nextQuestion(btn) {
+      var ctx = _quizCtx(btn);
+      renderQuiz(ctx.body, ctx.questions, ctx.qIdx + 1);
+    }
+    function retryQuiz(btn) {
+      var ctx = _quizCtx(btn);
+      ctx.body.dataset.score = 0;
+      renderQuiz(ctx.body, ctx.questions, 0);
+    }
+
+    // ── 진도 추적 ───────────────────────────────────────────────
+    function _getUser() {
+      return {
+        name: localStorage.getItem('lupa_user') || '',
+        uid:  localStorage.getItem('lupa_uid')  || '',
+        dept: localStorage.getItem('lupa_dept') || ''
+      };
+    }
+
+    // ── 사용자 등록 모달 ──────────────────────────────────────
+    function _showUserBanner(user, dept) {
+      var existing = document.querySelector('.user-banner');
+      if (existing) existing.remove();
+      var sub = document.querySelector('.header-sub');
+      if (sub && user) {
+        var banner = document.createElement('div');
+        banner.className = 'user-banner';
+        banner.innerHTML = '?? ' + user + (dept ? ' (' + dept + ')' : '') +
+          ' <span onclick="changeUser()" style="cursor:pointer;font-size:11px;color:var(--gray-300);margin-left:8px;font-weight:400;">[변경]</span>';
+        sub.parentNode.insertBefore(banner, sub.nextSibling);
+      }
+    }
+    function registerUser() {
+      var name = document.getElementById('modal-name').value.trim();
+      if (!name) { document.getElementById('modal-name').focus(); return; }
+      var dept = document.getElementById('modal-dept').value.trim();
+      localStorage.setItem('lupa_user', name);
+      localStorage.setItem('lupa_uid',  name);
+      localStorage.setItem('lupa_dept', dept);
+      localStorage.setItem('lupa_modal_seen', '1');
+      document.getElementById('user-modal').style.display = 'none';
+      _showUserBanner(name, dept);
+      _loadProgress();
+    }
+    function skipUser() {
+      localStorage.setItem('lupa_modal_seen', '1');
+      document.getElementById('user-modal').style.display = 'none';
+    }
+    function changeUser() {
+      document.getElementById('modal-name').value = localStorage.getItem('lupa_user') || '';
+      document.getElementById('modal-dept').value = localStorage.getItem('lupa_dept') || '';
+      document.getElementById('user-modal').style.display = 'flex';
+    }
+
+    // URL 파라미터 → localStorage 저장 + 배너/진도바 표시 + 모달
+    (function() {
+      var params = new URLSearchParams(location.search);
+      var user = params.get('user') || localStorage.getItem('lupa_user');
+      var uid  = params.get('uid')  || localStorage.getItem('lupa_uid');
+      var dept = params.get('dept') || localStorage.getItem('lupa_dept') || '';
+      if (params.get('user')) {
+        localStorage.setItem('lupa_user', user);
+        localStorage.setItem('lupa_uid',  uid || user);
+        localStorage.setItem('lupa_dept', dept);
+        localStorage.setItem('lupa_modal_seen', '1');
+      }
+      if (user) {
+        _showUserBanner(user, dept);
+      } else if (!localStorage.getItem('lupa_modal_seen')) {
+        // 미등록 + 첫 방문 → 모달 표시
+        setTimeout(function() {
+          document.getElementById('user-modal').style.display = 'flex';
+        }, 600);
+      }
+      // 진도바 삽입
+      var progressWrap = document.createElement('div');
+      progressWrap.className = 'progress-bar-wrap';
+      progressWrap.innerHTML = '<div class="progress-bar"><div class="progress-bar-fill" id="prog-fill" style="width:0%"></div></div><div class="progress-label" id="prog-label">0 / ' + TOTAL_CHAPTERS + ' 챕터 완료</div>';
+      var header = document.querySelector('.header');
+      if (header) header.appendChild(progressWrap);
+    })();
+
+    function _updateProgressBar() {
+      var done = document.querySelectorAll('.chapter-check.done').length;
+      var pct = TOTAL_CHAPTERS > 0 ? Math.round(done / TOTAL_CHAPTERS * 100) : 0;
+      var fill = document.getElementById('prog-fill');
+      var label = document.getElementById('prog-label');
+      if (fill) fill.style.width = pct + '%';
+      if (label) label.textContent = done + ' / ' + TOTAL_CHAPTERS + ' 챕터 완료';
+      // 사이드바 항목 완료 표시
+      document.querySelectorAll('.chapter-check').forEach(function(el) {
+        var idx = parseInt(el.dataset.chapterIdx);
+        var sideItem = document.querySelector('.sidebar-item[data-chapter-idx="' + idx + '"]');
+        if (sideItem) sideItem.style.borderLeftColor = el.classList.contains('done') ? '#10b981' : '';
+      });
+    }
+
+    function onChapterCheck(checkbox, chapterIdx) {
+      var label = checkbox.closest('.chapter-check');
+      var card  = checkbox.closest('.card');
+      label.classList.toggle('done', checkbox.checked);
+      if (card) card.classList.toggle('chapter-done', checkbox.checked);
+      _updateProgressBar();
+      var update = checkbox.checked
+        ? { chapter_done: chapterIdx }
+        : { chapter_undone: chapterIdx };
+      _saveProgress(update);
+    }
+
+    async function _saveProgress(update) {
+      var u = _getUser();
+      if (!u.uid || !PROGRESS_CFG.token) return;
+      var path = 'data/progress/' + u.uid + '.json';
+      var apiBase = 'https://api.github.com/repos/' + PROGRESS_CFG.owner + '/' + PROGRESS_CFG.repo + '/contents/' + path;
+      var headers = { 'Authorization': 'token ' + PROGRESS_CFG.token, 'Content-Type': 'application/json' };
+
+      var sha = null;
+      var current = { uid: u.uid, name: u.name, dept: u.dept, lectures: {} };
+      try {
+        var res = await fetch(apiBase, { headers: headers });
+        if (res.ok) {
+          var data = await res.json();
+          sha = data.sha;
+          current = JSON.parse(atob(data.content.replace(/\n/g, '')));
+        }
+      } catch(e) {}
+
+      if (!current.lectures) current.lectures = {};
+      if (!current.lectures[PROGRESS_CFG.video_id])
+        current.lectures[PROGRESS_CFG.video_id] = { chapters_done: [], quiz_scores: {}, last_access: null };
+      var lec = current.lectures[PROGRESS_CFG.video_id];
+
+      if (update.chapter_done !== undefined && lec.chapters_done.indexOf(update.chapter_done) < 0)
+        lec.chapters_done.push(update.chapter_done);
+      if (update.chapter_undone !== undefined)
+        lec.chapters_done = lec.chapters_done.filter(function(x) { return x !== update.chapter_undone; });
+      if (update.quiz_score !== undefined)
+        lec.quiz_scores[String(update.quiz_idx)] = { score: update.quiz_score, total: update.quiz_total };
+
+      lec.last_access = new Date().toISOString();
+
+      var content = btoa(unescape(encodeURIComponent(JSON.stringify(current, null, 2))));
+      var body = { message: 'progress: ' + u.uid + ' @' + PROGRESS_CFG.video_id, content: content };
+      if (sha) body.sha = sha;
+      try {
+        await fetch(apiBase, { method: 'PUT', headers: headers, body: JSON.stringify(body) });
+      } catch(e) {}
+    }
+
+    // 퀴즈 완료 시 점수 저장 — renderQuiz 완료 화면에서 호출
+    function _onQuizComplete(body, score, total, quizIdx) {
+      _saveProgress({ quiz_score: score, quiz_total: total, quiz_idx: quizIdx });
+    }
+
+    // 저장된 진도 불러와 UI 복원
+    async function _loadProgress() {
+      var u = _getUser();
+      if (!u.uid || !PROGRESS_CFG.token) return;
+      var path = 'data/progress/' + u.uid + '.json';
+      var apiBase = 'https://api.github.com/repos/' + PROGRESS_CFG.owner + '/' + PROGRESS_CFG.repo + '/contents/' + path;
+      var headers = { 'Authorization': 'token ' + PROGRESS_CFG.token };
+      try {
+        var res = await fetch(apiBase, { headers: headers });
+        if (!res.ok) return;
+        var data = await res.json();
+        var saved = JSON.parse(atob(data.content.replace(/\n/g, '')));
+        var lec = (saved.lectures || {})[PROGRESS_CFG.video_id];
+        if (!lec) return;
+        (lec.chapters_done || []).forEach(function(idx) {
+          var label = document.querySelector('.chapter-check[data-chapter-idx="' + idx + '"]');
+          if (label) {
+            var cb = label.querySelector('input');
+            if (cb) cb.checked = true;
+            label.classList.add('done');
+            var card = label.closest('.card');
+            if (card) card.classList.add('chapter-done');
+          }
+        });
+        _updateProgressBar();
+      } catch(e) {}
+    }
+    _loadProgress();
+  </script>
+</body>
+</html>
