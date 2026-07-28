@@ -5,289 +5,632 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Embedded Professional LUPA</title>
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root {
-      --blue: #3182F6;
-      --blue-light: #EBF3FE;
-      --blue-dark: #1B64DA;
-      --green: #0ECF8A;
-      --green-bg: #E8FBF4;
-      --gray-900: #191F28;
-      --gray-700: #333D4B;
-      --gray-500: #6B7684;
-      --gray-300: #B0B8C1;
-      --gray-100: #F2F4F6;
-      --gray-50: #F9FAFB;
-      --white: #FFFFFF;
-      --radius: 16px;
-      --shadow: 0 2px 12px rgba(0,0,0,0.06);
-      --shadow-md: 0 4px 24px rgba(0,0,0,0.10);
-      --tag-2025: #EBF3FE;
-      --tag-2025-text: #1B64DA;
-      --tag-2026: #E8FBF4;
-      --tag-2026-text: #059669;
+*,
+*::before,
+*::after{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+:root{
+    --rose-1:#881337;
+    --rose-2:#e11d48;
+    --rose-3:#fb7185;
+
+    --text:#191919;
+    --text-light:#666;
+
+    --bg:#fdfbf7;
+
+    --glass:rgba(255,255,255,.65);
+
+    --border:rgba(136,19,55,.08);
+}
+
+body{
+    font-family:-apple-system,BlinkMacSystemFont,"Pretendard","Segoe UI",sans-serif;
+
+    background:#fdfbf7;
+
+    color:var(--text);
+
+    min-height:100vh;
+
+    overflow-x:hidden;
+
+    position:relative;
+}
+
+/* 배경 효과 */
+
+body::before{
+    content:"";
+
+    position:fixed;
+
+    inset:0;
+
+    background:
+      radial-gradient(circle at 15% 15%, rgba(225,29,72,.18), transparent 35%),
+      radial-gradient(circle at 85% 30%, rgba(251,113,133,.18), transparent 35%),
+      radial-gradient(circle at 50% 85%, rgba(136,19,55,.12), transparent 35%);
+
+    z-index:-2;
+}
+
+body::after{
+    content:"";
+
+    position:fixed;
+
+    inset:0;
+
+    backdrop-filter:blur(70px);
+
+    z-index:-1;
+}
+
+/* HERO */
+
+header{
+    background:transparent;
+
+    border:none;
+
+    max-width:1400px;
+
+    margin:auto;
+
+    padding:90px 40px;
+}
+
+.logo-badge{
+    display:inline-block;
+
+    padding:8px 18px;
+
+    border-radius:999px;
+
+    background:rgba(225,29,72,.10);
+
+    color:#9f1239;
+
+    font-size:12px;
+
+    font-weight:700;
+
+    letter-spacing:.2em;
+
+    text-transform:uppercase;
+}
+
+header h1{
+    margin-top:22px;
+
+    font-size:clamp(4rem,10vw,8rem);
+
+    font-weight:900;
+
+    line-height:.9;
+
+    letter-spacing:-5px;
+
+    background:
+      linear-gradient(
+        120deg,
+        #881337 0%,
+        #e11d48 35%,
+        #9f1239 65%,
+        #fb7185 100%
+      );
+
+    -webkit-background-clip:text;
+
+    color:transparent;
+}
+
+header p{
+    margin-top:20px;
+
+    font-size:20px;
+
+    color:#666;
+}
+
+/* MAIN */
+
+main{
+    max-width:1400px;
+
+    margin:auto;
+
+    padding:0 30px 80px;
+
+    display:grid;
+
+    grid-template-columns:
+      repeat(auto-fit,minmax(500px,1fr));
+
+    gap:30px;
+}
+
+@media(max-width:768px){
+
+    header{
+        padding:60px 24px;
     }
 
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Pretendard", "Segoe UI", sans-serif;
-      background: var(--gray-50);
-      color: var(--gray-900);
-      min-height: 100vh;
+    main{
+        grid-template-columns:1fr;
+        padding:0 20px 60px;
     }
+}
 
-    /* ── 헤더 ── */
-    header {
-      background: var(--white);
-      border-bottom: 1px solid var(--gray-100);
-      padding: 28px 40px 24px;
-    }
-    header .logo-badge {
-      display: inline-block;
-      background: var(--blue);
-      color: #fff;
-      font-size: 11px;
-      font-weight: 700;
-      padding: 3px 10px;
-      border-radius: 6px;
-      letter-spacing: 0.5px;
-      margin-bottom: 10px;
-    }
-    header h1 {
-      font-size: 24px;
-      font-weight: 800;
-      color: var(--gray-900);
-      letter-spacing: -0.5px;
-    }
-    header p {
-      margin-top: 5px;
-      font-size: 14px;
-      color: var(--gray-500);
-    }
+/* COURSE */
 
-    /* ── 레이아웃 ── */
-    main {
-      max-width: 1040px;
-      margin: 36px auto;
-      padding: 0 24px;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 24px;
-    }
-    @media (max-width: 700px) {
-      main { grid-template-columns: 1fr; }
-      header { padding: 20px 20px 18px; }
-    }
+.course-section{
 
-    /* ── 과정 섹션 ── */
-    .course-section {
-      background: var(--white);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      overflow: hidden;
-    }
+    background:rgba(255,255,255,.65);
 
-    .course-header {
-      padding: 20px 22px 16px;
-      border-bottom: 1px solid var(--gray-100);
-    }
-    .year-badge {
-      display: inline-block;
-      padding: 3px 10px;
-      border-radius: 20px;
-      font-size: 11px;
-      font-weight: 700;
-      margin-bottom: 8px;
-      letter-spacing: 0.3px;
-    }
-    .badge-2025 { background: var(--tag-2025); color: var(--tag-2025-text); }
-    .badge-2026 { background: var(--tag-2026); color: var(--tag-2026-text); }
+    backdrop-filter:blur(20px);
 
-    .course-header h2 {
-      font-size: 16px;
-      font-weight: 700;
-      color: var(--gray-900);
-      line-height: 1.4;
-    }
-    .course-header .subtitle {
-      margin-top: 3px;
-      font-size: 12px;
-      color: var(--gray-500);
-    }
+    border-radius:30px;
 
-    /* ── 강의 카드 ── */
-    .lecture-list { padding: 8px 0; }
+    border:1px solid var(--border);
 
-    .lecture-card {
-      display: flex;
-      align-items: center;
-      padding: 13px 22px;
-      border-bottom: 1px solid var(--gray-100);
-      cursor: pointer;
-      transition: background 0.15s;
-      user-select: none;
-    }
-    .lecture-card:last-child { border-bottom: none; }
-    .lecture-card.done:hover { background: var(--blue-light); }
-    .lecture-card.pending { cursor: not-allowed; opacity: 0.5; }
+    overflow:hidden;
 
-    .lecture-num {
-      min-width: 30px;
-      height: 30px;
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 12px;
-      font-weight: 800;
-      flex-shrink: 0;
-      margin-right: 13px;
-    }
-    .done .lecture-num { background: var(--blue-light); color: var(--blue); }
-    .pending .lecture-num { background: var(--gray-100); color: var(--gray-300); }
+    box-shadow:
+      0 20px 60px rgba(225,29,72,.10);
 
-    .lecture-info { flex: 1; }
-    .lecture-info .topic {
-      font-size: 14px;
-      font-weight: 700;
-      color: var(--gray-900);
-    }
-    .done:hover .lecture-info .topic { color: var(--blue); }
-    .lecture-info .instructor {
-      margin-top: 1px;
-      font-size: 12px;
-      color: var(--gray-500);
-      font-weight: 500;
-    }
-    .lecture-info .desc {
-      margin-top: 3px;
-      font-size: 11px;
-      color: var(--gray-300);
-      line-height: 1.5;
-    }
-    .done:hover .lecture-info .desc { color: #7aafdf; }
+    transition:.3s;
+}
 
-    .status-chip {
-      font-size: 11px;
-      padding: 3px 9px;
-      border-radius: 20px;
-      font-weight: 700;
-      flex-shrink: 0;
-    }
-    .done .status-chip { background: var(--blue-light); color: var(--blue); }
-    .pending .status-chip { background: var(--gray-100); color: var(--gray-300); }
+.course-section:hover{
 
-    .arrow {
-      margin-left: 8px;
-      font-size: 16px;
-      color: var(--gray-300);
-      flex-shrink: 0;
-    }
-    .done:hover .arrow { color: var(--blue); }
-    .pending .arrow { display: none; }
+    transform:translateY(-4px);
 
-    /* ── 비밀번호 모달 ── */
-    #pw-overlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(25,31,40,0.5);
-      z-index: 100;
-      align-items: center;
-      justify-content: center;
-    }
-    #pw-overlay.active { display: flex; }
-    #pw-box {
-      background: var(--white);
-      border-radius: var(--radius);
-      padding: 32px 32px 28px;
-      width: 320px;
-      box-shadow: var(--shadow-md);
-      text-align: center;
-    }
-    #pw-box h3 { font-size: 15px; font-weight: 700; margin-bottom: 5px; color: var(--gray-900); }
-    #pw-box p { font-size: 12px; color: var(--gray-500); margin-bottom: 18px; }
-    #pw-input {
-      width: 100%;
-      padding: 10px 14px;
-      border: 1.5px solid var(--gray-100);
-      border-radius: 10px;
-      font-size: 15px;
-      outline: none;
-      letter-spacing: 3px;
-      text-align: center;
-      color: var(--gray-900);
-      background: var(--gray-50);
-    }
-    #pw-input:focus { border-color: var(--blue); background: var(--white); }
-    #pw-error { color: #F04452; font-size: 12px; margin-top: 7px; min-height: 16px; font-weight: 500; }
-    #pw-btns { display: flex; gap: 8px; margin-top: 16px; }
-    #pw-btns button {
-      flex: 1; padding: 10px; border: none;
-      border-radius: 10px; font-size: 14px; cursor: pointer; font-weight: 700;
-      transition: background 0.15s;
-    }
-    #pw-confirm { background: var(--blue); color: white; }
-    #pw-confirm:hover { background: var(--blue-dark); }
-    #pw-cancel { background: var(--gray-100); color: var(--gray-700); }
-    #pw-cancel:hover { background: var(--gray-300); color: white; }
+    box-shadow:
+      0 35px 80px rgba(225,29,72,.15);
+}
 
-    footer {
-      text-align: center;
-      padding: 28px;
-      color: var(--gray-300);
-      font-size: 12px;
-    }
-  </style>
+.course-header{
+
+    padding:26px;
+
+    border-bottom:1px solid rgba(0,0,0,.05);
+}
+
+.course-header h2{
+
+    margin-top:10px;
+
+    font-size:22px;
+
+    font-weight:800;
+}
+
+.subtitle{
+
+    margin-top:8px;
+
+    color:#777;
+
+    font-size:13px;
+}
+
+/* YEAR */
+
+.year-badge{
+
+    display:inline-block;
+
+    padding:7px 14px;
+
+    border-radius:999px;
+
+    font-size:11px;
+
+    font-weight:700;
+}
+
+.badge-2025{
+
+    background:rgba(225,29,72,.10);
+
+    color:#9f1239;
+}
+
+.badge-2026{
+
+    background:rgba(59,130,246,.10);
+
+    color:#2563eb;
+}
+
+/* LECTURE */
+/* ===========================
+   LECTURE LIST
+=========================== */
+
+.lecture-list{
+
+    display:grid;
+
+    grid-template-columns:
+      repeat(auto-fit,minmax(260px,1fr));
+
+    gap:18px;
+
+    padding:20px;
+}
+
+/* ===========================
+   LECTURE CARD
+=========================== */
+
+.lecture-card{
+
+    position:relative;
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:flex-start;
+
+    min-height:240px;
+
+    padding:28px;
+
+    background:white;
+
+    border:1px solid rgba(0,0,0,.05);
+
+    border-radius:24px;
+
+    transition:.25s ease;
+
+    cursor:pointer;
+
+    overflow:hidden;
+
+    box-shadow:
+      0 8px 24px rgba(0,0,0,.04);
+}
+
+.lecture-card.done:hover{
+
+    transform:
+      translateY(-8px);
+
+    border-color:
+      rgba(225,29,72,.15);
+
+    box-shadow:
+      0 25px 60px rgba(225,29,72,.14);
+}
+
+
+.lecture-card:last-child{
+    border:none;
+}
+
+.lecture-card.done:hover{
+
+    transform:
+      translateY(-3px);
+
+    box-shadow:
+      0 20px 40px rgba(225,29,72,.12);
+
+    background:#fff;
+}
+
+.lecture-card.pending{
+
+    opacity:.55;
+
+    cursor:not-allowed;
+}
+
+/* ===========================
+   NUMBER
+=========================== */
+
+.lecture-num{
+
+    width:64px;
+
+    height:64px;
+
+    border-radius:20px;
+
+    margin-bottom:24px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    background:
+      linear-gradient(
+        135deg,
+        #881337,
+        #e11d48
+      );
+
+    color:white;
+
+    font-size:22px;
+
+    font-weight:800;
+}
+
+
+.done .lecture-num{
+
+    background:
+      linear-gradient(
+         135deg,
+         #e11d48,
+         #fb7185
+      );
+
+    color:white;
+
+    box-shadow:
+      0 10px 20px rgba(225,29,72,.25);
+}
+
+.pending .lecture-num{
+
+    background:#eee;
+
+    color:#999;
+}
+
+/* ===========================
+   TEXT
+=========================== */
+
+.lecture-info{
+    flex:1;
+}
+
+.topic{
+
+    font-size:22px;
+
+    font-weight:800;
+
+    line-height:1.2;
+
+    margin-bottom:10px;
+}
+
+.instructor{
+
+    margin-top:auto;
+
+    padding-top:24px;
+
+    font-size:13px;
+
+    color:#666;
+
+    font-weight:600;
+}
+
+.desc{
+
+    font-size:13px;
+
+    color:#7b7b7b;
+
+    line-height:1.7;
+
+    margin-top:2px;
+}
+
+/* ===========================
+   STATUS
+=========================== */
+
+.status-chip{
+
+    border-radius:999px;
+
+    padding:7px 12px;
+
+    font-size:11px;
+
+    font-weight:700;
+
+    white-space:nowrap;
+}
+
+.done .status-chip{
+
+    background:#fdf2f8;
+
+    color:#be123c;
+}
+
+.pending .status-chip{
+
+    background:#f5f5f5;
+
+    color:#888;
+}
+
+/* ===========================
+   ARROW
+=========================== */
+
+.arrow{
+
+    font-size:20px;
+
+    color:#e11d48;
+
+    margin-left:2px;
+
+    transition:.25s;
+}
+
+.done:hover .arrow{
+
+    transform:translateX(3px);
+}
+
+
+/* MODAL */
+
+#pw-overlay{
+    display:none;
+
+    position:fixed;
+
+    inset:0;
+
+    background:rgba(0,0,0,.45);
+
+    z-index:1000;
+
+    align-items:center;
+
+    justify-content:center;
+}
+
+#pw-overlay.active{
+    display:flex;
+}
+
+#pw-box{
+
+    width:340px;
+
+    background:rgba(255,255,255,.88);
+
+    backdrop-filter:blur(20px);
+
+    border-radius:28px;
+
+    padding:30px;
+
+    border:1px solid rgba(225,29,72,.08);
+
+    box-shadow:
+      0 30px 80px rgba(225,29,72,.18);
+
+    text-align:center;
+}
+
+#pw-box h3{
+    margin-bottom:8px;
+}
+
+#pw-box p{
+
+    color:#666;
+
+    font-size:13px;
+
+    margin-bottom:18px;
+}
+
+#pw-input{
+
+    width:100%;
+
+    padding:12px;
+
+    border-radius:12px;
+
+    border:1px solid #ddd;
+
+    text-align:center;
+
+    outline:none;
+}
+
+#pw-input:focus{
+
+    border-color:#e11d48;
+}
+
+#pw-error{
+
+    min-height:18px;
+
+    margin-top:8px;
+
+    color:#ef4444;
+
+    font-size:12px;
+}
+
+#pw-btns{
+
+    display:flex;
+
+    gap:10px;
+
+    margin-top:16px;
+}
+
+#pw-btns button{
+
+    flex:1;
+
+    border:none;
+
+    border-radius:12px;
+
+    padding:11px;
+
+    cursor:pointer;
+
+    font-weight:700;
+}
+
+#pw-confirm{
+
+    color:white;
+
+    background:
+      linear-gradient(
+        120deg,
+        #881337,
+        #e11d48
+      );
+}
+
+#pw-cancel{
+
+    background:#eee;
+}
+
+/* FOOTER */
+
+footer{
+
+    text-align:center;
+
+    padding:50px 20px;
+
+    color:#777;
+
+    font-size:13px;
+}
+</style>
 </head>
 <body>
 
-<!-- 비밀번호 모달 -->
-<div id="pw-overlay">
-  <div id="pw-box">
-    <h3>🔒 강의 접근 확인</h3>
-    <p>강의 요약 페이지는 내부 접근용입니다.</p>
-    <input type="password" id="pw-input" placeholder="비밀번호 입력" maxlength="20" />
-    <div id="pw-error"></div>
-    <div id="pw-btns">
-      <button id="pw-cancel" onclick="closePw()">취소</button>
-      <button id="pw-confirm" onclick="checkPw()">확인</button>
-    </div>
-  </div>
-</div>
 
-<script>
-  var _target = null;
-  var PW = '2026lupa';
-
-  function openLink(url) {
-    _target = url;
-    document.getElementById('pw-input').value = '';
-    document.getElementById('pw-error').textContent = '';
-    document.getElementById('pw-overlay').classList.add('active');
-    setTimeout(function(){ document.getElementById('pw-input').focus(); }, 100);
-  }
-  function closePw() {
-    _target = null;
-    document.getElementById('pw-overlay').classList.remove('active');
-  }
-  function checkPw() {
-    var val = document.getElementById('pw-input').value;
-    if (val === PW) {
-      document.getElementById('pw-overlay').classList.remove('active');
-      window.open(_target, '_blank');
-    } else {
-      document.getElementById('pw-error').textContent = '비밀번호가 올바르지 않습니다.';
-      document.getElementById('pw-input').focus();
-    }
-  }
-  document.getElementById('pw-input').addEventListener('keydown', function(e){
-    if (e.key === 'Enter') checkPw();
-    if (e.key === 'Escape') closePw();
-  });
-  document.getElementById('pw-overlay').addEventListener('click', function(e){
-    if (e.target === this) closePw();
-  });
-</script>
 
 <header>
   <div class="logo-badge">LG LUPA · Embedded Professional</div>
@@ -301,44 +644,41 @@
   <section class="course-section">
     <div class="course-header">
       <div class="year-badge badge-2025">2025년 12월</div>
-      <h2>LG LUPA 2025 Embedded Professional</h2>
+      <h2>LG LUPA LCD 2025 </h2>
       <div class="subtitle">LUPA Studio · Platform · GUI Creator (LCD Display) · GDB Debugging</div>
     </div>
     <div class="lecture-list">
 
-      <div class="lecture-card done"
-           onclick="openLink('https://sophiahjlee.github.io/embeddedpro/lupa/2025_lecture/summary.html')">
+        <div class="lecture-card done"
+            onclick="window.open('https://sophiahjlee.github.io/embeddedpro/lupa/2025_lecture/summary.html','_blank')">
         <div class="lecture-num">1</div>
         <div class="lecture-info">
           <div class="topic">LUPA Studio</div>
           <div class="instructor">김윤관 책임</div>
           <div class="desc">LUPA 앱 개발환경 구성 · 프로젝트 생성 · 빌드 및 배포</div>
         </div>
-        <span class="status-chip">완료</span>
         <span class="arrow">›</span>
       </div>
 
       <div class="lecture-card done"
-           onclick="openLink('https://sophiahjlee.github.io/embeddedpro/lupa/2025_lecture/summary_2.html')">
+           onclick="window.open('https://sophiahjlee.github.io/embeddedpro/lupa/2025_lecture/summary_2.html')">
         <div class="lecture-num">2</div>
         <div class="lecture-info">
           <div class="topic">LUPA Platform · LCD</div>
           <div class="instructor">이상민 책임</div>
           <div class="desc">LUPA 플랫폼 구조 · LCD 디스플레이 제어 · API 활용</div>
         </div>
-        <span class="status-chip">완료</span>
         <span class="arrow">›</span>
       </div>
 
       <div class="lecture-card done"
-           onclick="openLink('https://sophiahjlee.github.io/embeddedpro/lupa/2025_lecture/summary_3.html')">
+           onclick="window.open('https://sophiahjlee.github.io/embeddedpro/lupa/2025_lecture/summary_3.html','_blank')">
         <div class="lecture-num">3</div>
         <div class="lecture-info">
           <div class="topic">GUI Creator</div>
           <div class="instructor">하래주 책임</div>
           <div class="desc">LUPA GUI 디자인 도구 · 화면 레이아웃 구성 · 위젯 설정</div>
         </div>
-        <span class="status-chip">완료</span>
         <span class="arrow">›</span>
       </div>
 
@@ -359,44 +699,41 @@
   <section class="course-section">
     <div class="course-header">
       <div class="year-badge badge-2026">2026년 4월</div>
-      <h2>LG LUPA 2026 Embedded Professional</h2>
+      <h2>LG  LUPA LED 2026 </h2>
       <div class="subtitle">LUPA Studio · Platform · LED Control · GDB Debugging</div>
     </div>
     <div class="lecture-list">
 
       <div class="lecture-card done"
-           onclick="openLink('https://sophiahjlee.github.io/embeddedpro/lupa/2026_lecture/embeddedpro202601_01_lupastudio.html')">
+           onclick="window.open('https://sophiahjlee.github.io/embeddedpro/lupa/2026_lecture/embeddedpro202601_01_lupastudio.html','_blank')">
         <div class="lecture-num">1</div>
         <div class="lecture-info">
           <div class="topic">LUPA Studio</div>
           <div class="instructor">김윤관 책임</div>
           <div class="desc">LUPA 앱 개발환경 구성 · 프로젝트 생성 · 빌드 및 배포</div>
         </div>
-        <span class="status-chip">완료</span>
         <span class="arrow">›</span>
       </div>
 
       <div class="lecture-card done"
-           onclick="openLink('https://sophiahjlee.github.io/embeddedpro/lupa/2026_lecture/embeddedpro202601_02_lupaplatform.html')">
+           onclick="window.open('https://sophiahjlee.github.io/embeddedpro/lupa/2026_lecture/embeddedpro202601_02_lupaplatform.html','_blank')">
         <div class="lecture-num">2</div>
         <div class="lecture-info">
           <div class="topic">LUPA Platform의 이해</div>
           <div class="instructor">이상민 책임</div>
           <div class="desc">LUPA 플랫폼 구조 · 시스템 아키텍처 · IPC통신 · API 활용</div>
         </div>
-        <span class="status-chip">완료</span>
         <span class="arrow">›</span>
       </div>
 
       <div class="lecture-card done"
-           onclick="openLink('https://sophiahjlee.github.io/embeddedpro/lupa/2026_lecture/embeddedpro202601_03_ledcontrol_v2.html')">
+           onclick="window.open('https://sophiahjlee.github.io/embeddedpro/lupa/2026_lecture/embeddedpro202601_03_ledcontrol_v2.html','_blank')">
         <div class="lecture-num">3</div>
         <div class="lecture-info">
           <div class="topic">LED Control</div>
           <div class="instructor">신동순 책임</div>
           <div class="desc">GPIO 제어 · LED 드라이버 연동 · LUPA API로 하드웨어 제어</div>
         </div>
-        <span class="status-chip">완료</span>
         <span class="arrow">›</span>
       </div>
 
