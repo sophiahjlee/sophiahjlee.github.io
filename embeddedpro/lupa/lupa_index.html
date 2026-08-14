@@ -166,13 +166,15 @@
        챕터별로 나눠 보고, 원문 타임스탬프로 필요한 구간만 되짚을 수 있습니다.</p>
     <div class="stats mono">6개 강의 · 73개 챕터 · 총 19시간 34분</div>
 
-    <div class="mine" id="mine">
+    <!-- 진도가 없으면 아래 첫 카드와 같은 말이 되므로 숨긴다. 진도가 생기면 나타나서
+         '중단 지점으로 점프' 역할을 한다 — 그게 이 카드의 유일한 존재 이유다. -->
+    <div class="mine" id="mine" hidden>
       <div class="ring" id="m-ring" style="--p:0%"><span id="m-n">0</span></div>
       <div>
-        <b id="m-title">아직 시작하지 않았습니다</b>
-        <em id="m-sub">첫 강의부터 순서대로 보시는 걸 권합니다</em>
+        <b id="m-title"></b>
+        <em id="m-sub"></em>
       </div>
-      <a class="btn" id="m-go" href="#">학습 시작</a>
+      <a class="btn" id="m-go" href="#">이어서 학습</a>
     </div>
   </div>
 </section>
@@ -346,24 +348,27 @@
       }
     }
 
-    /* 히어로 요약 */
+    /* 히어로 요약 — 진도가 하나라도 있을 때만 보여준다 */
     var totalLec = cards.length;
+    if (doneLec === 0 && !lastGoing) return;
+
     var pct = totalLec ? Math.round(doneLec / totalLec * 100) : 0;
+    document.getElementById('mine').hidden = false;
     document.getElementById('m-ring').style.setProperty('--p', pct + '%');
     document.getElementById('m-n').textContent = doneLec;
     var target = lastGoing || firstOpen || cards[0];
-    if (doneLec === totalLec && totalLec) {
-      document.getElementById('m-title').textContent = '모든 강의를 완료했습니다';
+    if (doneLec === totalLec) {
+      document.getElementById('m-title').textContent =
+        (name ? name + '님, ' : '') + '모든 강의를 완료했습니다';
       document.getElementById('m-sub').textContent = totalLec + '개 강의 · 수고하셨습니다';
       document.getElementById('m-go').textContent = '처음부터 다시';
-    } else if (doneLec > 0 || lastGoing) {
+    } else {
       document.getElementById('m-title').textContent =
         (name ? name + '님, ' : '') + '이어서 학습하세요';
       document.getElementById('m-sub').textContent =
         totalLec + '개 강의 중 ' + doneLec + '개 완료 · ' + pct + '%';
-      document.getElementById('m-go').textContent = '이어서 학습';
     }
-    if (target) document.getElementById('m-go').setAttribute('href', target.getAttribute('href'));
+    document.getElementById('m-go').setAttribute('href', target.getAttribute('href'));
   })();
 
 </script>
