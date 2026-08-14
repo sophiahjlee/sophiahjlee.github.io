@@ -1,758 +1,371 @@
 <!DOCTYPE html>
 <html lang="ko">
+<!-- 히어로 제목은 단색으로 확정. 그라디언트 텍스트·글로우는 이 사이트 전역에서 쓰지 않는다. -->
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Embedded Professional LUPA</title>
-  <style>
-*,
-*::before,
-*::after{
-    box-sizing:border-box;
-    margin:0;
-    padding:0;
-}
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light">
+<title>Embedded SW Professional — 강의 목록</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    /* 학습 페이지와 같은 토큰을 쓴다 — 두 화면이 한 제품으로 읽히게 */
+    --bg: #FFFFFF; --surface: #FFFFFF; --surface-2: #F4F6F8;
+    --line: #E6E9ED; --line-2: #D3D8DF;
+    --ink: #14171C; --ink-2: #545B67; --ink-3: #878E9A;
+    --brand: #D81B50; --brand-ink: #A81340; --brand-wash: #FDF1F5;
+    --ok: #0A7A55; --ok-wash: #E9F5F0;
+    --shell: #15181F;
+    --r: 12px; --r-sm: 8px; --r-xs: 6px;
+    --sys: -apple-system, BlinkMacSystemFont, "Segoe UI", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+    --font: "IBM Plex Sans KR", var(--sys);
+    --mono: "JetBrains Mono", "SF Mono", ui-monospace, monospace;
+  }
+  body {
+    font-family: var(--font); background: var(--bg); color: var(--ink); line-height: 1.6;
+    -webkit-font-smoothing: antialiased; word-break: keep-all; overflow-wrap: break-word;
+  }
+  :focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; border-radius: 4px; }
+  .wrap { max-width: 920px; margin: 0 auto; padding: 0 28px; }
+  .mono { font-family: var(--mono); font-variant-numeric: tabular-nums; }
 
-:root{
-    --rose-1:#881337;
-    --rose-2:#e11d48;
-    --rose-3:#fb7185;
+  /* ── 상단 바 — 로고만. 항목이 한둘뿐인 메뉴는 두지 않는다 ── */
+  .top {
+    position: sticky; top: 0; z-index: 20; background: rgba(255,255,255,0.92);
+    backdrop-filter: blur(8px); border-bottom: 1px solid var(--line);
+  }
+  .top .wrap { display: flex; align-items: center; gap: 11px; height: 60px; }
+  .mark {
+    width: 30px; height: 30px; flex: 0 0 30px; border-radius: 9px; background: var(--brand);
+    color: #fff; display: grid; place-items: center; font-size: 10px; font-weight: 700; letter-spacing: 0.01em;
+  }
+  .wordmark { font-size: 14.5px; font-weight: 700; letter-spacing: -0.01em; }
+  .top .spacer { flex: 1; }
+  .who { font-size: 12.5px; color: var(--ink-3); }
+  .who b { color: var(--ink-2); font-weight: 600; }
 
-    --text:#191919;
-    --text-light:#666;
-
-    --bg:#fdfbf7;
-
-    --glass:rgba(255,255,255,.65);
-
-    --border:rgba(136,19,55,.08);
-}
-
-body{
-    font-family:-apple-system,BlinkMacSystemFont,"Pretendard","Segoe UI",sans-serif;
-
-    background:#fdfbf7;
-
-    color:var(--text);
-
-    min-height:100vh;
-
-    overflow-x:hidden;
-
-    position:relative;
-}
-
-/* 배경 효과 */
-
-body::before{
-    content:"";
-
-    position:fixed;
-
-    inset:0;
-
+  /* ── 히어로 — 배경만 은은하게 ── */
+  .hero { position: relative; overflow: hidden; border-bottom: 1px solid var(--line); }
+  .hero::before {
+    content: ''; position: absolute; inset: 0; z-index: 0; pointer-events: none;
     background:
-      radial-gradient(circle at 15% 15%, rgba(225,29,72,.18), transparent 35%),
-      radial-gradient(circle at 85% 30%, rgba(251,113,133,.18), transparent 35%),
-      radial-gradient(circle at 50% 85%, rgba(136,19,55,.12), transparent 35%);
-
-    z-index:-2;
-}
-
-body::after{
-    content:"";
-
-    position:fixed;
-
-    inset:0;
-
-    backdrop-filter:blur(70px);
-
-    z-index:-1;
-}
-
-/* HERO */
-
-header{
-    background:transparent;
-
-    border:none;
-
-    max-width:1400px;
-
-    margin:auto;
-
-    padding:90px 40px;
-}
-
-.logo-badge{
-    display:inline-block;
-
-    padding:8px 18px;
-
-    border-radius:999px;
-
-    background:rgba(225,29,72,.10);
-
-    color:#9f1239;
-
-    font-size:12px;
-
-    font-weight:700;
-
-    letter-spacing:.2em;
-
-    text-transform:uppercase;
-}
-
-header h1{
-    margin-top:22px;
-
-    font-size:clamp(4rem,10vw,8rem);
-
-    font-weight:900;
-
-    line-height:.9;
-
-    letter-spacing:-5px;
-
-    background:
-      linear-gradient(
-        120deg,
-        #881337 0%,
-        #e11d48 35%,
-        #9f1239 65%,
-        #fb7185 100%
-      );
-
-    -webkit-background-clip:text;
-
-    color:transparent;
-}
-
-header p{
-    margin-top:20px;
-
-    font-size:20px;
-
-    color:#666;
-}
-
-/* MAIN */
-
-main{
-    max-width:1400px;
-
-    margin:auto;
-
-    padding:0 30px 80px;
-
-    display:grid;
-
-    grid-template-columns:
-      repeat(auto-fit,minmax(500px,1fr));
-
-    gap:30px;
-}
-
-@media(max-width:768px){
-
-    header{
-        padding:60px 24px;
-    }
-
-    main{
-        grid-template-columns:1fr;
-        padding:0 20px 60px;
-    }
-}
-
-/* COURSE */
-
-.course-section{
-
-    background:rgba(255,255,255,.65);
-
-    backdrop-filter:blur(20px);
-
-    border-radius:30px;
-
-    border:1px solid var(--border);
-
-    overflow:hidden;
-
-    box-shadow:
-      0 20px 60px rgba(225,29,72,.10);
-
-    transition:.3s;
-}
-
-.course-section:hover{
-
-    transform:translateY(-4px);
-
-    box-shadow:
-      0 35px 80px rgba(225,29,72,.15);
-}
-
-.course-header{
-
-    padding:26px;
-
-    border-bottom:1px solid rgba(0,0,0,.05);
-}
-
-.course-header h2{
-
-    margin-top:10px;
-
-    font-size:22px;
-
-    font-weight:800;
-}
-
-.subtitle{
-
-    margin-top:8px;
-
-    color:#777;
-
-    font-size:13px;
-}
-
-/* YEAR */
-
-.year-badge{
-
-    display:inline-block;
-
-    padding:7px 14px;
-
-    border-radius:999px;
-
-    font-size:11px;
-
-    font-weight:700;
-}
-
-.badge-2025{
-
-    background:rgba(225,29,72,.10);
-
-    color:#9f1239;
-}
-
-.badge-2026{
-
-    background:rgba(59,130,246,.10);
-
-    color:#2563eb;
-}
-
-/* LECTURE */
-/* ===========================
-   LECTURE LIST
-=========================== */
-
-.lecture-list{
-
-    display:grid;
-
-    grid-template-columns:
-      repeat(auto-fit,minmax(260px,1fr));
-
-    gap:18px;
-
-    padding:20px;
-}
-
-/* ===========================
-   LECTURE CARD
-=========================== */
-
-.lecture-card{
-
-    position:relative;
-
-    display:flex;
-
-    flex-direction:column;
-
-    align-items:flex-start;
-
-    min-height:240px;
-
-    padding:28px;
-
-    background:white;
-
-    border:1px solid rgba(0,0,0,.05);
-
-    border-radius:24px;
-
-    transition:.25s ease;
-
-    cursor:pointer;
-
-    overflow:hidden;
-
-    box-shadow:
-      0 8px 24px rgba(0,0,0,.04);
-}
-
-.lecture-card.done:hover{
-
-    transform:
-      translateY(-8px);
-
-    border-color:
-      rgba(225,29,72,.15);
-
-    box-shadow:
-      0 25px 60px rgba(225,29,72,.14);
-}
-
-
-.lecture-card:last-child{
-    border:none;
-}
-
-.lecture-card.done:hover{
-
-    transform:
-      translateY(-3px);
-
-    box-shadow:
-      0 20px 40px rgba(225,29,72,.12);
-
-    background:#fff;
-}
-
-.lecture-card.pending{
-
-    opacity:.55;
-
-    cursor:not-allowed;
-}
-
-/* ===========================
-   NUMBER
-=========================== */
-
-.lecture-num{
-
-    width:64px;
-
-    height:64px;
-
-    border-radius:20px;
-
-    margin-bottom:24px;
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    background:
-      linear-gradient(
-        135deg,
-        #881337,
-        #e11d48
-      );
-
-    color:white;
-
-    font-size:22px;
-
-    font-weight:800;
-}
-
-
-.done .lecture-num{
-
-    background:
-      linear-gradient(
-         135deg,
-         #e11d48,
-         #fb7185
-      );
-
-    color:white;
-
-    box-shadow:
-      0 10px 20px rgba(225,29,72,.25);
-}
-
-.pending .lecture-num{
-
-    background:#eee;
-
-    color:#999;
-}
-
-/* ===========================
-   TEXT
-=========================== */
-
-.lecture-info{
-    flex:1;
-}
-
-.topic{
-
-    font-size:22px;
-
-    font-weight:800;
-
-    line-height:1.2;
-
-    margin-bottom:10px;
-}
-
-.instructor{
-
-    margin-top:auto;
-
-    padding-top:24px;
-
-    font-size:13px;
-
-    color:#666;
-
-    font-weight:600;
-}
-
-.desc{
-
-    font-size:13px;
-
-    color:#7b7b7b;
-
-    line-height:1.7;
-
-    margin-top:2px;
-}
-
-/* ===========================
-   STATUS
-=========================== */
-
-.status-chip{
-
-    border-radius:999px;
-
-    padding:7px 12px;
-
-    font-size:11px;
-
-    font-weight:700;
-
-    white-space:nowrap;
-}
-
-.done .status-chip{
-
-    background:#fdf2f8;
-
-    color:#be123c;
-}
-
-.pending .status-chip{
-
-    background:#f5f5f5;
-
-    color:#888;
-}
-
-/* ===========================
-   ARROW
-=========================== */
-
-.arrow{
-
-    font-size:20px;
-
-    color:#e11d48;
-
-    margin-left:2px;
-
-    transition:.25s;
-}
-
-.done:hover .arrow{
-
-    transform:translateX(3px);
-}
-
-
-/* MODAL */
-
-#pw-overlay{
-    display:none;
-
-    position:fixed;
-
-    inset:0;
-
-    background:rgba(0,0,0,.45);
-
-    z-index:1000;
-
-    align-items:center;
-
-    justify-content:center;
-}
-
-#pw-overlay.active{
-    display:flex;
-}
-
-#pw-box{
-
-    width:340px;
-
-    background:rgba(255,255,255,.88);
-
-    backdrop-filter:blur(20px);
-
-    border-radius:28px;
-
-    padding:30px;
-
-    border:1px solid rgba(225,29,72,.08);
-
-    box-shadow:
-      0 30px 80px rgba(225,29,72,.18);
-
-    text-align:center;
-}
-
-#pw-box h3{
-    margin-bottom:8px;
-}
-
-#pw-box p{
-
-    color:#666;
-
-    font-size:13px;
-
-    margin-bottom:18px;
-}
-
-#pw-input{
-
-    width:100%;
-
-    padding:12px;
-
-    border-radius:12px;
-
-    border:1px solid #ddd;
-
-    text-align:center;
-
-    outline:none;
-}
-
-#pw-input:focus{
-
-    border-color:#e11d48;
-}
-
-#pw-error{
-
-    min-height:18px;
-
-    margin-top:8px;
-
-    color:#ef4444;
-
-    font-size:12px;
-}
-
-#pw-btns{
-
-    display:flex;
-
-    gap:10px;
-
-    margin-top:16px;
-}
-
-#pw-btns button{
-
-    flex:1;
-
-    border:none;
-
-    border-radius:12px;
-
-    padding:11px;
-
-    cursor:pointer;
-
-    font-weight:700;
-}
-
-#pw-confirm{
-
-    color:white;
-
-    background:
-      linear-gradient(
-        120deg,
-        #881337,
-        #e11d48
-      );
-}
-
-#pw-cancel{
-
-    background:#eee;
-}
-
-/* FOOTER */
-
-footer{
-
-    text-align:center;
-
-    padding:50px 20px;
-
-    color:#777;
-
-    font-size:13px;
-}
+      radial-gradient(760px 380px at 50% -18%, rgba(216,27,80,0.10), transparent 70%),
+      linear-gradient(180deg, #FFF7FA 0%, #FFFFFF 100%);
+  }
+  .hero .wrap { position: relative; z-index: 1; padding: 64px 28px 56px; text-align: center; }
+  .pill {
+    display: inline-block; padding: 5px 13px; border-radius: 99px; background: var(--brand); color: #fff;
+    font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
+  }
+  h1 {
+    margin-top: 22px; font-size: 42px; font-weight: 700; letter-spacing: -0.025em; line-height: 1.2;
+    color: var(--brand); text-wrap: balance;
+  }
+  /* 이 페이지가 무엇인지 한 문장으로 먼저 말한다 — 그 다음이 기능 설명 */
+  .hero .lead { margin-top: 20px; font-size: 16.5px; font-weight: 500; color: var(--ink); line-height: 1.65; }
+  .hero p { margin-top: 10px; font-size: 14.5px; color: var(--ink-2); line-height: 1.75; }
+  .hero .stats { margin-top: 14px; font-size: 13px; color: var(--ink-3); }
+
+  /* 내 진도 요약 — 학습 페이지의 진도를 그대로 읽어온다 */
+  .mine {
+    display: inline-flex; align-items: center; gap: 14px; margin-top: 30px; padding: 14px 18px;
+    background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); text-align: left;
+  }
+  .mine .ring {
+    width: 42px; height: 42px; flex: 0 0 42px; border-radius: 50%; display: grid; place-items: center;
+    background: conic-gradient(var(--brand) var(--p, 0%), var(--surface-2) 0);
+  }
+  .mine .ring span {
+    width: 34px; height: 34px; border-radius: 50%; background: var(--surface); display: grid; place-items: center;
+    font-family: var(--mono); font-size: 11px; font-weight: 700;
+  }
+  .mine b { display: block; font-size: 13.5px; font-weight: 600; }
+  .mine em { font-style: normal; font-size: 12.5px; color: var(--ink-3); }
+  .mine .btn { margin-left: 6px; }
+
+  /* ── 연도 섹션 ── */
+  .year { padding-top: 44px; }
+  .year:last-of-type { padding-bottom: 64px; }
+  .year-head { display: flex; align-items: baseline; gap: 10px; padding-bottom: 12px; border-bottom: 1px solid var(--line); }
+  .year-head h2 { font-size: 15px; font-weight: 700; letter-spacing: 0.02em; }
+  .year-n { margin-left: auto; font-size: 12px; color: var(--ink-3); font-family: var(--mono); }
+  .cards { display: flex; flex-direction: column; gap: 10px; margin-top: 18px; }
+
+  /* ── 강의 카드 ── */
+  .card {
+    display: flex; align-items: flex-start; gap: 16px; padding: 18px 20px; text-decoration: none; color: inherit;
+    background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); transition: 0.14s;
+  }
+  .card:hover { border-color: var(--line-2); background: var(--surface-2); }
+  .card-num {
+    flex: 0 0 34px; height: 34px; display: grid; place-items: center; border-radius: var(--r-sm);
+    background: var(--surface-2); color: var(--ink-3);
+    font-family: var(--mono); font-size: 12.5px; font-weight: 600;
+  }
+  .card:hover .card-num { background: var(--brand-wash); color: var(--brand); }
+  .card.is-done .card-num { background: var(--ok-wash); color: var(--ok); }
+  .card-body { flex: 1; min-width: 0; }
+  .card-top { display: flex; align-items: center; gap: 10px; }
+  .card-title { font-size: 15.5px; font-weight: 600; letter-spacing: -0.014em; }
+  .badge { font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 99px; white-space: nowrap; }
+  .badge.done { background: var(--ok-wash); color: var(--ok); }
+  .badge.going { background: var(--brand-wash); color: var(--brand); }
+  .card-facts { display: block; margin-top: 5px; font-size: 12.5px; color: var(--ink-3); font-variant-numeric: tabular-nums; }
+  .card-prog { display: flex; align-items: center; gap: 12px; margin-top: 14px; }
+  .bar { flex: 1; height: 4px; border-radius: 99px; background: var(--surface-2); overflow: hidden; }
+  .bar i { display: block; height: 100%; width: 0; background: var(--brand); border-radius: 99px; transition: width 0.4s ease; }
+  .card.is-done .bar i { background: var(--ok); }
+  .pct { font-family: var(--mono); font-size: 11.5px; font-weight: 600; color: var(--ink-3); flex: 0 0 auto; }
+  .go { font-size: 12.5px; font-weight: 600; color: var(--brand); flex: 0 0 auto; }
+  .card:hover .go { color: var(--brand-ink); }
+
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 7px; font: inherit;
+    font-size: 13px; font-weight: 600; letter-spacing: -0.012em; cursor: pointer; height: 38px; padding: 0 15px;
+    border-radius: var(--r-sm); border: 1px solid var(--brand); background: var(--brand); color: #fff;
+    text-decoration: none; transition: 0.14s;
+  }
+  .btn:hover { background: var(--brand-ink); border-color: var(--brand-ink); }
+
+  /* ── 푸터 ── */
+  .foot { border-top: 1px solid var(--line); background: var(--surface-2); }
+  .foot .wrap { padding: 26px 28px 34px; font-size: 12px; color: var(--ink-3); line-height: 1.7; }
+
+  @media (max-width: 720px) {
+    .wrap { padding: 0 18px; }
+    .hero .wrap { padding: 44px 18px 40px; }
+    h1 { font-size: 30px; }
+    .mine { display: flex; margin-top: 24px; }
+    .card { padding: 16px; gap: 12px; }
+    .card-top { flex-wrap: wrap; }
+    .card-prog { flex-wrap: wrap; gap: 8px; }
+    .bar { flex: 1 0 100%; order: 3; }
+  }
 </style>
 </head>
 <body>
 
-
-
-<header>
-  <div class="logo-badge">LG LUPA · Embedded Professional</div>
-  <h1>Embedded Professional LUPA</h1>
-  <p>완료된 강의 카드를 클릭하면 요약 페이지로 이동합니다.</p>
+<header class="top">
+  <div class="wrap">
+    <span class="mark">ESP</span>
+    <span class="wordmark">Embedded SW Professional</span>
+    <span class="spacer"></span>
+    <span class="who" id="who"></span>
+  </div>
 </header>
 
-<main>
+<section class="hero">
+  <div class="wrap">
+    <span class="pill">LG전자</span>
+    <h1>Embedded SW Professional</h1>
+    <p class="lead">오프라인 강의 녹화본을 학습용으로 다시 구성해 제공하는 페이지입니다.</p>
+    <p>강의 영상과 학습목표 · 주요내용 · 이해도 확인을 한 화면에서.<br>
+       챕터별로 나눠 보고, 원문 타임스탬프로 필요한 구간만 되짚을 수 있습니다.</p>
+    <div class="stats mono">6개 강의 · 73개 챕터 · 총 19시간 34분</div>
 
-  <!-- 2025년 12월 과정 -->
-  <section class="course-section">
-    <div class="course-header">
-      <div class="year-badge badge-2025">2025년 12월</div>
-      <h2>LG LUPA LCD 2025 </h2>
-      <div class="subtitle">LUPA Studio · Platform · GUI Creator (LCD Display) · GDB Debugging</div>
+    <div class="mine" id="mine">
+      <div class="ring" id="m-ring" style="--p:0%"><span id="m-n">0</span></div>
+      <div>
+        <b id="m-title">아직 시작하지 않았습니다</b>
+        <em id="m-sub">첫 강의부터 순서대로 보시는 걸 권합니다</em>
+      </div>
+      <a class="btn" id="m-go" href="#">학습 시작</a>
     </div>
-    <div class="lecture-list">
+  </div>
+</section>
 
-        <div class="lecture-card done"
-            onclick="window.open('https://sophiahjlee.github.io/embeddedpro/lupa/2025_lecture/summary.html','_blank')">
-        <div class="lecture-num">1</div>
-        <div class="lecture-info">
-          <div class="topic">LUPA Studio</div>
-          <div class="instructor">김윤관 책임</div>
-          <div class="desc">LUPA 앱 개발환경 구성 · 프로젝트 생성 · 빌드 및 배포</div>
-        </div>
-        <span class="arrow">›</span>
+<div class="wrap">
+    <section class="year">
+      <div class="year-head">
+        <h2>2026 · LUPA LED</h2>
+        <span class="year-n">3개 강의</span>
       </div>
-
-      <div class="lecture-card done"
-           onclick="window.open('https://sophiahjlee.github.io/embeddedpro/lupa/2025_lecture/summary_2.html')">
-        <div class="lecture-num">2</div>
-        <div class="lecture-info">
-          <div class="topic">LUPA Platform · LCD</div>
-          <div class="instructor">이상민 책임</div>
-          <div class="desc">LUPA 플랫폼 구조 · LCD 디스플레이 제어 · API 활용</div>
-        </div>
-        <span class="arrow">›</span>
+      <div class="cards">
+      <a class="card" href="2026_lecture/embeddedpro202601_01_lupastudio.html" data-vid="yi8KhjPtEUw" data-total="9">
+        <span class="card-num">01</span>
+        <span class="card-body">
+          <span class="card-top">
+            <span class="card-title">[1] LUPA Studio 및 환경이해</span>
+            <span class="badge" data-role="badge"></span>
+          </span>
+          <span class="card-facts">김윤관 책임 · 9챕터 · 1시간 6분 · 퀴즈 44문항</span>
+          <span class="card-prog">
+            <span class="bar"><i data-role="fill"></i></span>
+            <span class="pct" data-role="pct"></span>
+            <span class="go" data-role="go">학습 시작 →</span>
+          </span>
+        </span>
+      </a>
+      <a class="card" href="2026_lecture/embeddedpro202601_02_lupaplatform.html" data-vid="6xIaR6XWtkU" data-total="17">
+        <span class="card-num">02</span>
+        <span class="card-body">
+          <span class="card-top">
+            <span class="card-title">[2] LUPA Platform의 이해</span>
+            <span class="badge" data-role="badge"></span>
+          </span>
+          <span class="card-facts">이상민 책임 · 17챕터 · 5시간 16분 · 퀴즈 85문항</span>
+          <span class="card-prog">
+            <span class="bar"><i data-role="fill"></i></span>
+            <span class="pct" data-role="pct"></span>
+            <span class="go" data-role="go">학습 시작 →</span>
+          </span>
+        </span>
+      </a>
+      <a class="card" href="2026_lecture/embeddedpro202601_03_ledcontrol_v2.html" data-vid="QF2K_z9CC8Q" data-total="12">
+        <span class="card-num">03</span>
+        <span class="card-body">
+          <span class="card-top">
+            <span class="card-title">[3] LED Control</span>
+            <span class="badge" data-role="badge"></span>
+          </span>
+          <span class="card-facts">신동순 책임 · 12챕터 · 1시간 55분 · 퀴즈 60문항</span>
+          <span class="card-prog">
+            <span class="bar"><i data-role="fill"></i></span>
+            <span class="pct" data-role="pct"></span>
+            <span class="go" data-role="go">학습 시작 →</span>
+          </span>
+        </span>
+      </a>
       </div>
-
-      <div class="lecture-card done"
-           onclick="window.open('https://sophiahjlee.github.io/embeddedpro/lupa/2025_lecture/summary_3.html','_blank')">
-        <div class="lecture-num">3</div>
-        <div class="lecture-info">
-          <div class="topic">GUI Creator</div>
-          <div class="instructor">하래주 책임</div>
-          <div class="desc">LUPA GUI 디자인 도구 · 화면 레이아웃 구성 · 위젯 설정</div>
-        </div>
-        <span class="arrow">›</span>
+    </section>
+    <section class="year">
+      <div class="year-head">
+        <h2>2025</h2>
+        <span class="year-n">3개 강의</span>
       </div>
-
-      <div class="lecture-card pending">
-        <div class="lecture-num">4</div>
-        <div class="lecture-info">
-          <div class="topic">GDB Debugging</div>
-          <div class="instructor">서지훈 책임</div>
-          <div class="desc">GDB 디버거 설정 · 브레이크포인트 · 코어덤프 분석</div>
-        </div>
-        <span class="status-chip">준비중</span>
+      <div class="cards">
+      <a class="card" href="2025_lecture/summary.html" data-vid="R0QxxJUgpD4" data-total="13">
+        <span class="card-num">01</span>
+        <span class="card-body">
+          <span class="card-top">
+            <span class="card-title">LUPA 강의 1회차 요약</span>
+            <span class="badge" data-role="badge"></span>
+          </span>
+          <span class="card-facts">김윤관 책임 · 13챕터 · 4시간 14분 · 퀴즈 18문항</span>
+          <span class="card-prog">
+            <span class="bar"><i data-role="fill"></i></span>
+            <span class="pct" data-role="pct"></span>
+            <span class="go" data-role="go">학습 시작 →</span>
+          </span>
+        </span>
+      </a>
+      <a class="card" href="2025_lecture/summary_2.html" data-vid="rkC4VSFwG4g" data-total="10">
+        <span class="card-num">02</span>
+        <span class="card-body">
+          <span class="card-top">
+            <span class="card-title">LUPA 강의 2회차 요약</span>
+            <span class="badge" data-role="badge"></span>
+          </span>
+          <span class="card-facts">이상민 책임 · 10챕터 · 2시간 49분 · 퀴즈 18문항</span>
+          <span class="card-prog">
+            <span class="bar"><i data-role="fill"></i></span>
+            <span class="pct" data-role="pct"></span>
+            <span class="go" data-role="go">학습 시작 →</span>
+          </span>
+        </span>
+      </a>
+      <a class="card" href="2025_lecture/summary_3.html" data-vid="lorYpAjlMyM" data-total="12">
+        <span class="card-num">03</span>
+        <span class="card-body">
+          <span class="card-top">
+            <span class="card-title">LUPA 강의 3회차 요약</span>
+            <span class="badge" data-role="badge"></span>
+          </span>
+          <span class="card-facts">하래주 책임 · 12챕터 · 4시간 14분 · 퀴즈 없음</span>
+          <span class="card-prog">
+            <span class="bar"><i data-role="fill"></i></span>
+            <span class="pct" data-role="pct"></span>
+            <span class="go" data-role="go">학습 시작 →</span>
+          </span>
+        </span>
+      </a>
       </div>
+    </section>
+</div>
 
-    </div>
-  </section>
+<footer class="foot">
+  <div class="wrap">
+    진도와 퀴즈 결과는 서버가 아니라 <b>이 브라우저</b>에 저장됩니다. 다른 PC에서는 진도가 이어지지 않습니다.<br>
+    퀴즈가 있는 챕터는 전 문항을 맞혀야 완료로 기록되고, 퀴즈가 없는 챕터는 다음으로 넘어가면 완료됩니다.
+  </div>
+</footer>
 
-  <!-- 2026년 4월 과정 -->
-  <section class="course-section">
-    <div class="course-header">
-      <div class="year-badge badge-2026">2026년 4월</div>
-      <h2>LG  LUPA LED 2026 </h2>
-      <div class="subtitle">LUPA Studio · Platform · LED Control · GDB Debugging</div>
-    </div>
-    <div class="lecture-list">
+<script>
+  /* 학습 페이지와 같은 localStorage 키를 읽는다. 같은 출처라서 그대로 공유된다.
+     진도 키: lupa_prog_<video_id>_<uid>   /  이어서 학습: 완료 안 된 첫 챕터 */
+  function uid() { return localStorage.getItem('lupa_uid') || 'guest'; }
+  function progOf(vid) {
+    try { return JSON.parse(localStorage.getItem('lupa_prog_' + vid + '_' + uid())) || {}; }
+    catch (e) { return {}; }
+  }
+  function firstUndone(done, total) {
+    for (var i = 0; i < total; i++) if (done.indexOf(i) < 0) return i;
+    return 0;
+  }
 
-      <div class="lecture-card done"
-           onclick="window.open('https://sophiahjlee.github.io/embeddedpro/lupa/2026_lecture/embeddedpro202601_01_lupastudio.html','_blank')">
-        <div class="lecture-num">1</div>
-        <div class="lecture-info">
-          <div class="topic">LUPA Studio</div>
-          <div class="instructor">김윤관 책임</div>
-          <div class="desc">LUPA 앱 개발환경 구성 · 프로젝트 생성 · 빌드 및 배포</div>
-        </div>
-        <span class="arrow">›</span>
-      </div>
+  (function() {
+    var name = localStorage.getItem('lupa_user') || '';
+    var dept = localStorage.getItem('lupa_dept') || '';
+    if (name) {
+      document.getElementById('who').innerHTML =
+        '<b>' + name.replace(/[&<>"]/g, '') + '</b>' + (dept ? ' · ' + dept.replace(/[&<>"]/g, '') : '');
+    }
 
-      <div class="lecture-card done"
-           onclick="window.open('https://sophiahjlee.github.io/embeddedpro/lupa/2026_lecture/embeddedpro202601_02_lupaplatform.html','_blank')">
-        <div class="lecture-num">2</div>
-        <div class="lecture-info">
-          <div class="topic">LUPA Platform의 이해</div>
-          <div class="instructor">이상민 책임</div>
-          <div class="desc">LUPA 플랫폼 구조 · 시스템 아키텍처 · IPC통신 · API 활용</div>
-        </div>
-        <span class="arrow">›</span>
-      </div>
+    var cards = document.querySelectorAll('.card');
+    var doneLec = 0, firstOpen = null, lastGoing = null;
+    for (var i = 0; i < cards.length; i++) {
+      var c = cards[i];
+      var total = parseInt(c.getAttribute('data-total'), 10) || 0;
+      var p = progOf(c.getAttribute('data-vid'));
+      var done = (p.done || []).length;
+      var pct = total ? Math.round(done / total * 100) : 0;
+      var finished = total > 0 && done >= total;
 
-      <div class="lecture-card done"
-           onclick="window.open('https://sophiahjlee.github.io/embeddedpro/lupa/2026_lecture/embeddedpro202601_03_ledcontrol_v2.html','_blank')">
-        <div class="lecture-num">3</div>
-        <div class="lecture-info">
-          <div class="topic">LED Control</div>
-          <div class="instructor">신동순 책임</div>
-          <div class="desc">GPIO 제어 · LED 드라이버 연동 · LUPA API로 하드웨어 제어</div>
-        </div>
-        <span class="arrow">›</span>
-      </div>
+      c.querySelector('[data-role="fill"]').style.width = pct + '%';
+      c.querySelector('[data-role="pct"]').textContent = done + ' / ' + total;
+      var badge = c.querySelector('[data-role="badge"]');
+      var go = c.querySelector('[data-role="go"]');
 
-      <div class="lecture-card pending">
-        <div class="lecture-num">4</div>
-        <div class="lecture-info">
-          <div class="topic">GDB Debugging</div>
-          <div class="instructor">서지훈 책임</div>
-          <div class="desc">GDB 디버거 설정 · 브레이크포인트 · 코어덤프 분석</div>
-        </div>
-        <span class="status-chip">준비중</span>
-      </div>
+      if (finished) {
+        c.classList.add('is-done');
+        badge.className = 'badge done'; badge.textContent = '완료';
+        go.textContent = '다시 보기 →';
+        doneLec++;
+      } else if (done > 0) {
+        badge.className = 'badge going'; badge.textContent = '학습 중';
+        var n = firstUndone(p.done || [], total) + 1;
+        go.textContent = 'CH.' + (n < 10 ? '0' + n : n) + '부터 이어서 →';
+        c.setAttribute('href', c.getAttribute('href') + '#ch-' + n);
+        if (!lastGoing) lastGoing = c;
+      } else {
+        badge.className = 'badge'; badge.textContent = '';
+        if (!firstOpen) firstOpen = c;
+      }
+    }
 
-    </div>
-  </section>
+    /* 히어로 요약 */
+    var totalLec = cards.length;
+    var pct = totalLec ? Math.round(doneLec / totalLec * 100) : 0;
+    document.getElementById('m-ring').style.setProperty('--p', pct + '%');
+    document.getElementById('m-n').textContent = doneLec;
+    var target = lastGoing || firstOpen || cards[0];
+    if (doneLec === totalLec && totalLec) {
+      document.getElementById('m-title').textContent = '모든 강의를 완료했습니다';
+      document.getElementById('m-sub').textContent = totalLec + '개 강의 · 수고하셨습니다';
+      document.getElementById('m-go').textContent = '처음부터 다시';
+    } else if (doneLec > 0 || lastGoing) {
+      document.getElementById('m-title').textContent =
+        (name ? name + '님, ' : '') + '이어서 학습하세요';
+      document.getElementById('m-sub').textContent =
+        totalLec + '개 강의 중 ' + doneLec + '개 완료 · ' + pct + '%';
+      document.getElementById('m-go').textContent = '이어서 학습';
+    }
+    if (target) document.getElementById('m-go').setAttribute('href', target.getAttribute('href'));
+  })();
 
-</main>
-
-<footer>LG Electronics · LUPA Education · 강의 전사 자동화 파이프라인</footer>
-
+</script>
 </body>
 </html>
