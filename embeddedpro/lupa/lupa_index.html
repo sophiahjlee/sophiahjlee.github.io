@@ -137,6 +137,15 @@
   /* ── 푸터 ── */
   .foot { border-top: 1px solid var(--line); background: var(--surface-2); }
   .foot .wrap { padding: 26px 28px 34px; font-size: 12px; color: var(--ink-3); line-height: 1.7; }
+  .foot-act { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+  .btn-ghost {
+    display: inline-flex; align-items: center; gap: 6px; cursor: pointer; font: inherit;
+    font-size: 12px; font-weight: 600; height: 32px; padding: 0 12px; border-radius: var(--r-sm);
+    border: 1px solid var(--line-2); background: var(--surface); color: var(--ink-2);
+  }
+  .btn-ghost:hover { background: var(--surface-2); color: var(--ink); }
+  .btn-ghost:disabled { opacity: 0.45; cursor: not-allowed; }
+  .said { font-size: 11.5px; color: var(--ok); font-weight: 600; }
 
   @media (max-width: 720px) {
     .wrap { padding: 0 18px; }
@@ -297,6 +306,11 @@
   <div class="wrap">
     진도와 퀴즈 결과는 서버가 아니라 <b>이 브라우저</b>에 저장됩니다. 다른 PC에서는 진도가 이어지지 않습니다.<br>
     퀴즈가 있는 챕터는 전 문항을 맞혀야 완료로 기록되고, 퀴즈가 없는 챕터는 다음으로 넘어가면 완료됩니다.
+    <div class="foot-act">
+      <button type="button" class="btn-ghost" id="ex-file" disabled>진도 내보내기 (JSON)</button>
+      <button type="button" class="btn-ghost" id="ex-copy" disabled>복사하기</button>
+      <span class="said" id="ex-said"></span>
+    </div>
   </div>
 </footer>
 
@@ -379,6 +393,74 @@
       document.getElementById('m-sub').textContent =
         '챕터 ' + doneCh + ' / ' + allCh + ' 완료 · 강의 ' + doneLec + ' / ' + totalLec;
     }
+  })();
+
+  /* ── 진도 내보내기 ────────────────────────────────────────
+     사내망(BEE)에서 사외 수집 경로가 막히면 이게 유일한 제출 수단이 된다.
+     학습자가 파일이나 텍스트로 내보내 메일/collab 에 붙이면 관리자가 취합한다. */
+  (function() {
+    var fileBtn = document.getElementById('ex-file');
+    var copyBtn = document.getElementById('ex-copy');
+    var said = document.getElementById('ex-said');
+
+    function collect() {
+      var cards = document.querySelectorAll('.card'), lectures = [];
+      var doneCh = 0, allCh = 0;
+      for (var i = 0; i < cards.length; i++) {
+        var c = cards[i];
+        var vid = c.getAttribute('data-vid');
+        var total = parseInt(c.getAttribute('data-total'), 10) || 0;
+        var p = progOf(vid);
+        var done = (p.done || []).slice().sort(function(a, b) { return a - b; });
+        doneCh += Math.min(done.length, total); allCh += total;
+        lectures.push({
+          video_id: vid,
+          lecture: c.querySelector('.card-title').textContent,
+          total: total, done: done, scores: p.scores || {},
+          pct: total ? Math.round(done.length / total * 100) : 0
+        });
+      }
+      return {
+        uid: localStorage.getItem('lupa_uid') || '',
+        name: localStorage.getItem('lupa_user') || '',
+        dept: localStorage.getItem('lupa_dept') || '',
+        chapters_done: doneCh, chapters_total: allCh,
+        pct: allCh ? Math.round(doneCh / allCh * 100) : 0,
+        exported_at: new Date().toISOString(),
+        lectures: lectures
+      };
+    }
+    function anyProgress(d) { return d.chapters_done > 0; }
+    function flash(msg) { said.textContent = msg; setTimeout(function() { said.textContent = ''; }, 2500); }
+
+    var data = collect();
+    if (anyProgress(data)) { fileBtn.disabled = false; copyBtn.disabled = false; }
+    else {
+      fileBtn.title = copyBtn.title = '내보낼 진도가 없습니다';
+    }
+
+    fileBtn.addEventListener('click', function() {
+      var d = collect(), txt = JSON.stringify(d, null, 2);
+      var a = document.createElement('a');
+      a.href = URL.createObjectURL(new Blob([txt], { type: 'application/json' }));
+      a.download = 'lupa_progress_' + (d.uid || 'guest') + '_' + d.exported_at.slice(0, 10) + '.json';
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(function() { URL.revokeObjectURL(a.href); }, 1000);
+      flash('파일로 저장했습니다');
+    });
+    copyBtn.addEventListener('click', function() {
+      var txt = JSON.stringify(collect(), null, 2);
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(txt).then(function() { flash('복사했습니다'); },
+                                               function() { flash('복사 실패 — 파일로 내보내 주세요'); });
+      } else {
+        var t = document.createElement('textarea');
+        t.value = txt; document.body.appendChild(t); t.select();
+        try { document.execCommand('copy'); flash('복사했습니다'); }
+        catch (e) { flash('복사 실패 — 파일로 내보내 주세요'); }
+        t.remove();
+      }
+    });
   })();
 
 </script>

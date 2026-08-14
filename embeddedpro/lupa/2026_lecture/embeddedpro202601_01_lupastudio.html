@@ -336,6 +336,14 @@
     border: 1px solid var(--line-2); background: var(--surface); color: var(--ink); font: inherit; font-size: 14px; outline: none;
   }
   .modal-input:focus { border-color: var(--brand); }
+  /* 메일 아이디 + 고정 도메인 — 전체 메일주소를 받지 않아 표기가 흔들리지 않는다 */
+  .mail-row { position: relative; display: block; }
+  .mail-row .modal-input { padding-right: 88px; }
+  .mail-dom {
+    position: absolute; right: 14px; top: 0; height: 44px; display: flex; align-items: center;
+    font-size: 13.5px; color: var(--ink-3); pointer-events: none;
+  }
+  .err { margin: -4px 0 10px; font-size: 12px; color: var(--no); }
   .modal-actions { display: flex; gap: 8px; margin-top: 14px; }
   .modal-actions .btn { flex: 1; }
 
@@ -373,7 +381,13 @@
 <div class="modal" id="modal">
   <div class="modal-box">
     <h3>학습자 등록</h3>
-    <p>이름을 등록하면 이 브라우저에 챕터별 진도와 퀴즈 결과가 저장됩니다.<br>언제든 이어서 학습할 수 있습니다.</p>
+    <p>사내 메일 아이디로 진도를 기록합니다. 챕터별 진도와 퀴즈 결과가 저장돼<br>언제든 이어서 학습할 수 있습니다.</p>
+    <label class="mail-row">
+      <input class="modal-input" id="m-uid" placeholder="메일 아이디 (필수)" maxlength="40"
+             autocomplete="username" spellcheck="false">
+      <span class="mail-dom">@lge.com</span>
+    </label>
+    <div class="err" id="m-err" hidden>메일 아이디만 넣어 주세요 — 예: sophiahj.lee</div>
     <input class="modal-input" id="m-name" placeholder="이름 (필수)" maxlength="30">
     <input class="modal-input" id="m-dept" placeholder="부서 / 팀 (선택)" maxlength="40">
     <div class="modal-actions">
@@ -1360,7 +1374,7 @@
   var CH_RANGE  = ["00:00:00 – 00:01:57", "00:01:57 – 00:06:00", "00:06:00 – 00:19:28", "00:19:28 – 00:29:00", "00:29:00 – 00:36:00", "00:36:00 – 00:47:28", "00:47:28 – 00:53:32", "00:53:32 – 01:01:13", "01:01:13 – 01:10:38"];
   var CH_QUIZ_N = [5, 4, 5, 5, 5, 5, 5, 5, 5];
   var CH_SCR_N  = [19, 28, 140, 79, 108, 79, 85, 69, 113];
-  var PROG_CFG  = {"owner": "", "repo": "", "video_id": "yi8KhjPtEUw"};
+  var PROG_CFG  = {"endpoint": "", "video_id": "yi8KhjPtEUw", "lecture": "[1] LUPA Studio 및 환경이해"};
   var isLocal   = location.protocol === 'file:';
   var cur = 0, QS = {}, yt = null, ytReady = false;
 
@@ -1384,7 +1398,7 @@
   function saveProg() { try { localStorage.setItem(pkey(), JSON.stringify(P)); } catch (e) {} }
   function isDone(i) { return P.done.indexOf(i) >= 0; }
   function markDone(i) {
-    if (!isDone(i)) { P.done.push(i); saveProg(); }
+    if (!isDone(i)) { P.done.push(i); saveProg(); sendProgress(); }
     paintProgress();
   }
   function markSeen(i) {
@@ -1408,6 +1422,57 @@
       steps[j].classList.toggle('is-done', d);
       steps[j].classList.toggle('is-viewed', !d && s);
     }
+  }
+
+  /* ── 진도 전송 (Apps Script → Google Sheets) ──────────────
+     정적 호스팅에는 쓰기 경로가 없어 사외 Apps Script 웹앱으로 보낸다.
+     Apps Script 는 CORS 응답 헤더를 붙일 수 없어 no-cors + text/plain 으로 보내야 하고,
+     그래서 응답을 읽을 수 없다 = 성공 확인이 불가하다. 네트워크 자체가 막히면 reject 되므로
+     그때는 큐에 쌓아 다음 방문에 재시도한다. 사내망(BEE)에서 사외 접근이 막히면
+     목록 페이지의 '진도 내보내기'가 대체 제출 경로다. */
+  var QKEY = 'lupa_queue', sendTimer = null;
+  function payload() {
+    return {
+      uid: localStorage.getItem('lupa_uid') || '',
+      name: localStorage.getItem('lupa_user') || '',
+      dept: localStorage.getItem('lupa_dept') || '',
+      video_id: VIDEO_ID, lecture: PROG_CFG.lecture || '', total: TOTAL,
+      done: P.done.slice().sort(function(a, b) { return a - b; }),
+      pct: TOTAL ? Math.round(P.done.length / TOTAL * 100) : 0,
+      scores: P.scores, ts: new Date().toISOString()
+    };
+  }
+  function post(body) {
+    if (!PROG_CFG.endpoint) return Promise.reject(new Error('endpoint 없음'));
+    return fetch(PROG_CFG.endpoint, {
+      method: 'POST', mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify(body)
+    });
+  }
+  function queuePush(body) {
+    try {
+      var q = JSON.parse(localStorage.getItem(QKEY)) || [];
+      q.push(body);
+      while (q.length > 50) q.shift();          /* 무한정 쌓이지 않게 최근 50건만 */
+      localStorage.setItem(QKEY, JSON.stringify(q));
+    } catch (e) {}
+  }
+  function sendProgress() {
+    if (!PROG_CFG.endpoint || !localStorage.getItem('lupa_uid')) return;
+    clearTimeout(sendTimer);                    /* 연속 완료 시 마지막 상태만 보낸다 */
+    sendTimer = setTimeout(function() {
+      var body = payload();
+      post(body).catch(function() { queuePush(body); });
+    }, 3000);
+  }
+  function flushQueue() {
+    if (!PROG_CFG.endpoint) return;
+    var q = [];
+    try { q = JSON.parse(localStorage.getItem(QKEY)) || []; } catch (e) {}
+    if (!q.length) return;
+    localStorage.removeItem(QKEY);
+    q.forEach(function(b) { post(b).catch(function() { queuePush(b); }); });
   }
 
   /* ── 플레이어 ────────────────────────────────────────────
@@ -1597,7 +1662,7 @@
     var passed = qs.length ? (st.score / qs.length) >= PASS : true;
     P.scores[idx] = [st.score, qs.length];
     saveProg();
-    if (passed) markDone(idx);
+    if (passed) markDone(idx); else sendProgress();   /* 미통과도 응시 기록은 남긴다 */
     var head = passed ? (pct === 100 ? '완벽합니다' : '통과했습니다') : '기준에 못 미쳤습니다';
     var sub = passed
       ? '틀린 문제의 해설을 한 번 더 확인하고 다음 챕터로 넘어가세요.'
@@ -1626,32 +1691,59 @@
 
   /* ── 학습자 ──────────────────────────────────────────────── */
   function showUser() {
-    var name = localStorage.getItem('lupa_user') || '', dept = localStorage.getItem('lupa_dept') || '';
+    var name = localStorage.getItem('lupa_user') || '', id = localStorage.getItem('lupa_uid') || '';
+    var dept = localStorage.getItem('lupa_dept') || '';
     var el = document.getElementById('rail-user');
-    if (!name) { el.classList.remove('on'); return; }
-    el.innerHTML = esc(name) + (dept ? ' · ' + esc(dept) : '') + ' <u onclick="changeUser()">변경</u>';
+    if (!id) { el.classList.remove('on'); return; }
+    el.innerHTML = esc(name || id) + (dept ? ' · ' + esc(dept) : '') + ' <u onclick="changeUser()">변경</u>';
+    el.setAttribute('title', id + '@lge.com');
     el.classList.add('on');
   }
+  /* 메일 아이디만 남긴다 — 전체 주소를 붙여넣어도 받아들인다 */
+  function normId(v) { return String(v || '').trim().toLowerCase().split('@')[0]; }
+  /* 식별자를 이름 → 메일 아이디로 바꾸면 진도 키가 달라져 기존 진도가 사라져 보인다.
+     이전 키가 남아 있으면 새 키로 한 번 옮긴다. 새 키에 이미 값이 있으면 덮지 않는다. */
+  function migrateProg(newUid) {
+    var olds = [localStorage.getItem('lupa_uid'), localStorage.getItem('lupa_user'), 'guest'];
+    var to = 'lupa_prog_' + VIDEO_ID + '_' + newUid;
+    if (localStorage.getItem(to)) return false;
+    for (var i = 0; i < olds.length; i++) {
+      if (!olds[i] || olds[i] === newUid) continue;
+      var v = localStorage.getItem('lupa_prog_' + VIDEO_ID + '_' + olds[i]);
+      if (v) { localStorage.setItem(to, v); return true; }
+    }
+    return false;
+  }
   function registerUser() {
+    var idEl = document.getElementById('m-uid'), errEl = document.getElementById('m-err');
+    var id = normId(idEl.value);
+    if (!id || !/^[a-z0-9][a-z0-9._-]*$/.test(id)) {
+      errEl.hidden = false; idEl.focus(); return;
+    }
+    errEl.hidden = true;
     var n = document.getElementById('m-name').value.trim();
     if (!n) { document.getElementById('m-name').focus(); return; }
+    migrateProg(id);
+    localStorage.setItem('lupa_uid', id);
     localStorage.setItem('lupa_user', n);
-    localStorage.setItem('lupa_uid', n);
     localStorage.setItem('lupa_dept', document.getElementById('m-dept').value.trim());
     localStorage.setItem('lupa_modal_seen', '1');
     document.getElementById('modal').classList.remove('on');
     showUser();
-    P = loadProg();          /* 이름이 바뀌면 그 사람의 진도를 다시 읽는다 */
+    P = loadProg();          /* 사람이 바뀌면 그 사람의 진도를 다시 읽는다 */
     paintProgress();
     renderActions();
+    sendProgress();
   }
   function skipUser() {
     localStorage.setItem('lupa_modal_seen', '1');
     document.getElementById('modal').classList.remove('on');
   }
   function changeUser() {
+    document.getElementById('m-uid').value = localStorage.getItem('lupa_uid') || '';
     document.getElementById('m-name').value = localStorage.getItem('lupa_user') || '';
     document.getElementById('m-dept').value = localStorage.getItem('lupa_dept') || '';
+    document.getElementById('m-err').hidden = true;
     document.getElementById('modal').classList.add('on');
   }
 
@@ -1698,18 +1790,22 @@
 
   /* ── 초기화 ──────────────────────────────────────────────── */
   (function() {
+    /* 메일로 개인 링크를 보낼 때 ?uid=sophiahj.lee&user=이름&dept=팀 형태로 넘길 수 있다 */
     var q = new URLSearchParams(location.search);
-    if (q.get('user')) {
-      localStorage.setItem('lupa_user', q.get('user'));
-      localStorage.setItem('lupa_uid', q.get('uid') || q.get('user'));
-      localStorage.setItem('lupa_dept', q.get('dept') || '');
+    var qid = normId(q.get('uid') || q.get('user'));
+    if (qid && /^[a-z0-9][a-z0-9._-]*$/.test(qid)) {
+      migrateProg(qid);
+      localStorage.setItem('lupa_uid', qid);
+      if (q.get('user')) localStorage.setItem('lupa_user', q.get('user'));
+      if (q.get('dept')) localStorage.setItem('lupa_dept', q.get('dept'));
       localStorage.setItem('lupa_modal_seen', '1');
     }
     P = loadProg();
     showUser();
-    if (!localStorage.getItem('lupa_user') && !localStorage.getItem('lupa_modal_seen')) {
+    if (!localStorage.getItem('lupa_uid') && !localStorage.getItem('lupa_modal_seen')) {
       setTimeout(function() { document.getElementById('modal').classList.add('on'); }, 700);
     }
+    flushQueue();
     var m = /^#ch-(\d+)$/.exec(location.hash);
     goChapter(m ? Math.min(Math.max(parseInt(m[1], 10) - 1, 0), TOTAL - 1) : 0, false);
     document.addEventListener('keydown', function(e) {
@@ -1723,6 +1819,7 @@
       }
     });
     document.getElementById('modal').addEventListener('click', function(e) { if (e.target === this) skipUser(); });
+    document.getElementById('m-uid').addEventListener('keydown', function(e) { if (e.key === 'Enter') document.getElementById('m-name').focus(); });
     document.getElementById('m-name').addEventListener('keydown', function(e) { if (e.key === 'Enter') registerUser(); });
   })();
 </script>
