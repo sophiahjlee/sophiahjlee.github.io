@@ -2599,7 +2599,7 @@
   var CH_RANGE  = ["00:00:00 – 00:07:03", "00:07:03 – 00:20:00", "00:20:00 – 00:37:00", "00:37:00 – 00:50:00", "00:50:00 – 01:02:10", "01:02:10 – 01:14:34", "01:14:34 – 01:37:20", "01:37:20 – 02:06:46", "02:06:46 – 02:49:01", "02:49:01 – 03:14:40", "03:14:40 – 03:50:06", "03:50:06 – 04:18:57"];
   var CH_QUIZ_N = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
   var CH_SCR_N  = [45, 171, 104, 115, 114, 70, 177, 212, 323, 155, 217, 182];
-  var PROG_CFG  = {"endpoint": "", "video_id": "lorYpAjlMyM", "lecture": "LUPA 강의 3회차 요약"};
+  var PROG_CFG  = {"endpoint": "/progress","program": "LUPA_LCD", "video_id": "lorYpAjlMyM", "lecture": "LUPA 강의 3회차 요약"};
   var isLocal   = location.protocol === 'file:';
   var cur = 0, QS = {}, yt = null, ytReady = false;
 
@@ -2657,16 +2657,37 @@
      목록 페이지의 '진도 내보내기'가 대체 제출 경로다. */
   var QKEY = 'lupa_queue', sendTimer = null;
   function payload() {
+
     return {
+
       uid: localStorage.getItem('lupa_uid') || '',
       name: localStorage.getItem('lupa_user') || '',
       dept: localStorage.getItem('lupa_dept') || '',
-      video_id: VIDEO_ID, lecture: PROG_CFG.lecture || '', total: TOTAL,
-      done: P.done.slice().sort(function(a, b) { return a - b; }),
-      pct: TOTAL ? Math.round(P.done.length / TOTAL * 100) : 0,
-      scores: P.scores, ts: new Date().toISOString()
+
+      program: PROG_CFG.program,
+
+      video_id: VIDEO_ID,
+      lecture: PROG_CFG.lecture,
+
+      total: TOTAL,
+
+      done: P.done,
+      seen: P.seen,
+
+      scores: P.scores,
+
+      pct:
+        TOTAL
+        ? Math.round(
+            P.done.length / TOTAL * 100
+          )
+        : 0,
+
+      updatedAt:
+        new Date().toISOString()
     };
   }
+  
   function post(body) {
     if (!PROG_CFG.endpoint) return Promise.reject(new Error('endpoint 없음'));
     return fetch(PROG_CFG.endpoint, {

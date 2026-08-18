@@ -120,16 +120,15 @@
 
 <div class="wrap">
   <h1>학습 진도 조회</h1>
-  <p class="desc">사내 메일 아이디를 넣으면 강의별 진도를 보여줍니다.<br>
-     집계된 데이터 기준이라, 방금 들은 내용은 아직 반영되지 않았을 수 있습니다.</p>
+  <p class="desc">현재까지의 학습 진도를 확인할 수 있습니다.</p>
 
-  <form class="form" id="form" autocomplete="off">
+  <!-- <form class="form" id="form" autocomplete="off">
     <label class="mail-row">
       <input id="uid" placeholder="메일 아이디 (예: sophiahj.lee)" maxlength="40" spellcheck="false">
       <span class="mail-dom">@lge.com</span>
     </label>
     <button type="submit" class="btn">조회</button>
-  </form>
+  </form> -->
 
   <div class="msg" id="msg"></div>
   <div id="result"></div>
@@ -140,90 +139,226 @@
 </div>
 
 <script>
-  var DATA = null;
 
-  function esc(s) {
-    return String(s == null ? '' : s).replace(/[&<>"]/g, function(c) {
-      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c];
-    });
-  }
-  function normId(v) { return String(v || '').trim().toLowerCase().split('@')[0]; }
-  function say(text, warn) {
-    var el = document.getElementById('msg');
-    el.textContent = text || '';
-    el.className = 'msg' + (warn ? ' warn' : '');
-  }
+function esc(s){
+  return String(s || '')
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;');
+}
 
-  /* 기존 result_score.html 과 같은 방식 — 저장소의 JSON 을 읽는다 */
-  async function load() {
-    try {
-      var res = await fetch('lupa_progress.json', { cache: 'no-store' });
-      if (!res.ok) throw new Error(res.status);
-      DATA = await res.json();
-    } catch (e) {
-      say('아직 집계된 진도 데이터가 없습니다. 교육 담당자가 데이터를 올린 뒤 조회할 수 있습니다.', true);
-      document.querySelector('.btn').disabled = true;
+function say(text, warn){
+
+  const el =
+    document.getElementById('msg');
+
+  if(!el) return;
+
+  el.textContent =
+    text || '';
+
+  el.className =
+    'msg' +
+    (warn ? ' warn' : '');
+}
+
+async function loadMy(){
+
+  try{
+
+    const uid =
+      localStorage.getItem(
+        'lupa_uid'
+      );
+
+    if(!uid){
+
+      say(
+        '먼저 강의 목록에서 사용자를 선택해 주세요.',
+        true
+      );
+
+      return;
     }
-  }
 
-  function render(rec) {
-    var lecs = rec.lectures || [];
-    var doneCh = 0, allCh = 0, doneLec = 0;
-    var rows = '';
-    for (var i = 0; i < lecs.length; i++) {
-      var L = lecs[i];
-      var total = L.total || 0, done = (L.done || []).length;
-      var pct = total ? Math.round(done / total * 100) : 0;
-      var finished = total > 0 && done >= total;
-      doneCh += Math.min(done, total); allCh += total; if (finished) doneLec++;
-      var chip = finished ? '<span class="chip done">완료</span>'
-               : done > 0 ? '<span class="chip going">학습 중</span>'
-                          : '<span class="chip none">미시작</span>';
-      rows += '<tr class="' + (finished ? 'done' : '') + '">' +
-              '<td>' + esc(L.lecture || L.video_id) + '</td>' +
-              '<td class="num">' + done + ' / ' + total + '</td>' +
-              '<td><span class="bar"><i style="width:' + pct + '%"></i></span></td>' +
-              '<td class="num">' + pct + '%</td>' +
-              '<td>' + chip + '</td></tr>';
+    const res =
+      await fetch(
+        '/progress-list',
+        {
+          cache:'no-store'
+        }
+      );
+
+    if(!res.ok){
+      throw new Error(
+        res.status
+      );
     }
-    var pctAll = allCh ? Math.round(doneCh / allCh * 100) : 0;
-    document.getElementById('result').innerHTML =
-      '<div class="card">' +
-        '<div class="who">' +
-          '<div class="ring" style="--p:' + pctAll + '%"><span>' + pctAll + '%</span></div>' +
-          '<div><b>' + esc(rec.name || rec.uid) + '</b>' +
-          '<em>' + esc(rec.uid) + '@lge.com' + (rec.dept ? ' · ' + esc(rec.dept) : '') +
-          ' · 강의 ' + doneLec + ' / ' + lecs.length + ' 완료 · 챕터 ' + doneCh + ' / ' + allCh + '</em></div>' +
-        '</div>' +
-        '<table><thead><tr><th>강의</th><th>챕터</th><th>진도</th><th>%</th><th>상태</th></tr></thead>' +
-        '<tbody>' + rows + '</tbody></table>' +
-        (rec.updated_at ? '<p class="foot" style="margin:16px 0 0">집계 기준 ' + esc(rec.updated_at) + '</p>' : '') +
-      '</div>';
-  }
 
-  document.getElementById('form').addEventListener('submit', function(e) {
-    e.preventDefault();
-    document.getElementById('result').innerHTML = '';
-    var id = normId(document.getElementById('uid').value);
-    if (!id) { say('메일 아이디를 넣어 주세요.', true); return; }
-    if (!DATA) { say('데이터를 아직 불러오지 못했습니다.', true); return; }
+    const data =
+      await res.json();
 
-    /* 배열({uid:...} 목록) / 객체(uid 를 키로) 두 형태 모두 받아준다 */
-    var rec = null;
-    if (Array.isArray(DATA)) {
-      for (var i = 0; i < DATA.length; i++) {
-        if (normId(DATA[i].uid || DATA[i].email) === id) { rec = DATA[i]; break; }
-      }
-    } else if (DATA && typeof DATA === 'object') {
-      rec = DATA[id] || null;
-      if (rec && !rec.uid) rec.uid = id;
+    const rec =
+      data[uid];
+
+    if(!rec){
+
+      say(
+        '저장된 학습 정보가 없습니다.',
+        true
+      );
+
+      return;
     }
-    if (!rec) { say('해당 아이디의 진도 기록이 없습니다. 아이디를 확인해 주세요.', true); return; }
-    say('');
+
     render(rec);
+
+  }
+  catch(e){
+
+    console.error(e);
+
+    say(
+      '진도 데이터를 불러올 수 없습니다.',
+      true
+    );
+
+  }
+}
+
+function render(rec){
+
+  const lectures =
+    Object.values(
+      rec.lectures || {}
+    );
+
+  let doneCh = 0;
+  let allCh = 0;
+  let doneLec = 0;
+
+  let rows = '';
+
+  lectures.forEach(L => {
+
+    const total =
+      L.total || 0;
+
+    const done =
+      (L.done || []).length;
+
+    const pct =
+      total
+        ? Math.round(
+            done / total * 100
+          )
+        : 0;
+
+    const finished =
+      total > 0 &&
+      done >= total;
+
+    doneCh += done;
+    allCh += total;
+
+    if(finished)
+      doneLec++;
+
+    const chip =
+      finished
+        ? '<span class="chip done">완료</span>'
+        : done > 0
+          ? '<span class="chip going">학습 중</span>'
+          : '<span class="chip none">미시작</span>';
+
+    rows += `
+      <tr ${finished ? 'class="done"' : ''}>
+        <td>${esc(L.lecture)}</td>
+        <td class="num">${done} / ${total}</td>
+        <td>
+          <span class="bar">
+            <i style="width:${pct}%"></i>
+          </span>
+        </td>
+        <td class="num">${pct}%</td>
+        <td>${chip}</td>
+      </tr>
+    `;
   });
 
-  load();
+  const totalPct =
+    allCh
+      ? Math.round(
+          doneCh / allCh * 100
+        )
+      : 0;
+
+  document.getElementById(
+    'result'
+  ).innerHTML = `
+
+    <div class="card">
+
+      <div class="who">
+
+        <div
+          class="ring"
+          style="--p:${totalPct}%"
+        >
+          <span>${totalPct}%</span>
+        </div>
+
+        <div>
+
+          <b>${esc(rec.name)}</b>
+
+          <em>
+
+            ${esc(rec.uid)}@lge.com
+
+            ${
+              rec.dept
+              ? ' · ' + esc(rec.dept)
+              : ''
+            }
+
+            · 강의 ${doneLec}/${lectures.length}
+
+          </em>
+
+        </div>
+
+      </div>
+
+      <table>
+
+        <thead>
+          <tr>
+            <th>강의</th>
+            <th>챕터</th>
+            <th>진도</th>
+            <th>%</th>
+            <th>상태</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          ${rows}
+        </tbody>
+
+      </table>
+
+    </div>
+
+  `;
+}
+
+window.addEventListener(
+  'DOMContentLoaded',
+  loadMy
+);
+
 </script>
 </body>
 </html>
