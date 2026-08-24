@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PMI Leadership Insight Session</title>
+<style>
+ @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap');
+ :root{
+   --bg-0:#070b14;
+   --bg-1:#141033;
+   --teal:#1fdfc4;
+   --teal-dim:#14b8a6;
+   --violet:#5b3fae;
+   --ink:#f3f6fa;
+   --ink-dim:#9aa5bd;
+   --line:rgba(255,255,255,0.08);
+ }
+ *{margin:0;padding:0;box-sizing:border-box;}
+ html,body{
+   height:100%;
+   background:var(--bg-0);
+   font-family:'Inter',sans-serif;
+   overflow:hidden;
+ }
+ .stage{
+   position:relative;
+   width:100vw;
+   height:100vh;
+   display:flex;
+   align-items:center;
+   overflow:hidden;
+ }
+ canvas#net{
+   position:absolute;
+   inset:0;
+   width:100%;
+   height:100%;
+ }
+ .orb{
+   position:absolute;
+   border-radius:50%;
+   filter:blur(2px);
+   mix-blend-mode:screen;
+   opacity:0.55;
+   animation:drift 22s ease-in-out infinite;
+ }
+ .orb-1{
+   width:52vw; height:52vw;
+   right:-12vw; top:-14vw;
+   background:radial-gradient(circle at 35% 35%, var(--violet), transparent 70%);
+   animation-delay:0s;
+ }
+ .orb-2{
+   width:44vw; height:44vw;
+   right:2vw; bottom:-16vw;
+   background:radial-gradient(circle at 40% 40%, var(--teal-dim), transparent 70%);
+   animation-delay:-8s;
+ }
+ .orb-3{
+   width:30vw; height:30vw;
+   right:22vw; top:20vw;
+   background:radial-gradient(circle at 50% 50%, #2a2560, transparent 72%);
+   animation-delay:-15s;
+ }
+ @keyframes drift{
+   0%,100%{ transform:translate(0,0) scale(1); }
+   50%{ transform:translate(-3%, 4%) scale(1.06); }
+ }
+ .content{
+   position:relative;
+   z-index:3;
+   width:100%;
+   max-width:1180px;
+   margin:0 auto;
+   padding:6vw 6vw;
+ }
+ .eyebrow{
+   display:flex;
+   align-items:center;
+   gap:14px;
+   font-family:'IBM Plex Mono', monospace;
+   letter-spacing:0.32em;
+   font-size:clamp(11px,1vw,13px);
+   color:var(--teal);
+   text-transform:uppercase;
+   opacity:0;
+   transform:translateY(14px);
+   animation:rise 0.8s cubic-bezier(.16,.84,.44,1) forwards;
+   animation-delay:0.15s;
+ }
+ .eyebrow .dot{
+   width:6px;height:6px;border-radius:50%;
+   background:var(--teal);
+   box-shadow:0 0 10px 2px var(--teal);
+ }
+ .eyebrow .sep{ color:var(--ink-dim); opacity:0.5; }
+ h1{
+   font-family:'Space Grotesk', sans-serif;
+   font-weight:700;
+   color:var(--ink);
+   font-size:clamp(40px, 6.4vw, 88px);
+   line-height:1.03;
+   letter-spacing:-0.02em;
+   margin-top:22px;
+   max-width:780px;
+ }
+ h1 span{
+   display:block;
+   opacity:0;
+   transform:translateY(28px);
+   animation:rise 0.9s cubic-bezier(.16,.84,.44,1) forwards;
+ }
+ h1 span:nth-child(1){ animation-delay:0.3s; }
+ h1 span:nth-child(2){ animation-delay:0.45s; }
+ .subtitle{
+   margin-top:26px;
+   font-size:clamp(17px, 1.7vw, 22px);
+   font-weight:600;
+   color:var(--ink);
+   max-width:640px;
+   opacity:0;
+   transform:translateY(16px);
+   animation:rise 0.8s cubic-bezier(.16,.84,.44,1) forwards;
+   animation-delay:0.62s;
+ }
+ .subtitle em{
+   font-style:normal;
+   color:var(--teal);
+   background:linear-gradient(90deg, var(--teal), #8ef5e4);
+   -webkit-background-clip:text;
+   background-clip:text;
+   -webkit-text-fill-color:transparent;
+ }
+ .desc{
+   margin-top:18px;
+   font-size:15px;
+   color:var(--ink-dim);
+   line-height:1.75;
+   max-width:520px;
+   opacity:0;
+   transform:translateY(16px);
+   animation:rise 0.8s cubic-bezier(.16,.84,.44,1) forwards;
+   animation-delay:0.74s;
+ }
+ .desc p + p{ margin-top:2px; }
+ .meta-row{
+   display:flex;
+   gap:16px;
+   margin-top:44px;
+   flex-wrap:wrap;
+   opacity:0;
+   transform:translateY(16px);
+   animation:rise 0.8s cubic-bezier(.16,.84,.44,1) forwards;
+   animation-delay:0.9s;
+ }
+ .meta-card{
+   position:relative;
+   background:rgba(255,255,255,0.03);
+   border:1px solid var(--line);
+   backdrop-filter:blur(6px);
+   border-radius:14px;
+   padding:18px 24px;
+   min-width:240px;
+   overflow:hidden;
+ }
+ .meta-card::before{
+   content:"";
+   position:absolute;
+   inset:0;
+   padding:1px;
+   border-radius:14px;
+   background:linear-gradient(120deg, rgba(31,223,196,0.35), transparent 40%);
+   -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+   -webkit-mask-composite:xor;
+   mask-composite:exclude;
+   pointer-events:none;
+ }
+ .meta-label{
+   font-family:'IBM Plex Mono', monospace;
+   font-size:11px;
+   letter-spacing:0.18em;
+   text-transform:uppercase;
+   color:var(--teal);
+ }
+ .meta-value{
+   margin-top:8px;
+   font-size:17px;
+   font-weight:600;
+   color:var(--ink);
+ }
+ .footer{
+   margin-top:52px;
+   display:flex;
+   align-items:center;
+   gap:14px;
+   opacity:0;
+   transform:translateY(12px);
+   animation:rise 0.8s cubic-bezier(.16,.84,.44,1) forwards;
+   animation-delay:1.05s;
+ }
+ .footer .brand{
+   font-size:13px;
+   color:var(--ink-dim);
+   letter-spacing:0.02em;
+ }
+ .footer .brand b{ color:var(--ink); font-weight:600; }
+ .badge{
+   position:absolute;
+   top:6vw;
+   right:6vw;
+   z-index:4;
+   width:118px;height:118px;
+   border-radius:50%;
+   display:flex;
+   flex-direction:column;
+   align-items:center;
+   justify-content:center;
+   background:radial-gradient(circle at 35% 30%, #35f0d4, #0f9c88 75%);
+   box-shadow:0 0 0 1px rgba(255,255,255,0.15), 0 18px 40px -12px rgba(20,184,166,0.55);
+   color:#04231e;
+   animation:pulse 3.6s ease-in-out infinite, popIn 0.7s cubic-bezier(.16,.84,.44,1) forwards;
+   opacity:0;
+   animation-delay:0s, 0.5s;
+ }
+ .badge b{ font-size:30px; font-family:'Space Grotesk',sans-serif; line-height:1; }
+ .badge span{ font-size:10px; letter-spacing:0.14em; margin-top:2px; }
+ @keyframes popIn{
+   to{ opacity:1; }
+ }
+ @keyframes pulse{
+   0%,100%{ transform:scale(1); }
+   50%{ transform:scale(1.06); }
+ }
+ @keyframes rise{
+   to{ opacity:1; transform:translate(0,0); }
+ }
+ .pmi-mark{
+   position:absolute;
+   top:6vw; right:calc(6vw + 150px);
+   z-index:4;
+   display:flex;
+   align-items:center;
+   gap:10px;
+   opacity:0;
+   animation:rise 0.8s cubic-bezier(.16,.84,.44,1) forwards;
+   animation-delay:0.2s;
+ }
+ .pmi-mark .lg{
+   width:34px;height:34px;
+   border-radius:8px;
+   background:linear-gradient(135deg,#1fdfc4,#5b3fae);
+   display:flex;align-items:center;justify-content:center;
+   font-family:'Space Grotesk',sans-serif;
+   font-weight:700;
+   font-size:14px;
+   color:#04231e;
+ }
+ .pmi-mark span{
+   font-family:'IBM Plex Mono', monospace;
+   font-size:11px;
+   color:var(--ink-dim);
+   letter-spacing:0.05em;
+ }
+ @media (max-width:720px){
+   .stage{ align-items:flex-start; padding-top:4vh; }
+   .content{ padding:12vw 7vw 8vw; }
+   .badge{ width:88px;height:88px; top:5vh; right:6vw; }
+   .badge b{ font-size:22px; }
+   .pmi-mark{ display:none; }
+   .meta-row{ flex-direction:column; }
+   .meta-card{ min-width:0; width:100%; }
+ }
+ @media (prefers-reduced-motion: reduce){
+   *, *::before, *::after{
+     animation-duration:0.01ms !important;
+     animation-iteration-count:1 !important;
+     transition-duration:0.01ms !important;
+   }
+ }
+</style>
+</head>
+<body>
+<div class="stage">
+<canvas id="net"></canvas>
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+<div class="orb orb-3"></div>
+<div class="pmi-mark">
+<div class="lg">PM</div>
+<span>PMI · KOREA CHAPTER</span>
+</div>
+<div class="badge">
+<b>60</b>
+<span>MIN</span>
+</div>
+<div class="content">
+<div class="eyebrow">
+<span class="dot"></span>
+     WELCOME <span class="sep">·</span> LG PM COMPETITION 2026
+</div>
+<h1><span>PMI Leadership</span><span>Insight Session</span></h1>
+<div class="subtitle">AI시대 <em>프로젝트 리더</em>의 역할과 미래 핵심 역량</div>
+<div class="desc">
+<p>PM 역량인증 심사위원 특별초청</p>
+<p>PMI와 직접 만나는 특별한 기회</p>
+</div>
+<div class="meta-row">
+<div class="meta-card">
+<div class="meta-label">일시</div>
+<div class="meta-value">2026.07.27(목) 10:00–12:00</div>
+</div>
+<div class="meta-card">
+<div class="meta-label">장소</div>
+<div class="meta-value">ISC 7층</div>
+</div>
+</div>
+<div class="footer">
+<div class="brand"><b>LG Electronics</b> · SW역량강화팀</div>
+</div>
+</div>
+</div>
+<script>
+ const canvas = document.getElementById('net');
+ const ctx = canvas.getContext('2d');
+ let w, h, dpr;
+ let nodes = [];
+ function resize(){
+   dpr = Math.min(window.devicePixelRatio || 1, 2);
+   w = canvas.clientWidth = window.innerWidth;
+   h = canvas.clientHeight = window.innerHeight;
+   canvas.width = w * dpr;
+   canvas.height = h * dpr;
+   ctx.setTransform(dpr,0,0,dpr,0,0);
+   initNodes();
+ }
+ function initNodes(){
+   const count = Math.min(70, Math.floor((w*h)/22000));
+   nodes = [];
+   // bias nodes toward right/upper area to echo the source artwork
+   for(let i=0;i<count;i++){
+     const rx = Math.random();
+     const ry = Math.random();
+     const biasedX = w * (0.35 + rx*0.75);
+     nodes.push({
+       x: Math.min(biasedX, w*1.05),
+       y: h * ry,
+       vx: (Math.random()-0.5)*0.18,
+       vy: (Math.random()-0.5)*0.18,
+       r: Math.random()*1.6 + 0.6
+     });
+   }
+ }
+ function step(){
+   ctx.clearRect(0,0,w,h);
+   const maxDist = Math.min(180, w*0.16);
+   for(const n of nodes){
+     n.x += n.vx;
+     n.y += n.vy;
+     if(n.x < w*0.25 || n.x > w+40) n.vx *= -1;
+     if(n.y < -40 || n.y > h+40) n.vy *= -1;
+   }
+   for(let i=0;i<nodes.length;i++){
+     for(let j=i+1;j<nodes.length;j++){
+       const a = nodes[i], b = nodes[j];
+       const dx = a.x-b.x, dy = a.y-b.y;
+       const dist = Math.sqrt(dx*dx+dy*dy);
+       if(dist < maxDist){
+         const alpha = (1 - dist/maxDist) * 0.35;
+         ctx.strokeStyle = `rgba(120,220,205,${alpha})`;
+         ctx.lineWidth = 0.6;
+         ctx.beginPath();
+         ctx.moveTo(a.x,a.y);
+         ctx.lineTo(b.x,b.y);
+         ctx.stroke();
+       }
+     }
+   }
+   for(const n of nodes){
+     ctx.beginPath();
+     ctx.arc(n.x, n.y, n.r, 0, Math.PI*2);
+     ctx.fillStyle = 'rgba(200,245,235,0.85)';
+     ctx.fill();
+   }
+   requestAnimationFrame(step);
+ }
+ window.addEventListener('resize', resize);
+ resize();
+ step();
+</script>
+</body>
+</html>
