@@ -60,6 +60,8 @@
     word-break: keep-all; overflow-wrap: break-word;
   }
   :focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; border-radius: 4px; }
+  /* 중국어일 때 CJK 폰트 폴백 — IBM Plex Sans KR에 한자 글리프가 일부 누락된다 */
+  html[lang="zh"] body { font-family: "IBM Plex Sans KR", "Noto Sans SC", "Microsoft YaHei", "PingFang SC", var(--sys); }
   .i { width: 12px; height: 12px; flex: 0 0 auto; display: block; }
   .ring span, .prog-txt b, .tb-prog, .rng, .ts, .val, .cue, .cnt, .step-num,
   .eyebrow, .crumb, .ch-sub, .mod-label .n, .qno { font-variant-numeric: tabular-nums; }
@@ -148,6 +150,19 @@
   .tb-prog { display: flex; align-items: center; gap: 10px; font-size: 11.5px; color: var(--ink-3); flex-shrink: 0; }
   .tb-track { width: 120px; height: 4px; border-radius: 99px; background: var(--surface-2); overflow: hidden; }
   .tb-fill { display: block; height: 100%; width: 0; background: var(--brand); border-radius: 99px; transition: width 0.4s ease; }
+
+  /* ── 언어 전환 (KO/EN/CN) ─────────────────────────────── */
+  .lang-sw {
+    display: inline-flex; align-items: center; flex-shrink: 0; padding: 2px; gap: 2px;
+    background: var(--surface-2); border: 1px solid var(--line); border-radius: 99px;
+  }
+  .lang-sw button {
+    cursor: pointer; border: 0; background: none; font: inherit; font-size: 11px; font-weight: 600;
+    letter-spacing: 0.02em; color: var(--ink-3); padding: 4px 10px; border-radius: 99px; transition: 0.14s;
+  }
+  .lang-sw button:hover { color: var(--ink); }
+  .lang-sw button[aria-pressed="true"] { background: var(--brand); color: #fff; }
+  .lang-sw button:focus-visible { outline: 2px solid var(--brand); outline-offset: 1px; }
 
   .split {
     flex: 1; display: grid; grid-template-columns: var(--videocol) 14px minmax(0, 1fr);
@@ -436,6 +451,11 @@
   <div class="topbar">
     <div class="crumb" id="crumb"></div>
     <span class="spacer"></span>
+    <div class="lang-sw" role="group" aria-label="언어 선택">
+      <button type="button" data-lang="ko" aria-pressed="true" onclick="setLang('ko')">KO</button>
+      <button type="button" data-lang="en" aria-pressed="false" onclick="setLang('en')">EN</button>
+      <button type="button" data-lang="zh" aria-pressed="false" onclick="setLang('zh')">CN</button>
+    </div>
     <div class="tb-prog">
       <span class="lbl">진도</span>
       <span class="tb-track"><span class="tb-fill" id="tb-fill"></span></span>
@@ -1364,6 +1384,8 @@
   <div class="actions" id="actions"></div>
 </main>
 
+<script src="lang_en.js"></script>
+<script src="lang_zh.js"></script>
 <script>
   var VIDEO_ID  = 'yi8KhjPtEUw';
   var TOTAL     = 9;
@@ -1409,11 +1431,12 @@
     var pct = TOTAL ? Math.round(done / TOTAL * 100) : 0;
     document.getElementById('ring').style.setProperty('--p', pct + '%');
     document.getElementById('ring-n').textContent = done;
-    document.getElementById('prog-main').textContent = '진도 ' + done + ' / ' + TOTAL;
+    document.getElementById('prog-main').textContent = t('rail.progMain', { done: done, total: TOTAL }, '진도 ' + done + ' / ' + TOTAL);
     var pending = 0;
     for (var i = 0; i < TOTAL; i++) if (!isDone(i) && P.seen.indexOf(i) >= 0) pending++;
     document.getElementById('prog-sub').textContent =
-      pending ? '퀴즈 미완료 ' + pending + '개' : (done === TOTAL ? '전체 완료' : '남은 챕터 ' + (TOTAL - done) + '개');
+      pending ? t('rail.progSubPending', { n: pending }, '퀴즈 미완료 ' + pending + '개')
+              : (done === TOTAL ? t('rail.progSubAll', null, '전체 완료') : t('rail.progSubLeft', { n: TOTAL - done }, '남은 챕터 ' + (TOTAL - done) + '개'));
     document.getElementById('tb-fill').style.width = pct + '%';
     document.getElementById('tb-n').textContent = done + ' / ' + TOTAL;
     var steps = document.querySelectorAll('.step');
@@ -1530,10 +1553,10 @@
     screenEl.className = 'screen is-mock';
     screenEl.innerHTML =
       '<img src="https://img.youtube.com/vi/' + VIDEO_ID + '/hqdefault.jpg" alt="" onerror="this.style.display=\'none\'">' +
-      '<button type="button" class="play" aria-label="재생"><svg viewBox="0 0 12 12" aria-hidden="true">' +
+      '<button type="button" class="play" aria-label="' + esc(t('player.play', null, '재생')) + '"><svg viewBox="0 0 12 12" aria-hidden="true">' +
       '<path d="M3.5 2l6 4-6 4z" fill="currentColor"/></svg></button>' +
       '<div class="cue"><i class="dot"></i><span id="cue-ts">00:00:00</span>' +
-      '<span class="note">지점부터 재생 · 배포 환경에서는 여기서 바로 재생됩니다</span></div>';
+      '<span class="note">' + esc(t('player.mockNote', null, '지점부터 재생 · 배포 환경에서는 여기서 바로 재생됩니다')) + '</span></div>';
     screenEl.addEventListener('click', function() { cue(CH_SEC[cur]); });
   } else {
     screenEl.innerHTML =
@@ -1587,9 +1610,10 @@
     }
     if (steps[idx]) steps[idx].scrollIntoView({ block: 'nearest' });
     document.getElementById('crumb').innerHTML =
-      'CHAPTER ' + p2(idx + 1) + ' / ' + p2(TOTAL) + ' &nbsp;·&nbsp; <b>' + esc(CH_TITLE[idx]) + '</b>';
+      t('topbar.crumb', { nn: p2(idx + 1), total: p2(TOTAL), title: esc(CH_TITLE[idx]) },
+        'CHAPTER ' + p2(idx + 1) + ' / ' + p2(TOTAL) + ' &nbsp;·&nbsp; <b>' + esc(CH_TITLE[idx]) + '</b>');
     document.getElementById('rng').textContent = CH_RANGE[idx];
-    document.getElementById('script-cnt').textContent = CH_SCR_N[idx] + '줄';
+    document.getElementById('script-cnt').textContent = t('player.lines', { n: CH_SCR_N[idx] }, CH_SCR_N[idx] + '줄');
     renderActions();
     paintProgress();
     if (seek) cue(CH_SEC[idx]);
@@ -1612,30 +1636,29 @@
     if (inQuiz) { el.style.display = 'none'; return; }
     el.style.display = '';
     var prev = '<button type="button" class="btn"' +
-      (cur > 0 ? ' onclick="goChapter(' + (cur - 1) + ',true)"' : ' disabled') + '>← 이전 챕터</button>';
+      (cur > 0 ? ' onclick="goChapter(' + (cur - 1) + ',true)"' : ' disabled') + '>' + esc(t('actions.prev', null, '← 이전 챕터')) + '</button>';
     var out = prev + '<span class="spacer"></span>';
     var last = cur + 1 >= TOTAL;
     if (CH_QUIZ_N[cur] > 0) {
       /* 퀴즈가 있는 챕터: 건너뛸 수는 있지만 진도에는 반영되지 않는다 */
       if (!isDone(cur)) {
-        out += '<span class="note">퀴즈를 모두 맞히면 <b>진도에 반영</b>됩니다.<br>' +
-               '건너뛰면 목차에 <b>퀴즈 미완료</b>로 남습니다.</span>';
+        out += '<span class="note">' + t('actions.quizNote', null,
+          '퀴즈를 모두 맞히면 <b>진도에 반영</b>됩니다.<br>건너뛰면 목차에 <b>퀴즈 미완료</b>로 남습니다.') + '</span>';
       }
-      if (!last) out += '<button type="button" class="btn" onclick="goChapter(' + (cur + 1) + ',true)">다음 챕터 →</button>';
-      out += '<button type="button" class="btn btn-primary" onclick="openQuiz(' + cur + ')">이해도 확인 ' +
-             CH_QUIZ_N[cur] + '문제 →</button>';
+      if (!last) out += '<button type="button" class="btn" onclick="goChapter(' + (cur + 1) + ',true)">' + esc(t('actions.next', null, '다음 챕터 →')) + '</button>';
+      out += '<button type="button" class="btn btn-primary" onclick="openQuiz(' + cur + ')">' + esc(t('actions.quizBtn', { n: CH_QUIZ_N[cur] }, '이해도 확인 ' + CH_QUIZ_N[cur] + '문제 →')) + '</button>';
     } else {
       /* 퀴즈가 없는 챕터(Q&A·마무리): 다음으로 넘어가면 그대로 완료 */
       if (!isDone(cur)) {
-        out += '<span class="note">이 챕터는 퀴즈가 없습니다.<br>' +
-               (last ? '완료를 누르면 <b>바로 완료</b>됩니다.' : '다음으로 넘어가면 <b>바로 완료</b>됩니다.') + '</span>';
+        out += '<span class="note">' + t(last ? 'actions.noQuizNoteLast' : 'actions.noQuizNoteNext', null,
+          '이 챕터는 퀴즈가 없습니다.<br>' + (last ? '완료를 누르면 <b>바로 완료</b>됩니다.' : '다음으로 넘어가면 <b>바로 완료</b>됩니다.')) + '</span>';
       }
       if (last) {
         out += '<button type="button" class="btn btn-primary" onclick="finishChapter(' + cur + ',-1)">' +
-               '학습 완료' + (isDone(cur) ? '' : ' <span class="tick">진도 +1</span>') + '</button>';
+               esc(t('actions.finish', null, '학습 완료')) + (isDone(cur) ? '' : ' <span class="tick">' + esc(t('actions.tick', null, '진도 +1')) + '</span>') + '</button>';
       } else {
         out += '<button type="button" class="btn btn-primary" onclick="finishChapter(' + cur + ',' + (cur + 1) + ')">' +
-               '다음 챕터' + (isDone(cur) ? ' →' : ' <span class="tick">진도 +1</span>') + '</button>';
+               esc(t('actions.nextFinish', null, '다음 챕터')) + (isDone(cur) ? ' →' : ' <span class="tick">' + esc(t('actions.tick', null, '진도 +1')) + '</span>') + '</button>';
       }
     }
     el.innerHTML = out;
@@ -1652,15 +1675,21 @@
     renderQ(idx);
   }
   function renderDots(idx) {
-    var st = QS[idx], qs = QUIZ_DATA[idx] || [], out = '';
+    var st = QS[idx], qs = quizData(idx), out = '';
     for (var i = 0; i < qs.length; i++) {
       var c = st.marks[i] === 'ok' ? ' ok' : st.marks[i] === 'no' ? ' no' : (i === st.i ? ' on' : '');
       out += '<i class="dot-i' + c + '"></i>';
     }
     document.getElementById('qdots-' + idx).innerHTML = out;
   }
+  /* 현재 언어의 퀴즈 데이터 — 언어팩에 없으면 한국어 원문으로 폴백 */
+  function quizData(idx) {
+    var pack = (typeof LANGS !== 'undefined' && LANGS) ? LANGS[LANG] : null;
+    if (pack && pack.QUIZ && pack.QUIZ[idx]) return pack.QUIZ[idx];
+    return QUIZ_DATA[idx] || [];
+  }
   function renderQ(idx) {
-    var st = QS[idx], qs = QUIZ_DATA[idx] || [];
+    var st = QS[idx], qs = quizData(idx);
     renderDots(idx);
     if (st.i >= qs.length) { renderResult(idx); return; }
     var q = qs[st.i], keys = 'ABCDE', opts = '';
@@ -1670,7 +1699,7 @@
     }
     document.getElementById('qstage-' + idx).innerHTML =
       '<div class="qcard">' +
-        '<div class="qno">QUESTION ' + (st.i + 1) + ' / ' + qs.length + '</div>' +
+        '<div class="qno">' + esc(t('quiz.qno', { n: st.i + 1, m: qs.length }, 'QUESTION ' + (st.i + 1) + ' / ' + qs.length)) + '</div>' +
         '<div class="qtext">' + esc(q.q) + '</div>' +
         '<ul class="opts" id="opts-' + idx + '">' + opts + '</ul>' +
         '<div id="hint-' + idx + '"></div>' +
@@ -1678,7 +1707,7 @@
       '</div>';
   }
   function answer(idx, chosen) {
-    var st = QS[idx], qs = QUIZ_DATA[idx] || [], q = qs[st.i];
+    var st = QS[idx], qs = quizData(idx), q = qs[st.i];
     var ul = document.getElementById('opts-' + idx);
     if (!ul || ul.classList.contains('locked')) return;
     ul.classList.add('locked');
@@ -1695,42 +1724,42 @@
     st.marks[st.i] = ok ? 'ok' : 'no';
     renderDots(idx);
     var back = '<button type="button" class="btn-ghost" onclick="cue(' + CH_SEC[idx] + ')">' +
-               '<svg class="i" viewBox="0 0 12 12" aria-hidden="true"><path d="M3.5 2l6 4-6 4z" fill="currentColor"/></svg> 이 챕터 구간 다시 보기</button>';
+               '<svg class="i" viewBox="0 0 12 12" aria-hidden="true"><path d="M3.5 2l6 4-6 4z" fill="currentColor"/></svg> ' + esc(t('quiz.replay', null, '이 챕터 구간 다시 보기')) + '</button>';
     document.getElementById('hint-' + idx).innerHTML =
-      '<div class="hint"><b>해설</b>' + esc(q.hint || '') + back + '</div>';
+      '<div class="hint"><b>' + esc(t('quiz.explain', null, '해설')) + '</b>' + esc(q.hint || '') + back + '</div>';
     document.getElementById('qfoot-' + idx).innerHTML =
       '<button type="button" class="btn btn-primary" onclick="nextQ(' + idx + ')">' +
-      (st.i >= qs.length - 1 ? '결과 보기 →' : '다음 문제 →') + '</button>';
+      (st.i >= qs.length - 1 ? esc(t('quiz.showResult', null, '결과 보기 →')) : esc(t('quiz.nextQ', null, '다음 문제 →'))) + '</button>';
   }
   function nextQ(idx) { QS[idx].i++; renderQ(idx); }
   function renderResult(idx) {
-    var st = QS[idx], qs = QUIZ_DATA[idx] || [];
+    var st = QS[idx], qs = quizData(idx);
     var pct = qs.length ? Math.round(st.score / qs.length * 100) : 0;
     var passed = qs.length ? (st.score / qs.length) >= PASS : true;
     P.scores[idx] = [st.score, qs.length];
     saveProg();
     if (passed) markDone(idx); else sendProgress();   /* 미통과도 응시 기록은 남긴다 */
-    var head = passed ? (pct === 100 ? '완벽합니다' : '통과했습니다') : '기준에 못 미쳤습니다';
+    var head = passed ? (pct === 100 ? t('quiz.perfect', null, '완벽합니다') : t('quiz.passed', null, '통과했습니다')) : t('quiz.failed', null, '기준에 못 미쳤습니다');
     var sub = passed
-      ? '틀린 문제의 해설을 한 번 더 확인하고 다음 챕터로 넘어가세요.'
-      : '통과 기준은 ' + Math.round(PASS * 100) + '%입니다. 해설을 확인한 뒤 다시 풀어 주세요.';
+      ? t('quiz.passSub', null, '틀린 문제의 해설을 한 번 더 확인하고 다음 챕터로 넘어가세요.')
+      : t('quiz.failSub', { pct: Math.round(PASS * 100) }, '통과 기준은 ' + Math.round(PASS * 100) + '%입니다. 해설을 확인한 뒤 다시 풀어 주세요.');
     var last = idx + 1 >= TOTAL;
     var nextBtn = last
-      ? '<button type="button" class="btn" onclick="showFace(' + idx + ',\'learn\')">학습 화면</button>'
+      ? '<button type="button" class="btn" onclick="showFace(' + idx + ',\'learn\')">' + esc(t('quiz.learnScreen', null, '학습 화면')) + '</button>'
       : (passed
-          ? '<button type="button" class="btn btn-primary" onclick="goChapter(' + (idx + 1) + ',true)">다음 챕터 →</button>'
-          : '<button type="button" class="btn" onclick="goChapter(' + (idx + 1) + ',true)">다음 챕터 →</button>');
+          ? '<button type="button" class="btn btn-primary" onclick="goChapter(' + (idx + 1) + ',true)">' + esc(t('quiz.nextCh', null, '다음 챕터 →')) + '</button>'
+          : '<button type="button" class="btn" onclick="goChapter(' + (idx + 1) + ',true)">' + esc(t('quiz.nextCh', null, '다음 챕터 →')) + '</button>');
     var retry = '<button type="button" class="btn' + (passed ? '' : ' btn-primary') +
-                '" onclick="openQuiz(' + idx + ')">다시 풀기</button>';
+                '" onclick="openQuiz(' + idx + ')">' + esc(t('quiz.retry', null, '다시 풀기')) + '</button>';
     document.getElementById('qstage-' + idx).innerHTML =
       '<div class="qcard"><div class="result">' +
         '<div class="score" style="--p:' + pct + '%;--c:' + (passed ? 'var(--ok)' : 'var(--no)') + '">' +
           '<span>' + st.score + '/' + qs.length + '</span></div>' +
-        '<h3>' + head + '</h3><p>' + sub + '</p>' +
+        '<h3>' + esc(head) + '</h3><p>' + sub + '</p>' +
         '<div class="verdict ' + (passed ? 'pass' : 'fail') + '">' +
-          (passed ? '진도에 반영되었습니다' : '진도에 반영되지 않았습니다') + '</div>' +
+          (passed ? t('quiz.reflected', null, '진도에 반영되었습니다') : t('quiz.notReflected', null, '진도에 반영되지 않았습니다')) + '</div>' +
         '<div class="result-btns">' + retry +
-          '<button type="button" class="btn" onclick="showFace(' + idx + ',\'learn\')">학습 화면</button>' +
+          '<button type="button" class="btn" onclick="showFace(' + idx + ',\'learn\')">' + esc(t('quiz.learnScreen', null, '학습 화면')) + '</button>' +
           nextBtn +
         '</div>' +
       '</div></div>';
@@ -1742,7 +1771,7 @@
     var dept = localStorage.getItem('lupa_dept') || '';
     var el = document.getElementById('rail-user');
     if (!id) { el.classList.remove('on'); return; }
-    el.innerHTML = esc(name || id) + (dept ? ' · ' + esc(dept) : '') + ' <u onclick="changeUser()">변경</u>';
+    el.innerHTML = esc(name || id) + (dept ? ' · ' + esc(dept) : '') + ' <u onclick="changeUser()">' + esc(t('user.change', null, '변경')) + '</u>';
     el.setAttribute('title', id + '@lge.com');
     el.classList.add('on');
   }
@@ -1869,6 +1898,287 @@
     document.getElementById('m-uid').addEventListener('keydown', function(e) { if (e.key === 'Enter') document.getElementById('m-name').focus(); });
     document.getElementById('m-name').addEventListener('keydown', function(e) { if (e.key === 'Enter') registerUser(); });
   })();
+
+  /* ── 다국어 (KO 기본 · EN · CN) ────────────────────────────
+     KO는 이 문서의 DOM 원문 그대로다. EN은 lang_en.js, CN은 lang_zh.js가
+     데이터를 담고, 적용은 applyLang이 담당한다. 선택은 lupa_lang에 저장. */
+  var LANGS = { ko: null, en: (typeof LANG_EN !== 'undefined' ? LANG_EN : null),
+                zh: (typeof LANG_ZH !== 'undefined' ? LANG_ZH : null) };
+  var LANG = 'ko';
+
+  function t(key, params, ko) {
+    /* LANGS/LANG은 이 아래에서 선언되지만 var 호이스팅으로 스크립트 앞부분(목업 빌더)에서
+       호출될 수 있다 — typeof 가드로 그 시점엔 pack 없이 ko 원문을 돌려준다. */
+    var pack = (typeof LANGS !== 'undefined' && LANGS) ? LANGS[LANG] : null;
+    var s = (pack && pack.UI && pack.UI[key] != null) ? pack.UI[key] : ko;
+    if (s == null) return null;
+    if (params) for (var k in params) s = s.split('{' + k + '}').join(params[k]);
+    return s;
+  }
+  /* 데이터 사전: 번역 팩이 있으면 그걸, 없으면 KO 원본을 돌려준다 */
+  function dict(name, idx) {
+    var pack = LANGS[LANG];
+    if (pack && pack[name] && pack[name][idx] != null) return pack[name][idx];
+    return null;
+  }
+  function chTitle(idx) { return dict('CH_TITLE', idx) != null ? dict('CH_TITLE', idx) : CH_TITLE[idx]; }
+  function chGoals(idx) { return dict('CH_GOALS', idx) || null; }
+  function chKeys(idx)  { return dict('CH_KEYS', idx) || null; }
+  function trLine(sec)  { var pack = LANGS[LANG]; return (pack && pack.TR && pack.TR[String(sec)] != null) ? pack.TR[String(sec)] : null; }
+
+  /* 정적 DOM 교체 — KO 원문이 곧 기본값이므로 KO로 돌아올 때는 원문을 복원한다 */
+  var KO_STATIC = null;   /* 첫 applyLang 전에 원문을 캡처해 둔다 */
+  function captureStatic() {
+    if (KO_STATIC) return;
+    KO_STATIC = {
+      modal: {
+        h3: document.querySelector('#modal h3').innerHTML,
+        p: document.querySelector('#modal p').innerHTML,
+        uidPh: document.getElementById('m-uid').placeholder,
+        err: document.getElementById('m-err').innerHTML,
+        namePh: document.getElementById('m-name').placeholder,
+        deptPh: document.getElementById('m-dept').placeholder,
+        skip: document.querySelector('#modal .modal-actions .btn:not(.btn-primary)').textContent,
+        start: document.querySelector('#modal .modal-actions .btn-primary').textContent
+      },
+      rail: {
+        course: document.querySelector('.rail-title .course').textContent,
+        title: (function() {
+          var n = document.querySelector('.rail-title');
+          var c = n.querySelector('.course');
+          var tn = '';
+          for (var i = 0; i < n.childNodes.length; i++) {
+            if (n.childNodes[i] === c) continue;
+            tn += n.childNodes[i].textContent;
+          }
+          return tn.trim();
+        })(),
+        meta: document.querySelector('.rail-meta').textContent,
+        back: document.querySelector('.rail-back').textContent,
+        quiz: document.querySelector('.step-quiz') ? document.querySelector('.step-quiz').textContent : '퀴즈',
+        dur: (function() {
+          var out = [];
+          document.querySelectorAll('.step .dur').forEach(function(d) { out.push(d.textContent); });
+          return out;
+        })(),
+        titles: (function() {
+          var out = [];
+          document.querySelectorAll('.step .step-title').forEach(function(s) { out.push(s.textContent); });
+          return out;
+        })()
+      },
+      topbar: { lbl: document.querySelector('.tb-prog .lbl').textContent },
+      player: {
+        playRange: document.querySelector('.pbar button').textContent.trim(),
+        scriptHead: document.querySelector('details.script > summary').textContent.replace(/\s*\d+줄\s*$/, '').trim()
+      },
+      gutter: {
+        aria: document.getElementById('gutter').getAttribute('aria-label'),
+        title: document.getElementById('gutter').getAttribute('title')
+      },
+      mods: (function() {
+        var out = [];
+        document.querySelectorAll('.mod-label').forEach(function(m) { out.push(m.innerHTML); });
+        return out;
+      })(),
+      chSubs: (function() {
+        var out = [];
+        document.querySelectorAll('.ch-sub').forEach(function(s) { out.push(s.textContent); });
+        return out;
+      })(),
+      qheads: (function() {
+        var out = [];
+        document.querySelectorAll('.qhead .lbl').forEach(function(l) { out.push(l.textContent); });
+        return out;
+      })(),
+      qback: (function() {
+        var out = [];
+        document.querySelectorAll('.qhead .btn-sm').forEach(function(b) { out.push(b.textContent.trim()); });
+        return out;
+      })(),
+      chTitles: (function() {
+        var out = [];
+        document.querySelectorAll('.chapter .ch-title').forEach(function(c) { out.push(c.textContent); });
+        return out;
+      })(),
+      goals: (function() {
+        var out = [];
+        document.querySelectorAll('.chapter').forEach(function(ch) {
+          var a = [];
+          ch.querySelectorAll('.goals li').forEach(function(li) { a.push(li.textContent); });
+          out.push(a);
+        });
+        return out;
+      })(),
+      keys: (function() {
+        var out = [];
+        document.querySelectorAll('.chapter').forEach(function(ch) {
+          var a = [];
+          ch.querySelectorAll('.keys li').forEach(function(li) { a.push(li.textContent); });
+          out.push(a);
+        });
+        return out;
+      })(),
+      lines: (function() {
+        var out = {};
+        document.querySelectorAll('.line[data-sec]').forEach(function(l) {
+          var sp = l.querySelector('span:last-child');
+          out[l.getAttribute('data-sec')] = sp ? sp.textContent : '';
+        });
+        return out;
+      })()
+    };
+  }
+  function restoreStatic() {
+    var S = KO_STATIC, m, i;
+    m = document.querySelector('#modal h3'); m.innerHTML = S.modal.h3;
+    m = document.querySelector('#modal p'); m.innerHTML = S.modal.p;
+    document.getElementById('m-uid').placeholder = S.modal.uidPh;
+    document.getElementById('m-err').innerHTML = S.modal.err;
+    document.getElementById('m-name').placeholder = S.modal.namePh;
+    document.getElementById('m-dept').placeholder = S.modal.deptPh;
+    document.querySelector('#modal .modal-actions .btn:not(.btn-primary)').textContent = S.modal.skip;
+    document.querySelector('#modal .modal-actions .btn-primary').textContent = S.modal.start;
+    document.querySelector('.rail-title .course').textContent = S.rail.course;
+    (function() {
+      var n = document.querySelector('.rail-title');
+      var c = n.querySelector('.course');
+      n.childNodes.forEach(function(nd) {
+        if (nd.nodeType === 3 && nd.textContent.trim()) nd.textContent = ' ' + S.rail.title;
+      });
+    })();
+    document.querySelector('.rail-meta').textContent = S.rail.meta;
+    document.querySelector('.rail-back').textContent = S.rail.back;
+    document.querySelectorAll('.step-quiz').forEach(function(q) { q.textContent = S.rail.quiz; });
+    document.querySelectorAll('.step .dur').forEach(function(d, i) { d.textContent = S.rail.dur[i]; });
+    document.querySelectorAll('.step .step-title').forEach(function(s, i) { s.textContent = S.rail.titles[i]; });
+    document.querySelector('.tb-prog .lbl').textContent = S.topbar.lbl;
+    document.querySelector('.pbar button').innerHTML =
+      '<svg class="i" viewBox="0 0 12 12" aria-hidden="true"><path d="M3.5 2l6 4-6 4z" fill="currentColor"/></svg> ' + S.player.playRange;
+    document.querySelector('details.script > summary').innerHTML =
+      S.player.scriptHead + ' <span id="script-cnt"></span>';
+    document.getElementById('gutter').setAttribute('aria-label', S.gutter.aria);
+    document.getElementById('gutter').setAttribute('title', S.gutter.title);
+    document.querySelectorAll('.mod-label').forEach(function(m2, i) { m2.innerHTML = S.mods[i]; });
+    document.querySelectorAll('.ch-sub').forEach(function(s, i) { s.textContent = S.chSubs[i]; });
+    document.querySelectorAll('.qhead .lbl').forEach(function(l, i) { l.textContent = S.qheads[i]; });
+    document.querySelectorAll('.qhead .btn-sm').forEach(function(b, i) { b.textContent = S.qback[i]; });
+    document.querySelectorAll('.chapter .ch-title').forEach(function(c, i) { c.textContent = S.chTitles[i]; });
+    document.querySelectorAll('.chapter').forEach(function(ch, i) {
+      var gl = ch.querySelector('.goals'), kl = ch.querySelector('.keys');
+      if (gl && S.goals[i]) gl.innerHTML = S.goals[i].map(function(x) { return '<li>' + esc(x) + '</li>'; }).join('');
+      if (kl && S.keys[i]) kl.innerHTML = S.keys[i].map(function(x) { return '<li>' + esc(x) + '</li>'; }).join('');
+    });
+    document.querySelectorAll('.line[data-sec]').forEach(function(l) {
+      var sp = l.querySelector('span:last-child');
+      if (sp) sp.textContent = S.lines[l.getAttribute('data-sec')];
+    });
+  }
+
+  function applyStatic(lang) {
+    var pack = LANGS[lang];
+    if (lang === 'ko') { restoreStatic(); return; }
+    var U = pack.UI;
+    /* 모달 */
+    document.querySelector('#modal h3').innerHTML = U['modal.h3'];
+    document.querySelector('#modal p').innerHTML = U['modal.p'];
+    document.getElementById('m-uid').placeholder = U['modal.uid.ph'];
+    document.getElementById('m-err').innerHTML = U['modal.err'];
+    document.getElementById('m-name').placeholder = U['modal.name.ph'];
+    document.getElementById('m-dept').placeholder = U['modal.dept.ph'];
+    document.querySelector('#modal .modal-actions .btn:not(.btn-primary)').textContent = U['modal.skip'];
+    document.querySelector('#modal .modal-actions .btn-primary').textContent = U['modal.start'];
+    /* 레일 */
+    document.querySelector('.rail-title .course').textContent = U['rail.course'] || 'LUPA LED';
+    (function() {
+      var n = document.querySelector('.rail-title');
+      var c = n.querySelector('.course');
+      n.childNodes.forEach(function(nd) {
+        if (nd.nodeType === 3 && nd.textContent.trim()) nd.textContent = ' ' + U['rail.title'];
+      });
+    })();
+    document.querySelector('.rail-meta').textContent = U['rail.meta'];
+    document.querySelector('.rail-back').textContent = U['rail.back'];
+    document.querySelectorAll('.step-quiz').forEach(function(q) { q.textContent = U['rail.quiz']; });
+    /* 챕터 제목·시간 */
+    document.querySelectorAll('.step').forEach(function(st, i) {
+      var d = st.querySelector('.dur');
+      var mm = /^(\d+)분/.exec(KO_STATIC.rail.dur[i] || '');
+      if (d && mm) d.textContent = U['rail.min'].replace('{n}', mm[1]);
+      var ti = st.querySelector('.step-title');
+      if (ti) ti.textContent = chTitle(i);
+    });
+    /* 상단바 · 플레이어 · 거터 */
+    document.querySelector('.tb-prog .lbl').textContent = U['topbar.prog'];
+    document.querySelector('.pbar button').innerHTML =
+      '<svg class="i" viewBox="0 0 12 12" aria-hidden="true"><path d="M3.5 2l6 4-6 4z" fill="currentColor"/></svg> ' + U['player.playRange'];
+    document.querySelector('details.script > summary').innerHTML =
+      U['player.scriptHead'] + ' <span id="script-cnt"></span>';
+    document.getElementById('gutter').setAttribute('aria-label', U['gutter.aria']);
+    document.getElementById('gutter').setAttribute('title', U['gutter.title']);
+    /* 챕터 본문 라벨·부제·목표/주요내용 */
+    document.querySelectorAll('.chapter').forEach(function(ch, i) {
+      var sub = ch.querySelector('.ch-sub');
+      if (sub) {
+        var mm = /(\d+)분/.exec(KO_STATIC.chSubs[i] || '');
+        var g = ch.querySelectorAll('.goals li').length;
+        var k = ch.querySelectorAll('.keys li').length;
+        sub.textContent = U['ch.sub'].replace('{m}', mm ? mm[1] : '').replace('{g}', g).replace('{k}', k);
+      }
+      var labels = ch.querySelectorAll('.mod-label');
+      if (labels[0]) labels[0].innerHTML = U['mod.goals'] + '<span class="n">' + ch.querySelectorAll('.goals li').length + '</span>';
+      if (labels[1]) labels[1].innerHTML = U['mod.keys'] + '<span class="n">' + ch.querySelectorAll('.keys li').length + '</span>';
+      var gl = ch.querySelector('.goals'), kl = ch.querySelector('.keys');
+      var G = chGoals(i), K = chKeys(i);
+      if (gl && G) {
+        gl.innerHTML = G.map(function(x) { return '<li>' + esc(x) + '</li>'; }).join('');
+      }
+      if (kl && K) {
+        kl.innerHTML = K.map(function(x) { return '<li>' + esc(x) + '</li>'; }).join('');
+      }
+      var chT = ch.querySelector('.ch-title');
+      if (chT) chT.textContent = chTitle(i);
+      var qh = ch.querySelector('.qhead .lbl');
+      if (qh) qh.textContent = U['quiz.checkLbl'].replace('{nn}', p2(i + 1));
+      var qb = ch.querySelector('.qhead .btn-sm');
+      if (qb) qb.textContent = U['quiz.backToLearn'];
+    });
+    /* 원문 줄 */
+    document.querySelectorAll('.line[data-sec]').forEach(function(l) {
+      var sp = l.querySelector('span:last-child');
+      var tr = trLine(l.getAttribute('data-sec'));
+      if (sp && tr != null) sp.textContent = tr;
+    });
+  }
+
+  function setLang(lang) {
+    if (!(lang in LANGS)) return;   /* LANGS.ko는 null pack — 존재 여부로만 검사 */
+    captureStatic();
+    LANG = lang;
+    try { localStorage.setItem('lupa_lang', lang); } catch (e) {}
+    document.documentElement.setAttribute('lang', lang === 'zh' ? 'zh' : lang);
+    applyStatic(lang);
+    /* 동적 영역 재렌더 */
+    paintProgress();
+    renderActions();
+    showUser();
+    goChapter(cur, false);
+    /* 퀴즈 화면이 열려 있으면 다시 그린다 */
+    if (QS[cur]) renderQ(cur);
+    /* 목업 화면 문구 */
+    if (isLocal) {
+      var note = document.querySelector('.screen .note');
+      if (note) note.textContent = t('player.mockNote', null, '지점부터 재생 · 배포 환경에서는 여기서 바로 재생됩니다');
+      var play = document.querySelector('.screen .play');
+      if (play) play.setAttribute('aria-label', t('player.play', null, '재생'));
+    }
+    /* 스위치 버튼 상태 */
+    document.querySelectorAll('.lang-sw button').forEach(function(b) {
+      b.setAttribute('aria-pressed', String(b.getAttribute('data-lang') === lang));
+    });
+  }
+  window.applyLang = setLang;   /* lang_en.js 헤더 주석의 applyLang 이름 유지 */
+  setLang(localStorage.getItem('lupa_lang') || 'ko');
 </script>
 </body>
 </html>
